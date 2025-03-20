@@ -1,22 +1,17 @@
-//const AWS = require('aws-sdk');
+// Importar dependencias
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+require('dotenv').config(); // Si lo necesitas para Discord, pero AWS ya está en EC2
 
-require('dotenv').config();
-/*
-// Configurar AWS SDK
-AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION
+// Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
+const dynamoDB = new DynamoDBClient({
+    region: 'us-east-2'  // Asegúrate de poner la región correcta de tu instancia EC2
 });
 
-*/
-
-// Instanciar DynamoDB
-const dynamoDB = new AWS.DynamoDB.DocumentClient();
+// Crear cliente de Discord
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 // Cargar los comandos desde la carpeta "comandos/"
 client.commands = new Map();
@@ -44,6 +39,7 @@ client.on('messageCreate', async (message) => {
     // Verificar si el comando existe
     if (client.commands.has(commandName)) {
         try {
+            // Ejecutar el comando pasando el mensaje, argumentos y la conexión a DynamoDB
             await client.commands.get(commandName).execute(message, args, dynamoDB);
         } catch (error) {
             console.error("Error al ejecutar el comando:", error);
@@ -52,4 +48,5 @@ client.on('messageCreate', async (message) => {
     }
 });
 
+// Iniciar sesión con el token del bot
 client.login(process.env.TOKEN);
