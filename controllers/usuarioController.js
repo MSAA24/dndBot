@@ -1,23 +1,22 @@
 
 //Guardar usuario 
 async function saveUser(userID, username) {
-    const params = {
-        TableName: "Users",
-        Item: {
-            userID: userID,
-            username: username,
-            joinedAt: new Date().toISOString()
-        }
-    };
-
     try {
-        await dynamoDB.put(params).promise();
-        console.log("Usuario guardado en DynamoDB");
+        const command = new PutCommand({
+            TableName: "Users", // Asegúrate de que sea el nombre correcto
+            Item: {
+                userID: userID,
+                username: username
+            }
+        });
+
+        await dynamoDB.send(command);
+        console.log(`✅ Usuario ${username} guardado con éxito`);
     } catch (error) {
-        console.error("Error guardando usuario:", error);
+        console.error("❌ Error guardando el usuario:", error);
+        throw error;
     }
 }
-
 //Obtener usuario por ID
 async function getUser(userID) {
     const params = {
@@ -37,4 +36,4 @@ async function getUser(userID) {
     }
 }
 
-module.exports = { saveUser };
+module.exports = { saveUser, getUser};
