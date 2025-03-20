@@ -6,17 +6,15 @@ const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región
 const dynamoDB = DynamoDBDocumentClient.from(client);
 
 // Función para guardar un usuario en DynamoDB
-async function saveUser(userID, username) {
+async function saveUser(userID, username, joinedAt) {
     try {
-        
-        const fecha = userID.joinedAt;
-        
+        const registeredAt = new Date().toISOString()
         const command = new PutCommand({
             TableName: "Users", // Reemplaza con el nombre real de tu tabla
             Item: {
                 userID: userID,
                 username: username,
-                joinedAt: fecha
+                joinedAt: registeredAt
             }
         });
 
@@ -55,3 +53,4 @@ async function getUser(userID) {
 }
 
 module.exports = { saveUser, getUser};
+
