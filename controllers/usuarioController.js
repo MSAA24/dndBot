@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
 
 // Crear cliente de DynamoDB
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
@@ -24,7 +24,6 @@ async function saveUser(userID, username) {
     }
 }
 
-//Obtener usuario por ID
 async function getUser(userID) {
     const params = {
         TableName: "Users",
@@ -34,9 +33,17 @@ async function getUser(userID) {
     };
 
     try {
-        const result = await dynamoDB.get(params).promise();
-        console.log("Usuario encontrado:", result.Item);
-        return result.Item;
+        // Ejecutamos el comando GetCommand
+        const command = new GetCommand(params);
+        const result = await dynamoDB.send(command);
+
+        if (result.Item) {
+            console.log("Usuario encontrado:", result.Item);
+            return result.Item;
+        } else {
+            console.log("Usuario no encontrado.");
+            return null;
+        }
     } catch (error) {
         console.error("Error obteniendo usuario:", error);
         return null;
