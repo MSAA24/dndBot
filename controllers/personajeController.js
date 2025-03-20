@@ -10,7 +10,7 @@ async function crearPersonaje(userID, nombrePersonaje, nivel) {
         TableName: "Personajes", // Nombre de la tabla, si tienes una diferente, cámbiala
         Item: {
             userID: userID,
-            characterID: `${userID}_${nombrePersonaje}`, // Usamos el ID del usuario y el nombre del personaje como ID único
+            personajeId: `${userID}_${nombrePersonaje}`, // Cambié `characterID` a `personajeId` para coincidir con la clave primaria de la tabla
             characterName: nombrePersonaje,
             level: nivel,
             createdAt: new Date().toDateString() // Fecha de creación
@@ -56,7 +56,7 @@ async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel
         TableName: "Personajes",
         Key: {
             userID: userID,
-            characterID: `${userID}_${nombreActual}` // Clave compuesta por userID y nombre actual
+            personajeId: `${userID}_${nombreActual}` // Cambié `characterID` a `personajeId`
         },
         UpdateExpression: "set #name = :newName, #level = :newLevel",
         ExpressionAttributeNames: {
