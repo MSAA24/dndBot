@@ -9,7 +9,7 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 async function saveUser(userID, username) {
     try {
         
-        const fecha = userID.joinedAt.toISOString();
+        const fecha = userID.joinedAt;
         
         const command = new PutCommand({
             TableName: "Users", // Reemplaza con el nombre real de tu tabla
