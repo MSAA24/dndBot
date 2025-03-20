@@ -1,6 +1,9 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
 
+const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
+const dynamoDB = DynamoDBDocumentClient.from(client);
+
 // Guardar personaje
 async function crearPersonaje(userID, nombrePersonaje, nivel) {
     const params = {
