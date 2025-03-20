@@ -7,7 +7,7 @@ async function crearPersonaje(userID, nombrePersonaje, nivel) {
             characterID: `${userID}_${nombrePersonaje}`, // Usamos el ID del usuario y el nombre del personaje como ID único
             characterName: nombrePersonaje,
             level: nivel,
-            createdAt: new Date().toISOString() // Fecha de creación
+            createdAt: new Date().toDateString() // Fecha de creación
         }
     };
 
