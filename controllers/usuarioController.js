@@ -12,7 +12,8 @@ async function saveUser(userID, username) {
             TableName: "Users", // Reemplaza con el nombre real de tu tabla
             Item: {
                 userID: userID,
-                username: username
+                username: username,
+                joinedAt: joinedAt
             }
         });
 
