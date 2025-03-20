@@ -1,9 +1,10 @@
 const { crearPersonaje , getPersonaje, updateCharacter } = require("../controllers/personajeController.js");
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-const {crearPersonaje, getPersonaje } = require("../controllers/personajeController.js");
 
 //Comando para crear Personaje
+
+
 module.exports = {
     name: "crearpersonaje",
     description: "Crea un personaje en el juego",
