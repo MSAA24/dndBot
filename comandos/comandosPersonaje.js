@@ -40,7 +40,7 @@ module.exports = {
         }
 
         try {
-            const character = await getCharacter(userID, characterName);
+            const character = await getPersonaje(userID, characterName);
             
             if (character) {
                 message.reply(`📜 **Información de tu personaje**:
