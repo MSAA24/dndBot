@@ -1,20 +1,21 @@
 require('dotenv').config();
 const { DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
 const { marshall } = require('@aws-sdk/util-dynamodb');
-console.log(process.env.AWS_ACCESS_KEY_ID);  // Esto debería mostrar tu AWS Access Key
-console.log(process.env.AWS_SECRET_ACCESS_KEY);  // Esto debería mostrar tu AWS Secret Key
+const { fromIni } = require("@aws-sdk/credential-provider-ini");
 async function crearPersonaje(userID, nombre, nivel) {
     // Configurar el cliente de DynamoDB
     const client = new DynamoDBClient({
         region: 'us-east-2', // Coloca aquí la región correcta
+        /*
         credentials: {
             credentials: fromIni()
         }
+        */
     });
 
-    // Crear el objeto del personaje, aquí asignamos 'userID' como la clave primaria.
+    // Crear el objeto del personaje, asignamos 'userID' como la clave primaria.
     const personaje = {
-        id: userID,  // La clave primaria es '255', y usamos userID como su valor
+        id: userID,  // usamos userID como su valor
         nombre: nombre,
         nivel: nivel,
         fechaCreacion: new Date().toISOString()
