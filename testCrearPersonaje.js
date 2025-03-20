@@ -8,8 +8,7 @@ async function crearPersonaje(userID, nombre, nivel) {
     const client = new DynamoDBClient({
         region: 'us-east-2', // Coloca aquí la región correcta
         credentials: {
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+            credentials: fromIni()
         }
     });
 
