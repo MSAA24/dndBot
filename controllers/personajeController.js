@@ -18,7 +18,8 @@ async function crearPersonaje(userID, nombrePersonaje, nivel) {
     };
 
     try {
-        await dynamoDB.put(params).promise();
+        // Usar el comando PutCommand para guardar el personaje
+        await dynamoDB.send(new PutCommand(params));
         console.log("Personaje guardado");
     } catch (error) {
         console.error("Error guardando personaje:", error);
@@ -35,7 +36,7 @@ async function getPersonaje(userID) {
     };
 
     try {
-        const result = await dynamoDB.get(params).promise();
+        const result = await dynamoDB.send(new GetCommand(params));
         if (result.Item) {
             console.log("Personaje encontrado:", result.Item);
             return result.Item;
@@ -70,7 +71,7 @@ async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel
     };
 
     try {
-        const result = await dynamoDB.update(params).promise();
+        const result = await dynamoDB.send(new UpdateCommand(params)); // Usar el comando UpdateCommand para la actualización
         console.log("Personaje actualizado:", result.Attributes);
         return result.Attributes;
     } catch (error) {
@@ -78,6 +79,5 @@ async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel
         return null;
     }
 }
-
 
 module.exports = { crearPersonaje, getPersonaje, actualizarPersonaje };
