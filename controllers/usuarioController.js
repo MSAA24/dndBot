@@ -36,3 +36,5 @@ async function getUser(userID) {
         return null;
     }
 }
+
+module.exports = { saveUser };
