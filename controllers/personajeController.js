@@ -1,3 +1,6 @@
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
+
 // Guardar personaje
 async function crearPersonaje(userID, nombrePersonaje, nivel) {
     const params = {
