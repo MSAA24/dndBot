@@ -27,28 +27,33 @@ async function crearPersonaje(userID, nombrePersonaje, nivel) {
 }
 
 // Obtener personaje por ID de usuario
-async function getPersonaje(userID) {
-    const params = {
-        TableName: "Personajes", // Nombre de la tabla, si tienes una diferente, cámbiala
-        Key: {
-            userID: userID
-        }
-    };
+client.on("messageCreate", async (message) => {
+    if (message.author.bot) return; // Ignorar mensajes de otros bots
 
-    try {
-        const result = await dynamoDB.send(new GetCommand(params));
-        if (result.Item) {
-            console.log("Personaje encontrado:", result.Item);
-            return result.Item;
-        } else {
-            console.log("Personaje no encontrado");
-            return null;
+    // Comando para obtener personaje
+    if (message.content.startsWith("!getPersonaje")) {
+        const args = message.content.split(" ").slice(1); // Obtiene los argumentos después del comando
+        const characterName = args[0]; // Nombre del personaje a buscar
+
+        if (!characterName) {
+            return message.reply("⚠️ Uso correcto: `!getPersonaje <nombre_personaje>`");
         }
-    } catch (error) {
-        console.error("Error obteniendo personaje:", error);
-        return null;
+
+        try {
+            // Usar la función getPersonaje para obtener los datos del personaje
+            const personaje = await getPersonaje(message.author.id, characterName);
+            
+            if (personaje) {
+                message.reply(`✅ ¡Aquí están los detalles de tu personaje **${personaje.characterName}**!\nNivel: **${personaje.level}**\nCreado el: **${personaje.createdAt}**`);
+            } else {
+                message.reply("⚠️ No se encontró tu personaje con ese nombre.");
+            }
+        } catch (error) {
+            console.error("❌ Error al obtener personaje:", error);
+            message.reply("❌ Hubo un error al obtener tu personaje.");
+        }
     }
-}
+});
 
 // Actualizar solo el nombre o el nivel del personaje
 async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel) {
