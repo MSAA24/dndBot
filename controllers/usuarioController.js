@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
 
 // Crear cliente de DynamoDB
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
@@ -51,6 +51,33 @@ async function getUser(userID) {
         return null;
     }
 }
+async function deleteUser(userID) {
+    const params = {
+        TableName: "Users",
+        Key: {
+            userID: userID
+        }
+    };
 
-module.exports = { saveUser, getUser};
+    try {
+        // Ejecutamos el comando delete
+        const command = new DeleteCommand(params);
+        const result = await dynamoDB.send(command);
+
+        if (result.Item) {
+            console.log("Usuario eliminado:");
+        } else {
+            console.log("Usuario no encontrado.");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error eliminando usuario:", error);
+        return null;
+    }
+}
+
+
+
+
+module.exports = { saveUser, getUser, deleteUser };
 
