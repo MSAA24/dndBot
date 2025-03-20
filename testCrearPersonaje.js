@@ -1,7 +1,5 @@
-require('dotenv').config();
-const { DynamoDBClient, PutItemCommand } = require('@aws-sdk/client-dynamodb');
-const { marshall } = require('@aws-sdk/util-dynamodb');
-const { fromIni } = require("@aws-sdk/credential-provider-ini");
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({ region: "us-east-2" });
 const dynamoDB = DynamoDBDocumentClient.from(client);
@@ -34,11 +32,3 @@ async function crearPersonaje(userID, characterName, level) {
 }
 
 module.exports = { crearPersonaje };
-
-// Llamada a la función para probarla
-const [userID, nombre, nivel] = process.argv.slice(2); // Obtener parámetros desde la línea de comandos
-if (!userID || !nombre || !nivel) {
-    console.error('Faltan parámetros. Usa: node testCrearPersonaje.js <userID> <nombre> <nivel>');
-} else {
-    crearPersonaje(userID, nombre, parseInt(nivel)).catch(console.error);
-}
