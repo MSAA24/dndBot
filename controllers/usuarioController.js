@@ -1,11 +1,15 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, PutCommand } = require("@aws-sdk/lib-dynamodb");
 
-//Guardar usuario 
+// Crear cliente de DynamoDB
+const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
+const dynamoDB = DynamoDBDocumentClient.from(client);
+
+// Función para guardar un usuario en DynamoDB
 async function saveUser(userID, username) {
     try {
         const command = new PutCommand({
-            TableName: "Users", // Asegúrate de que sea el nombre correcto
+            TableName: "TuTablaDeDynamoDB", // Reemplaza con el nombre real de tu tabla
             Item: {
                 userID: userID,
                 username: username
@@ -19,6 +23,7 @@ async function saveUser(userID, username) {
         throw error;
     }
 }
+
 //Obtener usuario por ID
 async function getUser(userID) {
     const params = {
