@@ -1,5 +1,7 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const { saveUser } = require("../controllers/usuarioController.js");
+
 
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!registro")) {
