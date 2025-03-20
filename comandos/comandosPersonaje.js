@@ -7,19 +7,20 @@ module.exports = {
     name: "crearpersonaje",
     description: "Crea un personaje en el juego",
     async execute(message, args) {
-        const userID = message.author.id;
+        const userID = message.author.id; // ✅ ID del usuario de Discord como clave primaria
         const characterName = args[0]; // El primer argumento es el nombre del personaje
-        const level = args[1] || 1; // Si no se especifica, por defecto el nivel es 1
+        const level = args[1] ? parseInt(args[1]) : 1; // Si no se especifica, el nivel es 1
 
         if (!characterName) {
-            return message.reply("¡Por favor, ingresa un nombre para tu personaje!");
+            return message.reply("⚠️ ¡Por favor, ingresa un nombre para tu personaje! Uso: `!crearpersonaje <nombre>`");
         }
 
         try {
             await crearPersonaje(userID, characterName, level);
-            message.reply(`¡Tu personaje ${characterName} ha sido creado con éxito y está en nivel ${level}!`);
+            message.reply(`✅ ¡Tu personaje **${characterName}** ha sido creado con éxito en nivel **${level}**!`);
         } catch (error) {
-            message.reply("Hubo un error al crear tu personaje.");
+            console.error("❌ Error al crear el personaje:", error);
+            message.reply("❌ Hubo un error al crear tu personaje.");
         }
     }
 };
