@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-const { crearPersonaje , getPersonaje, updateCharacter } = require("../controllers/personajeController.js");
+const { crearPersonaje , getPersonaje, actualizarPersonaje } = require("../controllers/personajeController.js");
 
 //Comando para crear Personaje
 
@@ -14,12 +14,12 @@ client.on("messageCreate", async (message) => {
     const level = args[1] ? parseInt(args[1]) : 1; // Nivel, por defecto 1
 
     if (!characterName) {
-        return message.reply("⚠️ Uso correcto: `!crearPersonaje <nombre> [nivel]`");
+        return message.reply("⚠️ Uso correcto: `!crearPersonaje <nombre> <nivel>`");
     }
 
     try {
         await crearPersonaje(userID, characterName, level);
-        message.reply(`✅ ¡Personaje **${characterName}** creado con éxito en nivel **${level}**!`);
+        message.reply(`✅ ¡Personaje **${characterName}** creado exitosamente en nivel **${level}**!`);
     } catch (error) {
         console.error("❌ Error al crear personaje:", error);
         message.reply("❌ Hubo un error al crear tu personaje.");
