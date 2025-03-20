@@ -9,7 +9,7 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 async function saveUser(userID, username) {
     try {
         const command = new PutCommand({
-            TableName: "TuTablaDeDynamoDB", // Reemplaza con el nombre real de tu tabla
+            TableName: "Users", // Reemplaza con el nombre real de tu tabla
             Item: {
                 userID: userID,
                 username: username
