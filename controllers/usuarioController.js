@@ -8,6 +8,7 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 // Función para guardar un usuario en DynamoDB
 async function saveUser(userID, username) {
     try {
+        const joinedAt = member.joinedAt.toISOString();
         const command = new PutCommand({
             TableName: "Users", // Reemplaza con el nombre real de tu tabla
             Item: {
