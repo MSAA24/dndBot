@@ -1,6 +1,7 @@
-const { crearPersonaje , getPersonaje } = require("../controllers/personajeController.js");
-const { updateCharacter } = require("../controllers/personajeController.js");
-
+const { crearPersonaje , getPersonaje, updateCharacter } = require("../controllers/personajeController.js");
+const { Client, GatewayIntentBits } = require('discord.js');
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const {crearPersonaje, getPersonaje } = require("../controllers/personajeController.js");
 
 //Comando para crear Personaje
 module.exports = {

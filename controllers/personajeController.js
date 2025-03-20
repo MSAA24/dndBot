@@ -13,7 +13,7 @@ async function crearPersonaje(userID, nombrePersonaje, nivel) {
 
     try {
         await dynamoDB.put(params).promise();
-        console.log("Personaje guardado en DynamoDB");
+        console.log("Personaje guardado");
     } catch (error) {
         console.error("Error guardando personaje:", error);
     }
