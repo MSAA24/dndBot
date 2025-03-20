@@ -1,17 +1,19 @@
-const AWS = require('aws-sdk');
+//const AWS = require('aws-sdk');
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 require('dotenv').config();
-
+/*
 // Configurar AWS SDK
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     region: process.env.AWS_REGION
 });
+
+*/
 
 // Instanciar DynamoDB
 const dynamoDB = new AWS.DynamoDB.DocumentClient();
