@@ -1,17 +1,17 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
 const dynamoDB = DynamoDBDocumentClient.from(client);
-const { UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 // Guardar personaje
 
 async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url) {
+    const characterId = `${userID}_${nombrePersonaje}`; 
+
     const params = {
       TableName: "personajes",
       Item: {
-        userID: userID,
-        characterId: `${userID}_${nombrePersonaje}`,
+        characterId: characterId,
         characterName: nombrePersonaje,
         race: raza,
         class: clase,

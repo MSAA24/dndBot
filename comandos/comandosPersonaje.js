@@ -129,7 +129,7 @@ module.exports = {
         // Llama a la función para crear el personaje en DynamoDB
         try {
             await crearPersonaje(
-                interaction.user.id, 
+                `${userID}_${nombrePersonaje}`, 
                 nombrePersonaje, 
                 raza, 
                 clase, 
