@@ -1,6 +1,8 @@
 // Importar dependencias
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config(); // Si lo necesitas para Discord, pero AWS ya está en EC2
@@ -67,7 +69,34 @@ client.on("ready", () => {
     }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
 });
 
-
+const commands = [
+    new SlashCommandBuilder()
+      .setName('crear-personaje')
+      .setDescription('Crea una nueva hoja de personaje')
+      .addStringOption(option =>
+        option.setName('nombre')
+          .setDescription('Nombre del personaje')
+          .setRequired(true))
+      // ... agrega más opciones aquí
+      .toJSON(),
+  ];
+  
+  // Registra los comandos en Discord
+  const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
+  
+  (async () => {
+    try {
+      console.log('Empezando a registrar comandos de barra...');
+      await rest.put(
+        Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+        { body: commands }
+      );
+      console.log('Comandos registrados correctamente.');
+    } catch (error) {
+      console.error(error);
+    }
+  })();
+  
 
 // Iniciar sesión con el token del bot
 client.login(process.env.TOKEN);

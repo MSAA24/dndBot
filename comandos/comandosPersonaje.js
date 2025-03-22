@@ -147,6 +147,8 @@ module.exports = {
     }
 };
 
+console.log(createCharacterCommand.toJSON());
+
 client.login(process.env.TOKEN);
 
 
