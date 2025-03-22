@@ -1,5 +1,10 @@
-const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient, GetCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
+
+// Crear cliente de DynamoDB
+const client = new DynamoDBClient({ region: "us-east-2" });
+const dynamoDB = DynamoDBDocumentClient.from(client);
+
 
 const climas = [
     "Cielo despejado y brisa suave.",
@@ -90,14 +95,13 @@ async function generarYGuardarClima() {
 
 // Obtener el clima global desde BD
 async function obtenerClimaGlobal() {
-    const dynamoDB = new AWS.DynamoDB.DocumentClient();
     const params = {
         TableName: 'clima',  
         Key: { climaID: 'global' } // Usamos un ID único para el clima global
     };
     
     try {
-        const result = await dynamoDB.get(params).promise();
+        const result = await dynamoDB.send(new GetCommand(params));
         return result.Item; // Devuelve el clima guardado
     } catch (error) {
         console.error('Error al obtener el clima global:', error);
@@ -107,7 +111,6 @@ async function obtenerClimaGlobal() {
 
 // Guardar el clima global en la base de datos
 async function guardarClimaGlobal(clima, timestamp) {
-    const dynamoDB = new AWS.DynamoDB.DocumentClient();
     const params = {
         TableName: 'clima',
         Item: {
@@ -118,7 +121,7 @@ async function guardarClimaGlobal(clima, timestamp) {
     };
 
     try {
-        await dynamoDB.put(params).promise();
+        await dynamoDB.send(new PutCommand(params));
         console.log('Clima global guardado:', clima);
     } catch (error) {
         console.error('Error al guardar el clima global:', error);
