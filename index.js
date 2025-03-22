@@ -48,7 +48,7 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-const CHANNEL_ID = '1352871493343907891'; 
+const autobot_ID = '1352871493343907891'; 
 
 client.on("ready", () => {
 
@@ -56,7 +56,7 @@ client.on("ready", () => {
     setInterval(async () => {
         try {
             // Obtén el canal donde quieres enviar el mensaje
-            const channel = await client.channels.fetch(CHANNEL_ID);
+            const channel = await client.channels.fetch(autobot_ID);
 
             // Envía el mensaje
             await channel.send('!cambiarClima');
@@ -64,7 +64,7 @@ client.on("ready", () => {
         } catch (error) {
             console.error('Error al enviar el mensaje:', error);
         }
-    }, 10000); // 24 horas en milisegundos
+    }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
 });
 
 

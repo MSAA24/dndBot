@@ -66,18 +66,9 @@ const climas = [
 
 async function generarYGuardarClima() {
     try {
-        const fechaActual = Date.now();
-        const veinticuatroHoras = 24 * 60 * 60 * 1000; // 24hs en milisegundos
-
         // Consultar si ya existe un clima guardado
         const climaGuardado = await obtenerClimaGlobal();
-
-        // Si el clima existe y pasaron menos de 24 horas, no se genera clima nuevo
-        if (climaGuardado && (fechaActual - climaGuardado.timestamp) < veinticuatroHoras) {
-            console.log('El clima sigue siendo el mismo');
-            return climaGuardado.clima; // Devuelve el clima guardado
-        }
-
+        
         // Random de 1 a 50
         const numeroAleatorio = Math.floor(Math.random() * 50) + 1;
 
