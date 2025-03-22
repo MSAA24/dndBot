@@ -27,33 +27,28 @@ async function crearPersonaje(userID, nombrePersonaje, nivel) {
 }
 
 // Obtener personaje por ID de usuario
-client.on("messageCreate", async (message) => {
-    if (message.author.bot) return; // Ignorar mensajes de otros bots
-
-    // Comando para obtener personaje
-    if (message.content.startsWith("!getPersonaje")) {
-        const args = message.content.split(" ").slice(1); // Obtiene los argumentos después del comando
-        const characterName = args[0]; // Nombre del personaje a buscar
-
-        if (!characterName) {
-            return message.reply("⚠️ Uso correcto: `!getPersonaje <nombre_personaje>`");
+async function getPersonaje(userID) {
+    const params = {
+        TableName: "Personajes",
+        Key: {
+            userID: userID
         }
+    };
 
-        try {
-            // Usar la función getPersonaje para obtener los datos del personaje
-            const personaje = await getPersonaje(message.author.id, characterName);
-            
-            if (personaje) {
-                message.reply(`✅ ¡Aquí están los detalles de tu personaje **${personaje.characterName}**!\nNivel: **${personaje.level}**\nCreado el: **${personaje.createdAt}**`);
-            } else {
-                message.reply("⚠️ No se encontró tu personaje con ese nombre.");
-            }
-        } catch (error) {
-            console.error("❌ Error al obtener personaje:", error);
-            message.reply("❌ Hubo un error al obtener tu personaje.");
+    try {
+        const result = await dynamoDB.send(new GetCommand(params));
+        if (result.Item) {
+            console.log("Personaje encontrado:", result.Item);
+            return result.Item;
+        } else {
+            console.log("Personaje no encontrado");
+            return null;
         }
+    } catch (error) {
+        console.error("Error obteniendo personaje:", error);
+        return null;
     }
-});
+}
 
 // Actualizar solo el nombre o el nivel del personaje
 async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel) {
