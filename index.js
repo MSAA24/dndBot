@@ -6,7 +6,7 @@ const { Routes } = require('discord-api-types/v9');
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
 const path = require('path');
-const { createCharacterCommand } = require("./comandos/comandosPersonaje.js");
+const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
 require('dotenv').config();
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
