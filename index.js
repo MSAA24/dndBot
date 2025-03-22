@@ -19,7 +19,7 @@ const dynamoDB = new DynamoDBClient({
 // Crear cliente de Discord
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-// Cargar los comandos desde la carpeta "comandos/"
+/// Cargar los comandos desde la carpeta "comandos/"
 client.commands = new Map();
 const comandosPath = path.join(__dirname, 'comandos');
 const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
@@ -28,18 +28,8 @@ const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWi
 for (const file of archivosComandos) {
     const comando = require(path.join(comandosPath, file));
     client.commands.set(comando.name, comando);
-
-
-    client.on('ready', async () => {
-        try {
-            await client.guilds.cache.get('GUILD_ID')?.commands.create(comando.createCharacterCommand.toJSON()); // Registramos el comando
-            console.log(`Comando ${comando.name} registrado con éxito.`);
-        } catch (error) {
-            console.error('Error registrando comando:', error);
-        }
-
-    });
 }
+
 // Evento cuando recibe un mensaje
 client.on('messageCreate', async (message) => {
     // Ignorar si el mensaje es de un bot o no tiene el prefijo de comando
@@ -99,7 +89,7 @@ const commands = [
           .setRequired(true))
       // ... agrega más opciones aquí
       .toJSON(),
-  ];
+];
   
   // Registra los comandos en Discord
   const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
