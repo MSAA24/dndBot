@@ -7,7 +7,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
 const path = require('path');
 const { createCharacterCommand } = require("./comandos/comandosPersonaje.js");
-require('dotenv').config(); // Si lo necesitas para Discord, pero AWS ya está en EC2
+require('dotenv').config();
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
