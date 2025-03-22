@@ -31,17 +31,17 @@ const createCharacterCommand = new SlashCommandBuilder()
     .setName("crear-personaje")
     .setDescription("Crea una nueva hoja de personaje")
     .addStringOption(option =>
-      option.setName("Nombre")
+      option.setName("nombre")
         .setDescription("Nombre del personaje")
         .setRequired(true))
     .addIntegerOption(option =>
-      option.setName("Nivel")
+      option.setName("nivel")
         .setDescription("Nivel del personaje")
         .setRequired(true)
         .setMinValue(1)
         .setMaxValue(20))
     .addStringOption(option =>
-      option.setName("Clase")
+      option.setName("clase")
         .setDescription("Clase del personaje")
         .setRequired(true)
         .addChoices(
@@ -59,8 +59,8 @@ const createCharacterCommand = new SlashCommandBuilder()
           { name: 'Explorador', value: 'explorador' }
         ))
     .addStringOption(option =>
-      option.setName("Raza")
-        .setDescription("Raza del personaje")
+      option.setName("raza")
+        .setDescription("raza del personaje")
         .setRequired(true)
         .addChoices(
           { name: 'Acompañante', value: 'acompanante' },
@@ -83,7 +83,7 @@ const createCharacterCommand = new SlashCommandBuilder()
           { name: 'Tiefling Variante', value: 'tiefling_variante' }
         ))
     .addStringOption(option =>
-      option.setName("Rango")
+      option.setName("rango")
         .setDescription("Rango del personaje")
         .setRequired(true)
         .addChoices(
@@ -94,7 +94,7 @@ const createCharacterCommand = new SlashCommandBuilder()
           { name: 'Rango A', value: 'Rango A' }
         ))
     .addStringOption(option =>
-      option.setName("Imagen")
+      option.setName("imagen")
         .setDescription("URL de la imagen del personaje")
         .setRequired(true))
     .addStringOption(option =>
