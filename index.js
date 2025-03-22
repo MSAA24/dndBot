@@ -8,6 +8,8 @@ const fs = require('fs');
 const path = require('path');
 const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
 require('dotenv').config();
+const autobot_ID = '1352871493343907891'; 
+
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
@@ -26,12 +28,18 @@ const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWi
 for (const file of archivosComandos) {
     const comando = require(path.join(comandosPath, file));
     client.commands.set(comando.name, comando);
+
+
+    client.on('ready', async () => {
+        try {
+            await client.guilds.cache.get('GUILD_ID')?.commands.create(comando.createCharacterCommand.toJSON()); // Registramos el comando
+            console.log(`Comando ${comando.name} registrado con éxito.`);
+        } catch (error) {
+            console.error('Error registrando comando:', error);
+        }
+
+    });
 }
-
-client.once('ready', () => {
-    console.log(`Bot listo como ${client.user.tag}`);
-});
-
 // Evento cuando recibe un mensaje
 client.on('messageCreate', async (message) => {
     // Ignorar si el mensaje es de un bot o no tiene el prefijo de comando
@@ -52,7 +60,7 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-const autobot_ID = '1352871493343907891'; 
+
 
 client.on("ready", () => {
 
