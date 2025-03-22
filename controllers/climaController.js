@@ -128,4 +128,4 @@ async function guardarClimaGlobal(clima, timestamp) {
     }
 }
 
-module.exports = { generarYGuardarClima };
+module.exports = { obtenerClimaGlobal };
