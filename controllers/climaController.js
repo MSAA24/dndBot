@@ -67,7 +67,7 @@ const climas = [
 async function generarYGuardarClima() {
     try {
         const fechaActual = Date.now();
-        const veinticuatroHoras = 24 * 60 * 60 * 1000; //24hs
+        const veinticuatroHoras = 24 * 60 * 60 * 1000; // 24hs en milisegundos
 
         // Consultar si ya existe un clima guardado
         const climaGuardado = await obtenerClimaGlobal();
@@ -75,14 +75,14 @@ async function generarYGuardarClima() {
         // Si el clima existe y pasaron menos de 24 horas, no se genera clima nuevo
         if (climaGuardado && (fechaActual - climaGuardado.timestamp) < veinticuatroHoras) {
             console.log('El clima sigue siendo el mismo');
-            return climaGuardado.clima; //Devuelve el clima guardado
+            return climaGuardado.clima; // Devuelve el clima guardado
         }
 
-        // random de 1 a 50
+        // Random de 1 a 50
         const numeroAleatorio = Math.floor(Math.random() * 50) + 1;
 
-        // Asignar el clima basado en el num random
-        const climaSeleccionado = climas[numeroAleatorio - 1]; 
+        // Asignar el clima basado en el número aleatorio
+        const climaSeleccionado = climas[numeroAleatorio - 1];
 
         // Guardar el clima en la base de datos
         await guardarClimaGlobal(climaSeleccionado, fechaActual);
@@ -102,7 +102,12 @@ async function obtenerClimaGlobal() {
     
     try {
         const result = await dynamoDB.send(new GetCommand(params));
-        return result.Item; // Devuelve el clima guardado
+        if (result.Item) {
+            return result.Item; // Devuelve el clima guardado
+        } else {
+            console.log('No se encontró clima guardado.');
+            return null;
+        }
     } catch (error) {
         console.error('Error al obtener el clima global:', error);
         return null;
@@ -128,4 +133,4 @@ async function guardarClimaGlobal(clima, timestamp) {
     }
 }
 
-module.exports = { obtenerClimaGlobal };
+module.exports = { obtenerClimaGlobal, generarYGuardarClima };
