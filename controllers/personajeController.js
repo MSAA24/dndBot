@@ -14,8 +14,10 @@ async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango
             characterName: nombrePersonaje,
             race: raza,
             class: clase,
-            level: nivel,
-            rank: rango,
+            level: parseInt(nivel)|| '1',
+            rank: rango || 'E',
+            imageUrl: character.imageUrl || null,
+            n20Url: character.n20Url || null,
             createdAt: new Date().toDateString() // Fecha de creación
         }
     };
@@ -32,7 +34,7 @@ async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango
 // Obtener personaje por ID de usuario
 async function getPersonaje(userID) {
     const params = {
-        TableName: "Personajes",
+        TableName: "personajes",
         Key: {
             userID: userID
         }
@@ -56,7 +58,7 @@ async function getPersonaje(userID) {
 // Actualizar solo el nombre o el nivel del personaje
 async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel) {
     const params = {
-        TableName: "Personajes",
+        TableName: "personajes",
         Key: {
             userID: userID,
             personajeId: `${userID}_${nombreActual}` // Cambié `characterID` a `personajeId`

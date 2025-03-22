@@ -3,7 +3,7 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const { crearPersonaje , getPersonaje, actualizarPersonaje } = require("../controllers/personajeController.js");
 
 //Comando para crear Personaje
-
+/*
 client.on("messageCreate", async (message) => {
     if (!message.content.startsWith("!crearPersonaje")) return; // Verifica que el mensaje empiece con el comando
     if (message.author.bot) return; // Ignora mensajes de otros bots
@@ -25,6 +25,82 @@ client.on("messageCreate", async (message) => {
         message.reply("❌ Hubo un error al crear tu personaje.");
     }
 });
+*/
+const createCharacterCommand = new SlashCommandBuilder()
+    .setName("crear-personaje")
+    .setDescription("Crea una nueva hoja de personaje")
+    .addStringOption(option =>
+      option.setName("Nombre")
+        .setDescription("Nombre del personaje")
+        .setRequired(true))
+    .addIntegerOption(option =>
+      option.setName("Nivel")
+        .setDescription("Nivel del personaje")
+        .setRequired(true)
+        .setMinValue(1)
+        .setMaxValue(20))
+    .addStringOption(option =>
+      option.setName("Clase")
+        .setDescription("Clase del personaje")
+        .setRequired(true)
+        .addChoices(
+          { name: 'Artifice', value: 'artifice' },
+          { name: 'Bárbaro', value: 'barbaro' },
+          { name: 'Bardo', value: 'bardo' },
+          { name: 'Clérigo', value: 'clerigo' },
+          { name: 'Druida', value: 'druida' },
+          { name: 'Guerrero', value: 'guerrero' },
+          { name: 'Hechicero', value: 'hechicero' },
+          { name: 'Mago', value: 'mago' },
+          { name: 'Monje', value: 'monje' },
+          { name: 'Paladín', value: 'paladin' },
+          { name: 'Pícaro', value: 'picaro' },
+          { name: 'Explorador', value: 'explorador' }
+        ))
+    .addStringOption(option =>
+      option.setName("Raza")
+        .setDescription("Raza del personaje")
+        .setRequired(true)
+        .addChoices(
+          { name: 'Acompañante', value: 'acompanante' },
+          { name: 'Dhamphiro', value: 'dhamphiro' },
+          { name: 'Draconido', value: 'draconido' },
+          { name: 'Draconido Cromatico', value: 'draconido_cromatico' },
+          { name: 'Draconido Gema', value: 'draconido_gema' },
+          { name: 'Draconido Metalico', value: 'draconido_metalico' },
+          { name: 'Elfo', value: 'elfo' },
+          { name: 'Enano', value: 'enano' },
+          { name: 'Gnomo', value: 'gnomo' },
+          { name: 'Humano', value: 'humano' },
+          { name: 'Linaje Personalizado', value: 'linaje_personalizado' },
+          { name: 'Mediano', value: 'mediano' },
+          { name: 'Renacido', value: 'renacido' },
+          { name: 'Sangre Malefica', value: 'sangre_malefica' },
+          { name: 'Semielfo', value: 'semielfo' },
+          { name: 'Semiorco', value: 'semiorco' },
+          { name: 'Tiefling', value: 'tiefling' },
+          { name: 'Tiefling Variante', value: 'tiefling_variante' }
+        ))
+    .addStringOption(option =>
+      option.setName("Rango")
+        .setDescription("Rango del personaje")
+        .setRequired(true)
+        .addChoices(
+          { name: 'Rango E', value: 'Rango E' },
+          { name: 'Rango D', value: 'Rango D' },
+          { name: 'Rango C', value: 'Rango C' },
+          { name: 'Rango B', value: 'Rango B' },
+          { name: 'Rango A', value: 'Rango A' }
+        ))
+    .addStringOption(option =>
+      option.setName("Imagen")
+        .setDescription("URL de la imagen del personaje")
+        .setRequired(true))
+    .addStringOption(option =>
+      option.setName("n20")
+        .setDescription("URL adicional para N20")
+        .setRequired(true));
+
 
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!verPersonaje")) {
@@ -37,6 +113,38 @@ client.on("messageCreate", async (message) => {
     }
 });
 
+module.exports = {
+    data: createCharacterCommand,
+    async execute(interaction) {
+        const nombrePersonaje = interaction.options.getString('nombre');
+        const nivel = interaction.options.getInteger('nivel');
+        const clase = interaction.options.getString('clase');
+        const raza = interaction.options.getString('raza');
+        const rango = interaction.options.getString('rango');
+        const imagen = interaction.options.getString('imagen');
+        const n20Url = interaction.options.getString('n20');
+
+        // Llama a la función para crear el personaje en DynamoDB
+        try {
+            await crearPersonaje(
+                interaction.user.id, 
+                nombrePersonaje, 
+                raza, 
+                clase, 
+                nivel, 
+                rango,
+                imagen,
+                n20Url
+            );
+
+            // Responder al usuario que el personaje fue creado
+            await interaction.reply(`¡Personaje ${nombrePersonaje} creado con éxito!`);
+        } catch (error) {
+            console.error('Error al crear el personaje:', error);
+            await interaction.reply('Hubo un error al crear el personaje.');
+        }
+    }
+};
 
 client.login(process.env.TOKEN);
 
