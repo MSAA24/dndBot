@@ -5,14 +5,17 @@ const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región
 const dynamoDB = DynamoDBDocumentClient.from(client);
 
 // Guardar personaje
-async function crearPersonaje(userID, nombrePersonaje, nivel) {
+async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango) {
     const params = {
-        TableName: "Personajes", // Nombre de la tabla, si tienes una diferente, cámbiala
+        TableName: "personajes", // Nombre de la tabla
         Item: {
             userID: userID,
-            personajeId: `${userID}_${nombrePersonaje}`, // Cambié `characterID` a `personajeId` para coincidir con la clave primaria de la tabla
+            characterId: `${userID}_${nombrePersonaje}`, // Cambié `characterID` a `personajeId` para coincidir con la clave primaria de la tabla
             characterName: nombrePersonaje,
+            race: raza,
+            class: clase,
             level: nivel,
+            rank: rango,
             createdAt: new Date().toDateString() // Fecha de creación
         }
     };

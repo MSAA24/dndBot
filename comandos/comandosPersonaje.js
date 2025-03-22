@@ -26,6 +26,18 @@ client.on("messageCreate", async (message) => {
     }
 });
 
+client.on("messageCreate", async (message) => {
+    if (message.content.startsWith("!verPersonaje")) {
+        const user = await getPersonaje(message.author.id);
+        if (user) {
+            message.reply(`Hola ${user.username}, te registraste en: ${user.joinedAt}`);
+        } else {
+            message.reply("No se encuentra tu perfil en la base de datos.");
+        }
+    }
+});
+
+
 client.login(process.env.TOKEN);
 
 
