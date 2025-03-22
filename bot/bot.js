@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
-
+const {generarYGuardarClima} = require("../controllers/climaController.js");
 //ID del canal del msj
 const CHANNEL_ID = '1352871493343907891'; 
 
@@ -13,7 +13,7 @@ client.on("ready", () => {
             const channel = await client.channels.fetch(CHANNEL_ID);
 
             // Envía el mensaje
-            await channel.send('¡Este es un mensaje automatizado cada 24 horas!');
+            await channel.send('!cambiarClima');
             console.log('Mensaje enviado');
         } catch (error) {
             console.error('Error al enviar el mensaje:', error);
