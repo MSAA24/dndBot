@@ -5,31 +5,31 @@ const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región
 const dynamoDB = DynamoDBDocumentClient.from(client);
 const { UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 // Guardar personaje
-async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango) {
-    const params = {
-        TableName: "personajes", // Nombre de la tabla
-        Item: {
-            userID: userID,
-            characterId: `${userID}_${nombrePersonaje}`, // Cambié `characterID` a `personajeId` para coincidir con la clave primaria de la tabla
-            characterName: nombrePersonaje,
-            race: raza,
-            class: clase,
-            level: parseInt(nivel)|| '1',
-            rank: rango || 'E',
-            imageUrl: imageUrl || null,
-            n20Url: n20Url || null,
-            createdAt: new Date().toDateString() // Fecha de creación
-        }
-    };
 
+async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url) {
+    const params = {
+      TableName: "personajes",
+      Item: {
+        userID: userID,
+        characterId: `${userID}_${nombrePersonaje}`,
+        characterName: nombrePersonaje,
+        race: raza,
+        class: clase,
+        level: parseInt(nivel) || 1,
+        rank: rango || 'E',
+        imageUrl: imageUrl || null, // Usar la URL de la imagen pasada como argumento
+        n20Url: n20Url || null,     // Usar el URL de n20 pasado como argumento
+        createdAt: new Date().toDateString()
+      }
+    };
+  
     try {
-        // Usar el comando PutCommand para guardar el personaje
-        await dynamoDB.send(new PutCommand(params));
-        console.log("Personaje guardado");
+      await dynamoDB.send(new PutCommand(params));
+      console.log("Personaje guardado");
     } catch (error) {
-        console.error("Error guardando personaje:", error);
+      console.error("Error guardando personaje:", error);
     }
-}
+  }
 
 // Obtener personaje por ID de usuario
 async function getPersonaje(userID) {
