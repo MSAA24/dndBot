@@ -24,16 +24,6 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-client.on("messageCreate", async (message) => {
-    if (message.content.startsWith("!cambiarClima")) {
-        try {
-            const clima = await generarYGuardarClima();
-            message.reply(`Se cambió el clima a: ${clima}`);
-        } catch (error) {
-            message.reply("Hubo un error al cambiar el clima.");
-        }
-    }
-});
 
 client.login(process.env.TOKEN);
 
