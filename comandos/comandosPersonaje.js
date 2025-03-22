@@ -115,7 +115,38 @@ client.on("messageCreate", async (message) => {
 });
 
 
+module.exports = {
+    createCharacterCommand,
+    async execute(interaction) {
+        const nombrePersonaje = interaction.options.getString('nombre');
+        const nivel = interaction.options.getInteger('nivel');
+        const clase = interaction.options.getString('clase');
+        const raza = interaction.options.getString('raza');
+        const rango = interaction.options.getString('rango');
+        const imagen = interaction.options.getString('imagen');
+        const n20Url = interaction.options.getString('n20');
 
+        // Llama a la función para crear el personaje en DynamoDB
+        try {
+            await crearPersonaje(
+                interaction.user.id, 
+                nombrePersonaje, 
+                raza, 
+                clase, 
+                nivel, 
+                rango,
+                imagen,
+                n20Url
+            );
+
+            // Responder al usuario que el personaje fue creado
+            await interaction.reply(`¡Personaje ${nombrePersonaje} creado con éxito!`);
+        } catch (error) {
+            console.error('Error al crear el personaje:', error);
+            await interaction.reply('Hubo un error al crear el personaje.');
+        }
+    
+} };
 
 client.login(process.env.TOKEN);
 

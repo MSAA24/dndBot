@@ -3,7 +3,7 @@ const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand } = requir
 
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
 const dynamoDB = DynamoDBDocumentClient.from(client);
-
+const { UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 // Guardar personaje
 async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango) {
     const params = {
@@ -16,8 +16,8 @@ async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango
             class: clase,
             level: parseInt(nivel)|| '1',
             rank: rango || 'E',
-            imageUrl: character.imageUrl || null,
-            n20Url: character.n20Url || null,
+            imageUrl: imageUrl || null,
+            n20Url: n20Url || null,
             createdAt: new Date().toDateString() // Fecha de creación
         }
     };
@@ -88,38 +88,6 @@ async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel
 module.exports = { 
     crearPersonaje, 
     getPersonaje, 
-    actualizarPersonaje,
-    data: createCharacterCommand,
-    async execute(interaction) {
-        const nombrePersonaje = interaction.options.getString('nombre');
-        const nivel = interaction.options.getInteger('nivel');
-        const clase = interaction.options.getString('clase');
-        const raza = interaction.options.getString('raza');
-        const rango = interaction.options.getString('rango');
-        const imagen = interaction.options.getString('imagen');
-        const n20Url = interaction.options.getString('n20');
-
-        // Llama a la función para crear el personaje en DynamoDB
-        try {
-            await crearPersonaje(
-                interaction.user.id, 
-                nombrePersonaje, 
-                raza, 
-                clase, 
-                nivel, 
-                rango,
-                imagen,
-                n20Url
-            );
-
-            // Responder al usuario que el personaje fue creado
-            await interaction.reply(`¡Personaje ${nombrePersonaje} creado con éxito!`);
-        } catch (error) {
-            console.error('Error al crear el personaje:', error);
-            await interaction.reply('Hubo un error al crear el personaje.');
-        }
-    }
-    
+    actualizarPersonaje  
 };
-console.log(createCharacterCommand.toJSON());
-client.login(process.env.TOKEN);
+
