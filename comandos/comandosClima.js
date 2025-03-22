@@ -5,7 +5,7 @@ const { getClima} = require("../controllers/climaController.js");
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!clima")) {
         try {
-            const clima = await generarYGuardarClimaGlobal();
+            const clima = await generarYGuardarClima();
             message.reply(`El clima actual en el servidor es: ${clima}`);
         } catch (error) {
             message.reply("Hubo un error al obtener el clima.");
