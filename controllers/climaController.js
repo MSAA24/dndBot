@@ -76,7 +76,7 @@ async function generarYGuardarClima() {
         const climaSeleccionado = climas[numeroAleatorio - 1];
 
         // Guardar el clima en la base de datos
-        await guardarClimaGlobal(climaSeleccionado, fechaActual);
+        await guardarClimaGlobal(climaSeleccionado);
 
         return climaSeleccionado;
     } catch (error) {
@@ -106,13 +106,12 @@ async function obtenerClimaGlobal() {
 }
 
 // Guardar el clima global en la base de datos
-async function guardarClimaGlobal(clima, timestamp) {
+async function guardarClimaGlobal(clima) {
     const params = {
         TableName: 'clima',
         Item: {
             climaID: 'global', // ID único para el clima global
-            clima: clima,
-            timestamp: timestamp
+            clima: clima
         }
     };
 
