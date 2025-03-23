@@ -5,7 +5,7 @@ const cargarComandos = () => {
     const comandos = [];
 
     // Ruta donde están guardados los archivos de comandos
-    const comandosPath = path.join(__dirname);
+    const comandosPath = path.join(__dirname, 'comandos');
 
     // Leer todos los archivos en la carpeta de comandos
     const files = fs.readdirSync(comandosPath);
@@ -15,7 +15,11 @@ const cargarComandos = () => {
         const filePath = path.join(comandosPath, file);
         if (file.endsWith('.js')) {
             const comando = require(filePath);
-            comandos.push(comando);
+            if (Array.isArray(comando)) {
+                comandos.push(...comando);  // Si es un array de comandos
+            } else {
+                comandos.push(comando);  // Si es un único comando
+            }
         }
     });
 

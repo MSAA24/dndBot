@@ -34,7 +34,7 @@ client.on('messageCreate', async (message) => {
     // Asegúrate de que el mensaje no sea de un bot
     if (message.author.bot) return;
 
-    // Verificar si el mensaje comienza con un comando, por ejemplo, "!eliminarPerfil"
+    // Verificar si el mensaje comienza con un comando, por ejemplo, "!clima"
     const comando = message.content.split(" ")[0]; // Obtener el primer término (el comando)
     if (comando.startsWith('!')) {
         // Buscar el archivo de comando correspondiente
@@ -49,6 +49,7 @@ client.on('messageCreate', async (message) => {
         }
     }
 });
+
 
 client.on("ready", () => {
     setInterval(async () => {
