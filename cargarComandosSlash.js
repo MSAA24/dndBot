@@ -1,30 +1,29 @@
-// cargarComandosSlash.js
 const fs = require('fs');
 const path = require('path');
 
-const cargarComandosSlash = () => {
+function cargarComandosSlash() {
     const comandos = [];
+    const comandosPath = path.join(__dirname, 'comandosSlash'); // Asegúrate de que esta carpeta existe
 
-    // Ruta donde están guardados los archivos de comandosSlash
-    const comandosPath = path.join(__dirname, 'comandosSlash');  // Asegúrate de poner la ruta correcta
+    if (!fs.existsSync(comandosPath)) {
+        console.warn('⚠️ La carpeta comandosSlash no existe.');
+        return [];
+    }
 
-    // Leer todos los archivos en la carpeta de comandosSlash
-    const files = fs.readdirSync(comandosPath);
+    const files = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
 
-    // Filtrar los archivos que terminan en '.js' y cargar su contenido
     files.forEach(file => {
         const filePath = path.join(comandosPath, file);
-        if (file.endsWith('.js')) {
-            const comandosArchivo = require(filePath);
-            if (Array.isArray(comandosArchivo)) {
-                comandos.push(...comandosArchivo);  // Agregar todos los comandos exportados
-            } else {
-                console.warn(`El archivo ${file} no exporta un arreglo de comandos.`);
-            }
+        const comando = require(filePath);
+
+        if (Array.isArray(comando)) {
+            comandos.push(...comando);
+        } else {
+            console.warn(`⚠️ El archivo ${file} no exporta un arreglo de comandos.`);
         }
     });
 
     return comandos;
-};
+}
 
-module.exports = cargarComandosSlash; // Exporta la función correctamente
+module.exports = cargarComandosSlash;
