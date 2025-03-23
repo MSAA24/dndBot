@@ -3,10 +3,10 @@ const { Client, GatewayIntentBits, Events } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 const { cargarComandos } = require("./cargarComandos.js");
-//const { cargarComandosSlash } = require('./cargarComandosSlash.js');
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
 const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
+const comandosClima = require('./comandosSlash/comandosClima.js');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
@@ -76,7 +76,11 @@ client.once('ready', async () => {
 // **Registrar los comandos slash en Discord**
 async function registrarComandos() {
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
-    const comandosJSON = comandosPersonaje.map(cmd => cmd.data.toJSON()); // Convertir a JSON
+    const comandos = [
+        ...comandosPersonaje,
+        ...comandosClima
+    ];
+    const comandosJSON = comandos.map(cmd => cmd.data.toJSON()); // Convertir a JSON
 
     try {
         console.log('⏳ Registrando comandos en Discord...');
