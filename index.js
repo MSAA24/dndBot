@@ -14,7 +14,21 @@ const dynamoDB = new DynamoDBClient({
 });
 
 // Crear cliente de Discord
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages, 
+        GatewayIntentBits.MessageContent] 
+});
+
+client.application.commands.fetch()
+    .then(commands => {
+        console.log("📜 Comandos registrados en Discord:");
+        commands.forEach(command => {
+            console.log(`- ${command.name}`);
+        });
+    })
+    .catch(console.error);
 
 /*
 const commands = [];
