@@ -68,6 +68,5 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-module.exports = { cargarComandos };
 
 
