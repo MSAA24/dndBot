@@ -130,5 +130,5 @@ module.exports = [
     },
 ];
 
-client.login(process.env.TOKEN);
+
 

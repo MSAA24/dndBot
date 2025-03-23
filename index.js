@@ -39,7 +39,7 @@ client.once('ready', async () => {
 
         // Usa Routes.applicationGuildCommands para registrar los comandos en un servidor específico
         await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), 
+            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
             { body: comandosRegistrados }
         );
 
@@ -62,6 +62,7 @@ client.on('interactionCreate', async (interaction) => {
         await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true });
     }
 });
+
 
 client.on("ready", () => {
     setInterval(async () => {
