@@ -95,6 +95,36 @@ client.on("messageCreate", async (message) => {
     }
 });
 
+client.on("messageCreate", async (message) => {
+    if (message.content.startsWith("!gay")) {
+        const numeroAleatorio = Math.floor(Math.random() * 101); // Números del 0 al 100
+        if (message.author.id == "219694352895574018"){
+            message.reply ("Sos 200% homosexual")
+        }
+        else {
+            message.reply(`Sos ${numeroAleatorio}% homosexual`);
+        }
+        
+    }
+});
+
+client.on("messageCreate", async (message) => {
+    if (message.content.startsWith("!comandos")) {
+        const embed = new EmbedBuilder()
+            .setTitle("📜 Lista de Comandos")
+            .setDescription("Aquí están los comandos disponibles..")
+            .addFields(
+                { name: "!clima", value: "Muestra el clima actual.", inline: false },
+                { name: "!verPerfil", value: "Muestra tu perfil de usuario.", inline: false },
+                { name: "!gay", value: "Te dice qué porcentaje de homosexual sos", inline: false }
+            )
+            .setColor("#00ff00")
+            .setTimestamp();
+
+        await message.reply({ embeds: [embed] });
+    }
+});
+
 
 
 client.login(process.env.TOKEN);

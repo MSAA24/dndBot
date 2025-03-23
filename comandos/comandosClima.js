@@ -44,8 +44,8 @@ client.on("messageCreate", async (message) => {
             if (clima) {
                 // Crear el embed con el clima
                 const embed = new EmbedBuilder()
-                    .setTitle("🌍 Clima Global")
-                    .setDescription(`El clima global actual es: **${clima.clima}**`)
+                    .setTitle("🌍 Clima Actual")
+                    .setDescription(`El clima actual es: **${clima.clima}**`)
                     .setColor('#1E90FF') // Puedes elegir el color que prefieras
                     .setTimestamp();
 
