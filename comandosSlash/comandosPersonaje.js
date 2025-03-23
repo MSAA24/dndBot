@@ -127,7 +127,7 @@ const comandosPersonaje = [
                         { name: 'Nivel', value: `${personaje.level}`, inline: true },
                         { name: 'Rango', value: personaje.rank, inline: true },
                     )
-                    .setThumbnail(personaje.imageUrl) 
+                    embed.setImage(personaje.imageUrl) 
                     .setTimestamp(); 
 
                     if (personaje.n20Url) {
