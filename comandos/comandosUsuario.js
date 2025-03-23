@@ -9,7 +9,7 @@ const { saveUser, getUser, deleteUser } = require("../controllers/usuarioControl
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!registro")) {
         await saveUser(message.author.id, message.author.username);
-        message.reply("Tu información ha sido guardada en la Base de Datos.");
+        message.reply("Tu usuario ha sido registrado.");
     }
 });
 
@@ -59,7 +59,7 @@ client.on("messageCreate", async (message) => {
 
 
 client.on("messageCreate", async (message) => {
-    if (message.content.startsWith("!verPerfil")) {
+    if (message.content.startsWith("!miPerfil")) {
         try {
             const user = await getUser(message.author.id); // Obtener el usuario desde la base de datos
             if (user) {
@@ -94,38 +94,6 @@ client.on("messageCreate", async (message) => {
         message.reply("Tu usuario ha sido eliminado");
     }
 });
-
-client.on("messageCreate", async (message) => {
-    if (message.content.startsWith("!me")) {
-        const userData = await getUser(userID);
-        
-        if (!userData) {
-            return interaction.reply({
-                content: "❌ No encontré tu información guardada.",
-                ephemeral: true
-            });
-        }
-        
-        // Crear el embed con la información del usuario
-        const embed = new EmbedBuilder()
-            .setColor("#00ff00") // Color verde
-            .setTitle("👤 Información del Usuario")
-            .setThumbnail(interaction.user.displayAvatarURL()) // Avatar del usuario
-            .addFields(
-                { name: "🆔 ID", value: userData.userID, inline: true },
-                { name: "📛 Nombre de Usuario", value: userData.username, inline: true },
-                { name: "📅 Se unió el", value: userData.joinedAt, inline: false }
-            )
-            //.setFooter({ text: "Información obtenida desde DynamoDB" });
-        
-        return interaction.reply({ embeds: [embed] });      
-    }
-});
-
-
-
-
-
 
 
 
