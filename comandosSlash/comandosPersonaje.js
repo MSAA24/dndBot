@@ -27,11 +27,11 @@ const comandosPersonaje = [
                     .setDescription('Rango del personaje')
                     .setRequired(true))
             .addStringOption(option =>
-                option.setName('imageUrl')
+                option.setName('image_url')
                     .setDescription('La imagen del personaje')
                     .setRequired(true))
             .addStringOption(option =>
-                option.setName('n20')
+                option.setName('n20_url')
                     .setDescription('El url del personaje')
                     .setRequired(true)),          
         async execute(interaction) {
@@ -40,8 +40,8 @@ const comandosPersonaje = [
             const clase = interaction.options.getString('clase');
             const nivel = interaction.options.getInteger('nivel');
             const rango = interaction.options.getInteger('rango');
-            const imageUrl = interaction.options.getInteger('imageUrl');
-            const n20 = interaction.options.getInteger('n20');
+            const imageUrl = interaction.options.getInteger('image_url');
+            const n20 = interaction.options.getInteger('n20_url');
             await crearPersonaje(interaction.user.id, nombre, raza, clase, nivel, rango, imageUrl, n20);
             await interaction.reply(`Personaje **${nombre}** creado con éxito!`);
         }
@@ -72,6 +72,7 @@ const comandosPersonaje = [
                             \nRango: ${personaje.rank}
                             \nImagen: ${personaje.imageUrl}
                             \n20: ${personaje.n20Url}`);
+                    
                 } else {
                     // Si no se encuentra el personaje
                     await interaction.reply(`No se encontró un personaje con el nombre **${nombrePersonaje}**.`);
