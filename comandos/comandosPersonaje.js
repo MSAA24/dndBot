@@ -43,8 +43,8 @@ client.on("messageCreate", async (message) => {
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('crearpersonaje')
-        .setDescription('Crea un personaje en el juego')
+        .setName('crear-personaje')
+        .setDescription('Crea un nuevo personaje en el juego')
         .addStringOption(option => 
             option.setName('nombre')
                 .setDescription('Nombre del personaje')
@@ -75,8 +75,7 @@ module.exports = {
                 .setRequired(false)),
 
     async execute(interaction) {
-        const characterId = `${userID}_${nombrePersonaje}`
-        const userID = characterId;
+        const userID = interaction.user.id;
         const nombre = interaction.options.getString('nombre');
         const raza = interaction.options.getString('raza');
         const clase = interaction.options.getString('clase');
@@ -87,13 +86,14 @@ module.exports = {
 
         try {
             await crearPersonaje(userID, nombre, raza, clase, nivel, rango, imageUrl, n20Url);
-            await interaction.reply(`✅ **${nombre}** ha sido creado como un **${raza} ${clase}** en nivel **${nivel}** y rango **${rango}**.`);
+            await interaction.reply(`✅ Personaje **${nombre}** creado con éxito.`);
         } catch (error) {
-            console.error('❌ Error al crear personaje:', error);
-            await interaction.reply('❌ Hubo un error al crear tu personaje.');
+            console.error("❌ Error al crear personaje:", error);
+            await interaction.reply("❌ Hubo un error al crear tu personaje.");
         }
     }
 };
+
 
 
 

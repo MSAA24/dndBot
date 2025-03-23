@@ -3,10 +3,11 @@ const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para 
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
+//const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
-
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v9');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
@@ -16,16 +17,30 @@ const dynamoDB = new DynamoDBClient({
 // Crear cliente de Discord
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-/// Cargar los comandos desde la carpeta "comandos/"
-client.commands = new Map();
+const commands = [];
 const comandosPath = path.join(__dirname, 'comandos');
 const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
 
-// Cargar todos los comandos en el mapa
 for (const file of archivosComandos) {
-    const comando = require(path.join(comandosPath, file));
-    client.commands.set(comando.name, comando);
+    const command = require(path.join(comandosPath, file));
+    commands.push(command.data.toJSON());
 }
+
+// Registra los comandos
+const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
+
+(async () => {
+    try {
+        console.log('📌 Registrando comandos de barra...');
+        await rest.put(
+            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+            { body: commands }
+        );
+        console.log('✅ Comandos registrados correctamente.');
+    } catch (error) {
+        console.error('❌ Error registrando comandos:', error);
+    }
+})();
 
 // Evento cuando recibe un mensaje
 client.on('messageCreate', async (message) => {
