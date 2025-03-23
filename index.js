@@ -1,9 +1,9 @@
-const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
+const { DynamoDBClient } = require('@aws-sdk/client-dynamodb'); 
 const { Client, GatewayIntentBits, Events } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
 const { cargarComandos } = require("./cargarComandos.js");
-const { cargarComandosSlash } = require('./cargarComandosSlash.js');
+//const { cargarComandosSlash } = require('./cargarComandosSlash.js');
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
 const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
@@ -91,45 +91,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
     }
 });
 
-
-/*
-client.once('ready', async () => {
-    console.log('✅ Bot listo');
-
-    const comandosSlash = cargarComandosSlash(); // Asegúrate de que devuelve un array válido
-    //console.log(comandosSlash);
-    if (comandosSlash.length === 0) {
-        console.error("❌ No se encontraron comandos slash para registrar.");
-        return;
-    }
-
-    try {
-        await client.application.commands.set(comandosSlash);
-        console.log("✅ Comandos registrados correctamente");
-    } catch (error) {
-        console.error("❌ Error al registrar comandos:", error);
-    }
-});
-
-
-// Manejar comandos Slash
-client.on(Events.InteractionCreate, async (interaction) => {
-    if (!interaction.isCommand()) return;
-
-    const command = comandosSlash.find(cmd => cmd.data.name === interaction.commandName);
-    if (!command) {
-        console.error(`Comando no encontrado: ${interaction.commandName}`);
-        return;
-    }
-
-    try {
-        await command.execute(interaction);
-    } catch (error) {
-        console.error(`Error al ejecutar el comando Slash: ${interaction.commandName}`, error);
-        await interaction.reply({ content: "Hubo un error al ejecutar este comando.", ephemeral: true });
-    }
-});
-*/
 // El bot cambia el clima automáticamente cada 24hs
 client.on("ready", () => {
     setInterval(async () => {
