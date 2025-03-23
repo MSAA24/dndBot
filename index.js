@@ -54,7 +54,7 @@ client.once('ready', async () => {
     console.log('✅ Bot listo');
 
     const comandosSlash = cargarComandosSlash(); // Asegúrate de que devuelve un array válido
-    console.log(comandosSlash);
+    //console.log(comandosSlash);
     if (comandosSlash.length === 0) {
         console.error("❌ No se encontraron comandos slash para registrar.");
         return;
@@ -100,10 +100,5 @@ client.on("ready", () => {
     }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
 });
 
-// Cuando el bot esté listo
-client.once('ready', () => {
-    console.log(`El bot está listo. Conectado como ${client.user.tag}`);
-    
-});
 
 client.login(process.env.TOKEN);
