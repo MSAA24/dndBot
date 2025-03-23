@@ -26,7 +26,7 @@ const client = new Client({
     ] 
 });
 
-c// Cargar los comandos desde la carpeta "comandos"
+// Cargar los comandos desde la carpeta "comandos"
 const comandos = cargarComandos();
 
 client.once('ready', () => {
