@@ -114,9 +114,9 @@ client.on("messageCreate", async (message) => {
             .setTitle("📜 Lista de Comandos")
             .setDescription("Aquí están los comandos disponibles..")
             .addFields(
-                { name: "!clima", value: "Muestra el clima actual.", inline: false },
-                { name: "!verPerfil", value: "Muestra tu perfil de usuario.", inline: false },
-                { name: "!gay", value: "Te dice qué porcentaje de homosexual sos", inline: false }
+                { name: "!clima", value: "Muestra el clima actual.", inline: true },
+                { name: "!verPerfil", value: "Muestra tu perfil de usuario.", inline: true },
+                { name: "!gay", value: "Te dice qué porcentaje de homosexual sos", inline: true }
             )
             .setColor("#00ff00")
             .setTimestamp();
