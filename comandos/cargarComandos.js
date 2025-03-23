@@ -3,7 +3,7 @@ const path = require("path");
 
 function cargarComandos() {
     const commands = [];
-    const comandosPath = path.join(__dirname, "comandos"); // 👈 Asegúrate de que sea solo "comandos"
+    const comandosPath = __dirname; // 👈 Asegúrate de que sea solo "comandos"
     
     if (!fs.existsSync(comandosPath)) {
         console.error(`❌ Error: La carpeta ${comandosPath} no existe.`);
