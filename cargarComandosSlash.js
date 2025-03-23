@@ -26,4 +26,5 @@ const cargarComandosSlash = () => {
     return comandos;
 };
 
+// Exportar la función
 module.exports = cargarComandosSlash;
