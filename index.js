@@ -22,8 +22,10 @@ const client = new Client({
         GatewayIntentBits.MessageContent] 
 });
 
-const comandos = cargarComandos(); // Cargar los comandos desde la carpeta "comandos"
+// Cargar comandos desde la carpeta "comandos"
+const comandos = cargarComandos(); 
 
+// Registrar los comandos en Discord cuando el bot esté listo
 client.once('ready', async () => {
     const comandosRegistrados = [];
     
@@ -33,6 +35,7 @@ client.once('ready', async () => {
     }
 
     try {
+        // Registro de comandos de aplicación (slash commands) en Discord
         await client.application.commands.set(comandosRegistrados); // Esto registra los comandos slash en Discord
         console.log('✅ Comandos slash registrados exitosamente:', comandosRegistrados.map(cmd => cmd.data.name).join(', '));
     } catch (error) {
@@ -48,7 +51,8 @@ client.on('interactionCreate', async (interaction) => {
     if (!comando) return;
 
     try {
-        await comando.execute(interaction); // Ejecutar el comando correspondiente
+        // Ejecutar el comando correspondiente
+        await comando.execute(interaction);
     } catch (error) {
         console.error('❌ Error al ejecutar el comando:', error);
         await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true });
