@@ -55,7 +55,7 @@ comandosSlash.forEach(command => {
 
 // Registrar los comandos Slash
 client.on('ready', async () => {
-    const guildId = 'TU_GUILD_ID'; // Reemplaza con tu ID de servidor
+    const guildId = process.env.GUILD_ID; // Reemplaza con tu ID de servidor
     const guild = await client.guilds.fetch(guildId);
     await guild.commands.set(client.commands.map(command => command.data));
     console.log("Comandos slash registrados.");
