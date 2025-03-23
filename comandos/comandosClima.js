@@ -1,8 +1,11 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 const { obtenerClimaGlobal, generarYGuardarClima} = require("../controllers/climaController.js");
-const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
+const {AttachmentBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
+
+/*
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!climaSimple")) {
         try {
@@ -59,7 +62,7 @@ client.on("messageCreate", async (message) => {
         }
     }
 });
-
+*/
 module.exports = [
     // Comando /clima
     {
