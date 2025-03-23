@@ -3,45 +3,47 @@ const { DynamoDBDocumentClient, PutCommand, GetCommand, DeleteCommand, UpdateCom
 
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
 const dynamoDB = DynamoDBDocumentClient.from(client);
+
 // Guardar personaje
-
 async function crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url) {
-    const characterId = `${userID}_${nombrePersonaje}`; 
+    const characterId = `${userID}_${nombrePersonaje}`; // Crear un ID único para el personaje
 
-    const params = {
-      TableName: "personajes",
-      Item: {
-        characterId: characterId,
-        characterName: nombrePersonaje,
-        race: raza,
-        class: clase,
-        level: parseInt(nivel) || 1,
-        rank: rango || 'E',
-        imageUrl: imageUrl || null, // Usar la URL de la imagen pasada como argumento
-        n20Url: n20Url || null,     // Usar el URL de n20 pasado como argumento
-        createdAt: new Date().toDateString()
-      }
-    };
-  
-    try {
-      await dynamoDB.send(new PutCommand(params));
-      console.log("Personaje guardado");
-    } catch (error) {
-      console.error("Error guardando personaje:", error);
-    }
-  }
-
-// Obtener personaje por ID de usuario
-async function getPersonaje(userID) {
     const params = {
         TableName: "personajes",
-        Key: {
-            userID: userID
+        Item: {
+            characterId: characterId,
+            characterName: nombrePersonaje,
+            race: raza,
+            class: clase,
+            level: parseInt(nivel) || 1,
+            rank: rango || 'E',
+            imageUrl: imageUrl || null,
+            n20Url: n20Url || null,
+            createdAt: new Date().toDateString()
         }
     };
 
     try {
-        const result = await dynamoDB.send(new GetCommand(params));
+        await dynamoDB.send(new PutCommand(params)); // Guardar personaje en DynamoDB
+        console.log("Personaje guardado");
+    } catch (error) {
+        console.error("Error guardando personaje:", error);
+    }
+}
+
+// Obtener personaje por characterId (userID + nombrePersonaje)
+async function getPersonaje(userID, nombrePersonaje) {
+    const characterId = `${userID}_${nombrePersonaje}`;
+
+    const params = {
+        TableName: "personajes",
+        Key: {
+            characterId: characterId  // Usar el characterId como la clave primaria
+        }
+    };
+
+    try {
+        const result = await dynamoDB.send(new GetCommand(params)); // Obtener personaje por characterId
         if (result.Item) {
             console.log("Personaje encontrado:", result.Item);
             return result.Item;
@@ -55,13 +57,14 @@ async function getPersonaje(userID) {
     }
 }
 
-// Actualizar solo el nombre o el nivel del personaje
+// Actualizar personaje (ejemplo de actualización de nivel o nombre, si es necesario)
 async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel) {
+    const characterId = `${userID}_${nombreActual}`; // Usar characterId como la clave
+
     const params = {
         TableName: "personajes",
         Key: {
-            userID: userID,
-            personajeId: `${userID}_${nombreActual}` // Cambié `characterID` a `personajeId`
+            characterId: characterId
         },
         UpdateExpression: "set #name = :newName, #level = :newLevel",
         ExpressionAttributeNames: {
@@ -76,7 +79,7 @@ async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel
     };
 
     try {
-        const result = await dynamoDB.send(new UpdateCommand(params)); // Usar el comando UpdateCommand para la actualización
+        const result = await dynamoDB.send(new UpdateCommand(params)); // Actualizar el personaje
         console.log("Personaje actualizado:", result.Attributes);
         return result.Attributes;
     } catch (error) {
@@ -88,6 +91,6 @@ async function actualizarPersonaje(userID, nombreActual, nuevoNombre, nuevoNivel
 module.exports = { 
     crearPersonaje, 
     getPersonaje, 
-    actualizarPersonaje  
+    actualizarPersonaje 
 };
 

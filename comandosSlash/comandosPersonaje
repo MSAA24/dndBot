@@ -1,0 +1,77 @@
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { crearPersonaje } = require('../controllers/personajeController.js');
+
+module.exports = [
+    {
+        data: new SlashCommandBuilder()
+            .setName('crearPersonaje')
+            .setDescription('Crea un nuevo personaje')
+            .addStringOption(option =>
+                option.setName('nombre')
+                    .setDescription('Nombre del personaje')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('raza')
+                    .setDescription('Raza del personaje')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('clase')
+                    .setDescription('Clase del personaje')
+                    .setRequired(true))
+            .addIntegerOption(option =>
+                option.setName('nivel')
+                    .setDescription('Nivel del personaje')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('rango')
+                    .setDescription('Rango del personaje')
+                    .setRequired(true))
+            .addStringOption(option =>
+                option.setName('imageUrl')
+                    .setDescription('URL de la imagen del personaje'))
+            .addStringOption(option =>
+                option.setName('n20Url')
+                    .setDescription('URL del personaje en N20')),
+
+        async execute(interaction) {
+            const userID = interaction.user.id;
+            const nombrePersonaje = interaction.options.getString('nombre');
+            const raza = interaction.options.getString('raza');
+            const clase = interaction.options.getString('clase');
+            const nivel = interaction.options.getInteger('nivel');
+            const rango = interaction.options.getString('rango');
+            const imageUrl = interaction.options.getString('imageUrl') || null;
+            const n20Url = interaction.options.getString('n20Url') || null;
+
+            try {
+                await crearPersonaje(userID, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url);
+                await interaction.reply(`✅ El personaje **${nombrePersonaje}** ha sido creado exitosamente.`);
+            } catch (error) {
+                console.error("Error al crear personaje:", error);
+                await interaction.reply('⚠️ Hubo un error al crear el personaje. Inténtalo de nuevo.');
+            }
+        }
+    },
+
+    {
+        data: new SlashCommandBuilder()
+            .setName('obtenerPersonaje')
+            .setDescription('Obtiene un personaje por su ID de usuario'),
+
+        async execute(interaction) {
+            const userID = interaction.user.id;
+
+            try {
+                const personaje = await obtenerPersonaje(userID);
+                if (personaje) {
+                    await interaction.reply(`El personaje encontrado es: **${personaje.characterName}**`);
+                } else {
+                    await interaction.reply('No se encontró un personaje asociado con tu cuenta.');
+                }
+            } catch (error) {
+                console.error("Error obteniendo personaje:", error);
+                await interaction.reply('⚠️ Hubo un error al obtener el personaje.');
+            }
+        }
+    }
+];
