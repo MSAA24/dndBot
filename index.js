@@ -26,6 +26,34 @@ const client = new Client({
 const commands = cargarComandos();
 const commandsJSON = commands.map(cmd => cmd.data.toJSON());
 
+// Cargar los archivos de comandos
+const comandosPath = path.join(__dirname, 'comandos');
+const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
+
+// Crear un array para almacenar los comandos
+const comandos = [];
+
+for (const file of archivosComandos) {
+    const comando = require(path.join(comandosPath, file));
+    comandos.push(comando); // Agregar cada comando al array
+}
+
+client.on("messageCreate", async (message) => {
+    if (message.author.bot) return; // Evitar que el bot responda a sus propios mensajes
+
+    // Buscar si el mensaje empieza con un comando
+    for (const comando of comandos) {
+        if (message.content.startsWith(`!${comando.name}`)) {
+            try {
+                await comando.execute(message); // Ejecutar el comando
+            } catch (error) {
+                console.error('Error al ejecutar el comando:', error);
+                message.reply('Hubo un error al ejecutar el comando.');
+            }
+        }
+    }
+});
+
 // Evento cuando recibe un mensaje
 /*
 client.on('messageCreate', async (message) => {
