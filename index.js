@@ -4,6 +4,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 //const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
+const {cargarComandos} = require("./comandos/cargarComandos.js")
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
 const { REST,Routes } = require('@discordjs/rest');
@@ -22,17 +23,8 @@ const client = new Client({
 });
 
 
-
-
-const commands = [];
-const comandosPath = path.join(__dirname, 'comandos');
-const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
-
-for (const file of archivosComandos) {
-    const command = require(path.join(comandosPath, file));
-    commands.push(command.data.toJSON());
-}
-
+const commands = cargarComandos();
+const commandsJSON = commands.map(cmd => cmd.data.toJSON());
 
 // Evento cuando recibe un mensaje
 /*
