@@ -77,7 +77,7 @@ const comandosPersonaje = [
                     */
                     const embed = new EmbedBuilder()
                     .setTitle("Personaje")
-                    .setDescription(`El clima actual es: **${personaje.characterName}**`)
+                    .setDescription(`El Personaje es: **${personaje.characterName}**`)
                     .setColor('#1E90FF')
                     .addFields(
                         { name: 'Nombre', value: personaje.characterName, inline: true },
@@ -90,6 +90,15 @@ const comandosPersonaje = [
                     )
                     .setThumbnail(personaje.imageUrl) 
                     .setTimestamp(); 
+
+                    if (personaje.n20Url) {
+                        embed.addFields({
+                            name: 'Nivel 20',
+                            value: `[Haz clic aquí para ver el personaje en Nivel 20](${personaje.n20Url})`,
+                            inline: true
+                        });
+                    }
+                    
                     await interaction.reply({ embeds: [embed] });
                 } else {
                     // Si no se encuentra el personaje
