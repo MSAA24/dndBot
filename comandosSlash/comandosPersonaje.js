@@ -14,11 +14,45 @@ const comandosPersonaje = [
             .addStringOption(option => 
                 option.setName('raza')
                     .setDescription('Raza del personaje')
-                    .setRequired(true))
+                    .setRequired(true)
+                    .addChoices(
+                        { name: 'Acompañante', value: 'acompanante' },
+                        { name: 'Dhamphiro', value: 'dhamphiro' },
+                        { name: 'Draconido', value: 'draconido' },
+                        { name: 'Draconido Cromatico', value: 'draconido_cromatico' },
+                        { name: 'Draconido Gema', value: 'draconido_gema' },
+                        { name: 'Draconido Metalico', value: 'draconido_metalico' },
+                        { name: 'Elfo', value: 'elfo' },
+                        { name: 'Enano', value: 'enano' },
+                        { name: 'Gnomo', value: 'gnomo' },
+                        { name: 'Humano', value: 'humano' },
+                        { name: 'Linaje Personalizado', value: 'linaje_personalizado' },
+                        { name: 'Mediano', value: 'mediano' },
+                        { name: 'Renacido', value: 'renacido' },
+                        { name: 'Sangre Malefica', value: 'sangre_malefica' },
+                        { name: 'Semielfo', value: 'semielfo' },
+                        { name: 'Semiorco', value: 'semiorco' },
+                        { name: 'Tiefling', value: 'tiefling' },
+                        { name: 'Tiefling Variante', value: 'tiefling_variante' }
+                      ))
             .addStringOption(option => 
                 option.setName('clase')
                     .setDescription('Clase del personaje')
-                    .setRequired(true))
+                    .setRequired(true)
+                    .addChoices(
+                        { name: 'Artifice', value: 'artifice' },
+                        { name: 'Bárbaro', value: 'barbaro' },
+                        { name: 'Bardo', value: 'bardo' },
+                        { name: 'Clérigo', value: 'clerigo' },
+                        { name: 'Druida', value: 'druida' },
+                        { name: 'Guerrero', value: 'guerrero' },
+                        { name: 'Hechicero', value: 'hechicero' },
+                        { name: 'Mago', value: 'mago' },
+                        { name: 'Monje', value: 'monje' },
+                        { name: 'Paladín', value: 'paladin' },
+                        { name: 'Pícaro', value: 'picaro' },
+                        { name: 'Explorador', value: 'explorador' }
+                      ))
             .addIntegerOption(option => 
                 option.setName('nivel')
                     .setDescription('Nivel del personaje')
@@ -26,7 +60,14 @@ const comandosPersonaje = [
             .addStringOption(option => 
                 option.setName('rango')
                     .setDescription('Rango del personaje')
-                    .setRequired(true))
+                    .setRequired(true)
+                    .addChoices(
+                        { name: 'Rango E', value: 'Rango E' },
+                        { name: 'Rango D', value: 'Rango D' },
+                        { name: 'Rango C', value: 'Rango C' },
+                        { name: 'Rango B', value: 'Rango B' },
+                        { name: 'Rango A', value: 'Rango A' }
+                      ))
             .addStringOption(option =>
                 option.setName('image_url')
                     .setDescription('La imagen del personaje')
