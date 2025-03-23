@@ -140,7 +140,7 @@ const comandosPersonaje = [
                     await interaction.reply({ embeds: [embed] });
                 } else {
                     // Si no se encuentra el personaje
-                    await interaction.reply(`No se encontró un personaje con el nombre **${nombrePersonaje}**.`);
+                    await interaction.reply(`No se encontró un personaje con el nombre **${nombrePersonaje}** dentro de tus personajes`);
                 }
             } catch (error) {
                 console.error("Error al obtener personaje:", error);

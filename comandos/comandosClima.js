@@ -1,6 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const { obtenerClimaGlobal, generarYGuardarClima} = require("../controllers/climaController.js");
-const {EmbedBuilder } = require('discord.js');
+
 //const { SlashCommandBuilder } = require('@discordjs/builders');
 /*
 const client = new Client({ 
