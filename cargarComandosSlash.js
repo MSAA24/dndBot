@@ -3,27 +3,20 @@ const path = require('path');
 
 function cargarComandosSlash() {
     const comandos = [];
-    const comandosPath = path.join(__dirname, 'comandosSlash'); // Asegúrate de que esta carpeta existe
+    const comandosDir = path.join(__dirname, 'comandos');
 
-    if (!fs.existsSync(comandosPath)) {
-        console.warn('⚠️ La carpeta comandosSlash no existe.');
-        return [];
-    }
+    fs.readdirSync(comandosDir).forEach((archivo) => {
+        const filePath = path.join(comandosDir, archivo);
+        const modulo = require(filePath);
 
-    const files = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
-
-    files.forEach(file => {
-        const filePath = path.join(comandosPath, file);
-        const comando = require(filePath);
-
-        if (Array.isArray(comando)) {
-            comandos.push(...comando);
+        if (Array.isArray(modulo)) {
+            comandos.push(...modulo.map(cmd => cmd.data.toJSON())); // Convertimos cada comando a JSON
         } else {
-            console.warn(`⚠️ El archivo ${file} no exporta un arreglo de comandos.`);
+            console.warn(`⚠️ El archivo ${archivo} no exporta un array de comandos.`);
         }
     });
 
     return comandos;
 }
 
-module.exports = {cargarComandosSlash};
+module.exports = { cargarComandosSlash };
