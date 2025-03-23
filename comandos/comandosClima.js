@@ -27,7 +27,7 @@ client.on("messageCreate", async (message) => {
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!clima")) {
         try {
-            const clima = await obtenerClima(); // Obtener el clima global
+            const clima = await obtenerClimaGlobal(); // Obtener el clima global
             if (clima) {
                 // Crear el embed con el clima
                 const embed = new EmbedBuilder()
