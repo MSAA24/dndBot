@@ -21,16 +21,9 @@ const client = new Client({
         GatewayIntentBits.MessageContent] 
 });
 
-client.application.commands.fetch()
-    .then(commands => {
-        console.log("📜 Comandos registrados en Discord:");
-        commands.forEach(command => {
-            console.log(`- ${command.name}`);
-        });
-    })
-    .catch(console.error);
 
-/*
+
+
 const commands = [];
 const comandosPath = path.join(__dirname, 'comandos');
 const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
@@ -39,7 +32,7 @@ for (const file of archivosComandos) {
     const command = require(path.join(comandosPath, file));
     commands.push(command.data.toJSON());
 }
-*/
+
 
 // Evento cuando recibe un mensaje
 /*
