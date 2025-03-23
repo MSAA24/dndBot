@@ -20,6 +20,11 @@ const client = new Client({
         GatewayIntentBits.MessageContent] 
 });
 
+if (!process.env.CLIENT_ID || !process.env.GUILD_ID || !process.env.TOKEN) {
+    console.error('❌ Faltan variables en el archivo .env: CLIENT_ID, GUILD_ID, o TOKEN');
+    process.exit(1);  // Detener el bot si no están definidas las variables necesarias
+}
+
 // Cargar comandos desde la carpeta "comandos"
 const comandos = cargarComandos(); 
 
