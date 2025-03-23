@@ -3,7 +3,13 @@ const path = require("path");
 
 function cargarComandos() {
     const commands = [];
-    const comandosPath = path.join(__dirname, "comandos");
+    const comandosPath = path.join(__dirname, "comandos"); // 👈 Asegúrate de que sea solo "comandos"
+    
+    if (!fs.existsSync(comandosPath)) {
+        console.error(`❌ Error: La carpeta ${comandosPath} no existe.`);
+        return [];
+    }
+
     const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith(".js"));
 
     for (const file of archivosComandos) {
@@ -11,7 +17,7 @@ function cargarComandos() {
 
         if (!command.data) {
             console.warn(`⚠️  Advertencia: ${file} no tiene una propiedad 'data'.`);
-            continue; // Salta archivos mal definidos
+            continue;
         }
 
         commands.push(command);
