@@ -12,48 +12,43 @@ const dynamoDB = new DynamoDBClient({
     region: 'us-east-2'  // Asegúrate de poner la región correcta de tu instancia EC2
 });
 
-// Crear cliente de Discord
+// Verifica si las variables de entorno están cargadas correctamente
+if (!process.env.CLIENT_ID || !process.env.GUILD_ID || !process.env.TOKEN) {
+    console.error('❌ Faltan variables en el archivo .env: CLIENT_ID, GUILD_ID o TOKEN');
+    process.exit(1);
+}
+
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds, 
         GatewayIntentBits.GuildMessages, 
-        GatewayIntentBits.MessageContent] 
+        GatewayIntentBits.MessageContent
+    ] 
 });
 
-if (!process.env.CLIENT_ID || !process.env.GUILD_ID || !process.env.TOKEN) {
-    console.error('❌ Faltan variables en el archivo .env: CLIENT_ID, GUILD_ID, o TOKEN');
-    process.exit(1);  // Detener el bot si no están definidas las variables necesarias
-}
+// Cargar los comandos desde la carpeta "comandos"
+const comandos = cargarComandos();
 
-// Cargar comandos desde la carpeta "comandos"
-const comandos = cargarComandos(); 
-
-// Registrar los comandos en Discord cuando el bot esté listo
 client.once('ready', async () => {
-    const comandosRegistrados = [];
-
-    // Registrar los comandos en Discord
-    for (const comando of comandos) {
-        comandosRegistrados.push(comando.data.toJSON());
-    }
+    const comandosRegistrados = comandos.map(cmd => cmd.data.toJSON());
 
     try {
-        // Usar REST para registrar los comandos de forma confiable
-        const { clientId, guildId } = process.env; // Asegúrate de tener estos datos en tu .env
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
         console.log('🔄 Registrando comandos slash...');
-        await rest.put(Routes.applicationGuildCommands(clprocess.env.CLIENT_ID, process.env.GUILD_ID), {
-            body: comandosRegistrados,
-        });
 
-        console.log('✅ Comandos slash registrados exitosamente:', comandosRegistrados.map(cmd => cmd.data.name).join(', '));
+        // Usa Routes.applicationGuildCommands para registrar los comandos en un servidor específico
+        await rest.put(
+            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), 
+            { body: comandosRegistrados }
+        );
+
+        console.log('✅ Comandos slash registrados exitosamente');
     } catch (error) {
         console.error('❌ Error al registrar los comandos slash:', error);
     }
 });
 
-// Manejar interacciones de comandos slash
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isCommand()) return;
 
@@ -61,7 +56,6 @@ client.on('interactionCreate', async (interaction) => {
     if (!comando) return;
 
     try {
-        // Ejecutar el comando correspondiente
         await comando.execute(interaction);
     } catch (error) {
         console.error('❌ Error al ejecutar el comando:', error);
@@ -69,14 +63,10 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
-// Configuración del bot para enviar un mensaje cada 24 horas
 client.on("ready", () => {
     setInterval(async () => {
         try {
-            // Obtén el canal donde quieres enviar el mensaje
-            const channel = await client.channels.fetch(autobot_ID);
-
-            // Envía el mensaje
+            const channel = await client.channels.fetch('1352871493343907891');  // ID de canal
             await channel.send('!cambiarClima');
             console.log('Mensaje enviado');
         } catch (error) {
@@ -85,6 +75,4 @@ client.on("ready", () => {
     }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
 });
 
-console.log('BOT listo.');
-// Iniciar sesión con el token del bot
 client.login(process.env.TOKEN);
