@@ -3,7 +3,7 @@ const path = require('path');
 
 function cargarComandos() {
     const comandos = [];
-    const carpetaComandos = path.join(__dirname, 'comandos');
+    const carpetaComandos = path.join(__dirname);
     const archivos = fs.readdirSync(carpetaComandos);
 
     for (const archivo of archivos) {
