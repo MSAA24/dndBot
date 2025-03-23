@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { crearPersonaje, getPersonaje } = require('../controllers/personajeController.js');
+const { crearPersonaje } = require('../controllers/personajeController.js');
 
 const comandosPersonaje = [
     {
@@ -48,8 +48,10 @@ const comandosPersonaje = [
                 const personaje = await getPersonaje(userID, nombrePersonaje);
 
                 if (personaje) {
+                    // Si se encuentra el personaje
                     await interaction.reply(`Información del personaje:\nNombre: ${personaje.characterName}\nRaza: ${personaje.race}\nClase: ${personaje.class}\nNivel: ${personaje.level}\nRango: ${personaje.rank}`);
                 } else {
+                    // Si no se encuentra el personaje
                     await interaction.reply(`No se encontró un personaje con el nombre **${nombrePersonaje}**.`);
                 }
             } catch (error) {
