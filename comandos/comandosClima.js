@@ -2,7 +2,7 @@ const { Client, GatewayIntentBits } = require('discord.js');
 const { obtenerClimaGlobal, generarYGuardarClima} = require("../controllers/climaController.js");
 const {EmbedBuilder } = require('discord.js');
 //const { SlashCommandBuilder } = require('@discordjs/builders');
-
+/*
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds, 
@@ -67,5 +67,57 @@ client.on("messageCreate", async (message) => {
         }
     }
 });
+*/
 
-module.exports = client;
+module.exports = {
+    name: 'climaSimple',
+    async execute(message) {
+        try {
+            const clima = await obtenerClimaGlobal();
+            if (clima) {
+                message.reply(`El clima es: ${clima.clima}`);
+            } else {
+                message.reply("No se ha guardado un clima aún.");
+            }
+        } catch (error) {
+            message.reply("Hubo un error al obtener el clima.");
+        }
+    }
+};
+
+// También puedes agregar más comandos en el mismo archivo de la siguiente manera:
+module.exports = [
+    {
+        name: 'cambiarClima',
+        async execute(message) {
+            try {
+                const clima = await generarYGuardarClima();
+                message.reply(`Se cambió el clima a: ${clima}`);
+            } catch (error) {
+                message.reply("Hubo un error al cambiar el clima.");
+            }
+        }
+    },
+    {
+        name: 'clima',
+        async execute(message) {
+            try {
+                const clima = await obtenerClimaGlobal();
+                if (clima) {
+                    const embed = new EmbedBuilder()
+                        .setTitle("🌍 Clima Actual")
+                        .setDescription(`El clima actual es: **${clima.clima}**`)
+                        .setColor('#1E90FF')
+                        .setTimestamp();
+
+                    message.reply({ embeds: [embed] });
+                } else {
+                    message.reply("No se ha guardado un clima global aún.");
+                }
+            } catch (error) {
+                console.error("Error al mostrar el clima:", error);
+                message.reply("Hubo un error al obtener el clima.");
+            }
+        }
+    }
+];
