@@ -6,8 +6,7 @@ const path = require('path');
 //const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
+const { REST,Routes } = require('@discordjs/rest');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
