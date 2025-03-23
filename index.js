@@ -1,7 +1,7 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
 const { cargarComandos } = require("./comandos/cargarComandos.js");
-const { cargarComandosSlash } = require('./comandos/cargarComandosSlash.js');
+const { cargarComandosSlash } = require('./comandosSlash/cargarComandosSlash.js');
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
 
