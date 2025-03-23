@@ -121,15 +121,10 @@ const comandosPersonaje = [
                     .setDescription(`El Personaje es: **${personaje.characterName}**`)
                     .setColor('#1E90FF')
                     .addFields(
-                         // Primera fila (dos campos)
                         { name: 'Nombre', value: personaje.characterName, inline: true },
-                        { name: 'Raza', value: personaje.race, inline: true },
-
-                        // Segunda fila (dos campos)
+                        { name: 'Raza', value: personaje.race, inline: false },
                         { name: 'Clase', value: personaje.class, inline: true },
-                        { name: 'Nivel', value: `${personaje.level}`, inline: true },
-
-                        // Tercera fila (dos campos)
+                        { name: 'Nivel', value: `${personaje.level}`, inline: false },
                         { name: 'Rango', value: personaje.rank, inline: true },
                     )
                     .setThumbnail(personaje.imageUrl) 
