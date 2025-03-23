@@ -43,7 +43,7 @@ client.once('ready', async () => {
         const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
         console.log('🔄 Registrando comandos slash...');
-        await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+        await rest.put(Routes.applicationGuildCommands(clprocess.env.CLIENT_ID, process.env.GUILD_ID), {
             body: comandosRegistrados,
         });
 
