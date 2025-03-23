@@ -21,23 +21,25 @@ const client = new Client({
         GatewayIntentBits.GuildMessages, 
         GatewayIntentBits.MessageContent] 
 });
-client.login(process.env.TOKEN);
 
-const commands = cargarComandos();
-const commandsJSON = commands.map(cmd => cmd.data.toJSON());
 
-// Cargar los archivos de comandos
-const comandosPath = path.join(__dirname, 'comandos');
-const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
+// Función para cargar los comandos
+const cargarComandos = () => {
+    const comandos = [];
+    const comandosPath = path.join(__dirname, 'comandos');
+    const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
 
-// Crear un array para almacenar los comandos
-const comandos = [];
+    for (const file of archivosComandos) {
+        const comando = require(path.join(comandosPath, file));
+        comandos.push(comando); // Agregar el comando al array
+    }
+    return comandos;
+};
 
-for (const file of archivosComandos) {
-    const comando = require(path.join(comandosPath, file));
-    comandos.push(comando); // Agregar cada comando al array
-}
+// Cargar los comandos
+const comandos = cargarComandos();
 
+// Evento para cuando se recibe un mensaje
 client.on("messageCreate", async (message) => {
     if (message.author.bot) return; // Evitar que el bot responda a sus propios mensajes
 
@@ -54,27 +56,6 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-// Evento cuando recibe un mensaje
-/*
-client.on('messageCreate', async (message) => {
-    // Ignorar si el mensaje es de un bot o no tiene el prefijo de comando
-    if (!message.content.startsWith("!") || message.author.bot) return;
-
-    const args = message.content.slice(1).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
-
-    // Verificar si el comando existe
-    if (client.commands.has(commandName)) {
-        try {
-            // Ejecutar el comando pasando el mensaje, argumentos y la conexión a DynamoDB
-            await client.commands.get(commandName).execute(message, args, dynamoDB);
-        } catch (error) {
-            console.error("Error al ejecutar el comando:", error);
-            message.reply("Hubo un error al ejecutar el comando.");
-        }
-    }
-});
-*/
 client.on("ready", () => {
     // Configuramos el intervalo de 24 horas (24 horas = 24 * 60 * 60 * 1000 ms)
     setInterval(async () => {
@@ -93,3 +74,4 @@ client.on("ready", () => {
 
 console.log('BOT listo.');
 // Iniciar sesión con el token del bot
+client.login(process.env.TOKEN);
