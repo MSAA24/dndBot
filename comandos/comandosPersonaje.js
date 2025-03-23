@@ -72,8 +72,8 @@ module.exports = {
         .addStringOption(option => 
             option.setName('n20')
                 .setDescription('URL de la hoja de personaje en N20')
-                .setRequired(false)),
-
+                .setRequired(false))
+        .toJSON(),    
     async execute(interaction) {
         const userID = interaction.user.id;
         const nombre = interaction.options.getString('nombre');
