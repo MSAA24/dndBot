@@ -1,9 +1,6 @@
 // Importar dependencias
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v9');
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const fs = require('fs');
 const path = require('path');
 const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
@@ -50,10 +47,7 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-
-
 client.on("ready", () => {
-
     // Configuramos el intervalo de 24 horas (24 horas = 24 * 60 * 60 * 1000 ms)
     setInterval(async () => {
         try {
@@ -68,22 +62,6 @@ client.on("ready", () => {
         }
     }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
 });
-  
-  // Registra los comandos en Discord
-  const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
-  
-  (async () => {
-    try {
-      console.log('Empezando a registrar comandos de barra...');
-      await rest.put(
-        Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-        { body: commands }
-      );
-      console.log('Comandos registrados correctamente.');
-    } catch (error) {
-      console.error(error);
-    }
-  })();
 
 console.log('BOT listo.');
 // Iniciar sesión con el token del bot
