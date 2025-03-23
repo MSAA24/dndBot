@@ -1,13 +1,11 @@
-// Importar dependencias
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-//const { createCharacterCommand, execute  } = require("./comandos/comandosPersonaje.js");
-const {cargarComandos} = require("./comandos/cargarComandos.js")
+const { cargarComandos } = require("./comandos/cargarComandos.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
-const { REST,Routes } = require('@discordjs/rest');
+const { REST, Routes } = require('@discordjs/rest');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
@@ -28,15 +26,22 @@ const comandos = cargarComandos();
 // Registrar los comandos en Discord cuando el bot esté listo
 client.once('ready', async () => {
     const comandosRegistrados = [];
-    
+
     // Registrar los comandos en Discord
     for (const comando of comandos) {
         comandosRegistrados.push(comando.data.toJSON());
     }
 
     try {
-        // Registro de comandos de aplicación (slash commands) en Discord
-        await client.application.commands.set(comandosRegistrados); // Esto registra los comandos slash en Discord
+        // Usar REST para registrar los comandos de forma confiable
+        const { clientId, guildId } = process.env; // Asegúrate de tener estos datos en tu .env
+        const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+
+        console.log('🔄 Registrando comandos slash...');
+        await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
+            body: comandosRegistrados,
+        });
+
         console.log('✅ Comandos slash registrados exitosamente:', comandosRegistrados.map(cmd => cmd.data.name).join(', '));
     } catch (error) {
         console.error('❌ Error al registrar los comandos slash:', error);
@@ -59,30 +64,8 @@ client.on('interactionCreate', async (interaction) => {
     }
 });
 
-
-
-/*
-const comandos = cargarComandos();
-
-// Evento para cuando se recibe un mensaje
-client.on("messageCreate", async (message) => {
-    if (message.author.bot) return; // Evitar que el bot responda a sus propios mensajes
-
-    // Buscar si el mensaje empieza con un comando
-    for (const comando of comandos) {
-        if (message.content.startsWith(`!${comando.name}`)) {
-            try {
-                await comando.execute(message); // Ejecutar el comando
-            } catch (error) {
-                console.error('Error al ejecutar el comando:', error);
-                message.reply('Hubo un error al ejecutar el comando.');
-            }
-        }
-    }
-});
-*/
+// Configuración del bot para enviar un mensaje cada 24 horas
 client.on("ready", () => {
-    // Configuramos el intervalo de 24 horas (24 horas = 24 * 60 * 60 * 1000 ms)
     setInterval(async () => {
         try {
             // Obtén el canal donde quieres enviar el mensaje
