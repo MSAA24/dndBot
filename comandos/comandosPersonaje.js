@@ -75,7 +75,8 @@ module.exports = {
                 .setRequired(false)),
 
     async execute(interaction) {
-        const userID = interaction.user.id;
+        const characterId = `${userID}_${nombrePersonaje}`
+        const userID = characterId;
         const nombre = interaction.options.getString('nombre');
         const raza = interaction.options.getString('raza');
         const clase = interaction.options.getString('clase');

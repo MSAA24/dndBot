@@ -106,7 +106,7 @@ const commands = [
       console.error(error);
     }
   })();
-  
 
+console.log('BOT listo.');
 // Iniciar sesión con el token del bot
 client.login(process.env.TOKEN);
