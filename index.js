@@ -28,6 +28,7 @@ for (const file of archivosComandos) {
 */
 
 // Evento cuando recibe un mensaje
+/*
 client.on('messageCreate', async (message) => {
     // Ignorar si el mensaje es de un bot o no tiene el prefijo de comando
     if (!message.content.startsWith("!") || message.author.bot) return;
@@ -46,7 +47,7 @@ client.on('messageCreate', async (message) => {
         }
     }
 });
-
+*/
 client.on("ready", () => {
     // Configuramos el intervalo de 24 horas (24 horas = 24 * 60 * 60 * 1000 ms)
     setInterval(async () => {
