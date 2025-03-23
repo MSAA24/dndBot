@@ -3,33 +3,6 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 const { crearPersonaje , getPersonaje, actualizarPersonaje } = require("../controllers/personajeController.js");
 const { SlashCommandBuilder } = require('@discordjs/builders');
 
-//Comando para crear Personaje
-/*
-client.on("messageCreate", async (message) => {
-    if (!message.content.startsWith("!crearPersonaje")) return; // Verifica que el mensaje empiece con el comando
-    if (message.author.bot) return; // Ignora mensajes de otros bots
-
-    const args = message.content.split(" ").slice(1); // Obtiene los argumentos después del comando
-    const userID = message.author.id; // ID del usuario de Discord
-    const characterName = args[0]; // Nombre del personaje
-    const level = args[1] ? parseInt(args[1]) : 1; // Nivel, por defecto 1
-
-    if (!characterName) {
-        return message.reply("⚠️ Uso correcto: `!crearPersonaje <nombre> <nivel>`");
-    }
-
-    try {
-        await crearPersonaje(userID, characterName, level);
-        message.reply(`✅ ¡Personaje **${characterName}** creado exitosamente en nivel **${level}**!`);
-    } catch (error) {
-        console.error("❌ Error al crear personaje:", error);
-        message.reply("❌ Hubo un error al crear tu personaje.");
-    }
-});
-*/
-
-
-
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!verPersonaje")) {
         const user = await getPersonaje(message.author.id);
@@ -41,58 +14,7 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('crear-personaje')
-        .setDescription('Crea un nuevo personaje en el juego')
-        .addStringOption(option => 
-            option.setName('nombre')
-                .setDescription('Nombre del personaje')
-                .setRequired(true))
-        .addStringOption(option => 
-            option.setName('raza')
-                .setDescription('Raza del personaje')
-                .setRequired(true))
-        .addStringOption(option => 
-            option.setName('clase')
-                .setDescription('Clase del personaje')
-                .setRequired(true))
-        .addIntegerOption(option => 
-            option.setName('nivel')
-                .setDescription('Nivel del personaje (por defecto 1)')
-                .setRequired(false))
-        .addStringOption(option => 
-            option.setName('rango')
-                .setDescription('Rango del personaje (por defecto E)')
-                .setRequired(false))
-        .addStringOption(option => 
-            option.setName('imagen')
-                .setDescription('URL de la imagen del personaje')
-                .setRequired(false))
-        .addStringOption(option => 
-            option.setName('n20')
-                .setDescription('URL de la hoja de personaje en N20')
-                .setRequired(false))
-        .toJSON(),    
-    async execute(interaction) {
-        const userID = interaction.user.id;
-        const nombre = interaction.options.getString('nombre');
-        const raza = interaction.options.getString('raza');
-        const clase = interaction.options.getString('clase');
-        const nivel = interaction.options.getInteger('nivel') || 1;
-        const rango = interaction.options.getString('rango') || 'E';
-        const imageUrl = interaction.options.getString('imagen') || null;
-        const n20Url = interaction.options.getString('n20') || null;
 
-        try {
-            await crearPersonaje(userID, nombre, raza, clase, nivel, rango, imageUrl, n20Url);
-            await interaction.reply(`✅ Personaje **${nombre}** creado con éxito.`);
-        } catch (error) {
-            console.error("❌ Error al crear personaje:", error);
-            await interaction.reply("❌ Hubo un error al crear tu personaje.");
-        }
-    }
-};
 
 
 

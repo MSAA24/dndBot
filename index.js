@@ -26,21 +26,6 @@ for (const file of archivosComandos) {
     commands.push(command.data.toJSON());
 }
 
-// Registra los comandos
-const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
-
-(async () => {
-    try {
-        console.log('📌 Registrando comandos de barra...');
-        await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-            { body: commands }
-        );
-        console.log('✅ Comandos registrados correctamente.');
-    } catch (error) {
-        console.error('❌ Error registrando comandos:', error);
-    }
-})();
 
 // Evento cuando recibe un mensaje
 client.on('messageCreate', async (message) => {
