@@ -68,28 +68,6 @@ client.on("ready", () => {
         }
     }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
 });
-
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
-  
-    const { commandName } = interaction;
-  
-    if (commandName === 'crear-personaje') {
-      await execute(interaction);  // Llama a la función execute de comandosPersonaje.js
-    }
-  });
-
-const commands = [
-    new SlashCommandBuilder()
-      .setName('crear-personaje')
-      .setDescription('Crea una nueva hoja de personaje')
-      .addStringOption(option =>
-        option.setName('nombre')
-          .setDescription('Nombre del personaje')
-          .setRequired(true))
-      // ... agrega más opciones aquí
-      .toJSON(),
-];
   
   // Registra los comandos en Discord
   const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
