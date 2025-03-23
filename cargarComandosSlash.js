@@ -1,3 +1,4 @@
+// cargarComandosSlash.js
 const fs = require('fs');
 const path = require('path');
 
@@ -26,5 +27,4 @@ const cargarComandosSlash = () => {
     return comandos;
 };
 
-// Exportar la función
-module.exports = cargarComandosSlash;
+module.exports = cargarComandosSlash; // Exporta la función correctamente

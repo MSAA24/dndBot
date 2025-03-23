@@ -1,7 +1,7 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
 const { cargarComandos } = require("./cargarComandos.js");
-const { cargarComandosSlash } = require('./cargarComandosSlash.js');
+const { cargarComandosSlash } = require('./cargarComandosSlash');
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
 
@@ -47,18 +47,20 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-// Cargar los comandos Slash
-const comandosSlash = cargarComandosSlash();
-comandosSlash.forEach(command => {
-    client.commands.set(command.data.name, command);
-});
+const cargarComandosSlash = require('./cargarComandosSlash'); // Importa la función correctamente
 
-// Registrar los comandos Slash
-client.on('ready', async () => {
-    const guildId = process.env.GUILD_ID; // Reemplaza con tu ID de servidor
-    const guild = await client.guilds.fetch(guildId);
-    await guild.commands.set(client.commands.map(command => command.data));
-    console.log("Comandos slash registrados.");
+client.once('ready', async () => {
+    console.log('Bot listo');
+
+    const comandos = cargarComandosSlash();  // Llama a la función correctamente
+
+    // Registra los comandos
+    try {
+        await client.application.commands.set(comandos);
+        console.log("Comandos registrados correctamente");
+    } catch (error) {
+        console.error("Error al registrar comandos:", error);
+    }
 });
 
 
