@@ -4,7 +4,7 @@ const { DynamoDBDocumentClient, GetCommand, PutCommand } = require("@aws-sdk/lib
 // Crear cliente de DynamoDB
 const client = new DynamoDBClient({ region: "us-east-2" });
 const dynamoDB = DynamoDBDocumentClient.from(client);
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+
 
 const climas = [
     "Cielo despejado y brisa suave.",
@@ -123,69 +123,6 @@ async function guardarClimaGlobal(clima) {
     }
 }
 
-module.exports = [
-    // Comando /clima
-    {
-        data: new SlashCommandBuilder()
-            .setName('clima')
-            .setDescription('Obtiene el clima actual global'),
-
-        async execute(interaction) {
-            try {
-                const clima = await obtenerClimaGlobal();
-                if (clima) {
-                    const embed = new EmbedBuilder()
-                        .setTitle("🌍 Clima Actual")
-                        .setDescription(`El clima actual es: **${clima.clima}**`)
-                        .setColor('#1E90FF') // Color
-                        .setTimestamp();
-
-                    await interaction.reply({ embeds: [embed] });
-                } else {
-                    await interaction.reply("No se ha guardado un clima global aún.");
-                }
-            } catch (error) {
-                console.error("Error al mostrar el clima:", error);
-                await interaction.reply("Hubo un error al obtener el clima.");
-            }
-        },
-    },
-
-    // Comando /cambiarClima
-    {
-        data: new SlashCommandBuilder()
-            .setName('cambiarclima')
-            .setDescription('Cambia el clima global'),
-
-        async execute(interaction) {
-            try {
-                const clima = await generarYGuardarClima();
-                await interaction.reply(`Se cambió el clima a: ${clima}`);
-            } catch (error) {
-                console.error("Error al cambiar el clima:", error);
-                await interaction.reply("Hubo un error al cambiar el clima.");
-            }
-        },
-    },
-
-    // Comando /climaSimple
-    {
-        data: new SlashCommandBuilder()
-            .setName('climasimple')
-            .setDescription('Obtiene el clima de forma sencilla'),
-
-        async execute(interaction) {
-            try {
-                const clima = await obtenerClimaGlobal();
-                if (clima) {
-                    await interaction.reply(`El clima es: ${clima.clima}`);
-                } else {
-                    await interaction.reply("No se ha guardado un clima aún.");
-                }
-            } catch (error) {
-                console.error("Error al mostrar el clima simple:", error);
-                await interaction.reply("Hubo un error al obtener el clima.");
-            }
-        },
-    },
-];
+module.exports = { 
+    obtenerClimaGlobal, generarYGuardarClima
+};
