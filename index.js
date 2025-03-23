@@ -6,7 +6,7 @@ const { cargarComandos } = require("./cargarComandos.js");
 const { cargarComandosSlash } = require('./cargarComandosSlash.js');
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
-const comandosPersonaje = require('./comandos/comandosPersonaje.js');
+const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
