@@ -90,8 +90,27 @@ client.on("messageCreate", async (message) => {
 
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!eliminarPerfil")) {
-        await deleteUser(message.author.id, message.author.username);
-        message.reply("Tu usuario ha sido eliminado");
+        // Verifica si el usuario tiene el rol "Admin"
+        const adminRole = message.member.roles.cache.find(role => role.name === "Admin");
+        if (!adminRole) {
+            return message.reply("❌ No tienes permiso para usar este comando.");
+        }
+
+        // Obtiene el ID del usuario a eliminar
+        const args = message.content.split(" ");
+        if (args.length < 2) {
+            return message.reply("⚠️ Debes especificar el ID del usuario. Ejemplo: `!eliminarPerfil 123456789`");
+        }
+
+        const userID = args[1];
+
+        try {
+            await deleteUser(userID);
+            message.reply(`✅ El usuario con ID **${userID}** ha sido eliminado correctamente.`);
+        } catch (error) {
+            console.error("❌ Error al eliminar el usuario:", error);
+            message.reply("⚠️ Hubo un error al eliminar el perfil. Verifica que el ID sea correcto.");
+        }
     }
 });
 
@@ -116,7 +135,22 @@ client.on("messageCreate", async (message) => {
             .addFields(
                 { name: "!clima", value: "Muestra el clima actual.", inline: true },
                 { name: "!verPerfil", value: "Muestra tu perfil de usuario.", inline: true },
-                { name: "!gay", value: "Te dice qué porcentaje de homosexual sos", inline: true }
+            )
+            .setColor("#00ff00")
+            .setTimestamp();
+
+        await message.reply({ embeds: [embed] });
+    }
+});
+
+client.on("messageCreate", async (message) => {
+    if (message.content.startsWith("!admin")) {
+        const embed = new EmbedBuilder()
+            .setTitle("📜 Lista de Comandos de Admin")
+            .setDescription("Aquí están los comandos disponibles..")
+            .addFields(
+                { name: "!cambiarClima", value: "Muestra el clima actual.", inline: true },
+                { name: "!verPerfil", value: "Muestra tu perfil de usuario.", inline: true },
             )
             .setColor("#00ff00")
             .setTimestamp();
