@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { crearPersonaje } = require('../controllers/personajeController.js');
+const { crearPersonaje, getPersonaje } = require('../controllers/personajeController.js');
 
 const comandosPersonaje = [
     {
