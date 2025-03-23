@@ -4,7 +4,7 @@ const { DynamoDBDocumentClient, GetCommand, PutCommand } = require("@aws-sdk/lib
 // Crear cliente de DynamoDB
 const client = new DynamoDBClient({ region: "us-east-2" });
 const dynamoDB = DynamoDBDocumentClient.from(client);
-
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const climas = [
     "Cielo despejado y brisa suave.",
