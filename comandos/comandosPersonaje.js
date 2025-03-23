@@ -27,80 +27,7 @@ client.on("messageCreate", async (message) => {
     }
 });
 */
-const createCharacterCommand = new SlashCommandBuilder()
-    .setName("crear-personaje")
-    .setDescription("Crea una nueva hoja de personaje")
-    .addStringOption(option =>
-      option.setName("nombre")
-        .setDescription("Nombre del personaje")
-        .setRequired(true))
-    .addIntegerOption(option =>
-      option.setName("nivel")
-        .setDescription("Nivel del personaje")
-        .setRequired(true)
-        .setMinValue(1)
-        .setMaxValue(20))
-    .addStringOption(option =>
-      option.setName("clase")
-        .setDescription("Clase del personaje")
-        .setRequired(true)
-        .addChoices(
-          { name: 'Artifice', value: 'artifice' },
-          { name: 'Bárbaro', value: 'barbaro' },
-          { name: 'Bardo', value: 'bardo' },
-          { name: 'Clérigo', value: 'clerigo' },
-          { name: 'Druida', value: 'druida' },
-          { name: 'Guerrero', value: 'guerrero' },
-          { name: 'Hechicero', value: 'hechicero' },
-          { name: 'Mago', value: 'mago' },
-          { name: 'Monje', value: 'monje' },
-          { name: 'Paladín', value: 'paladin' },
-          { name: 'Pícaro', value: 'picaro' },
-          { name: 'Explorador', value: 'explorador' }
-        ))
-    .addStringOption(option =>
-      option.setName("raza")
-        .setDescription("raza del personaje")
-        .setRequired(true)
-        .addChoices(
-          { name: 'Acompañante', value: 'acompanante' },
-          { name: 'Dhamphiro', value: 'dhamphiro' },
-          { name: 'Draconido', value: 'draconido' },
-          { name: 'Draconido Cromatico', value: 'draconido_cromatico' },
-          { name: 'Draconido Gema', value: 'draconido_gema' },
-          { name: 'Draconido Metalico', value: 'draconido_metalico' },
-          { name: 'Elfo', value: 'elfo' },
-          { name: 'Enano', value: 'enano' },
-          { name: 'Gnomo', value: 'gnomo' },
-          { name: 'Humano', value: 'humano' },
-          { name: 'Linaje Personalizado', value: 'linaje_personalizado' },
-          { name: 'Mediano', value: 'mediano' },
-          { name: 'Renacido', value: 'renacido' },
-          { name: 'Sangre Malefica', value: 'sangre_malefica' },
-          { name: 'Semielfo', value: 'semielfo' },
-          { name: 'Semiorco', value: 'semiorco' },
-          { name: 'Tiefling', value: 'tiefling' },
-          { name: 'Tiefling Variante', value: 'tiefling_variante' }
-        ))
-    .addStringOption(option =>
-      option.setName("rango")
-        .setDescription("Rango del personaje")
-        .setRequired(true)
-        .addChoices(
-          { name: 'Rango E', value: 'Rango E' },
-          { name: 'Rango D', value: 'Rango D' },
-          { name: 'Rango C', value: 'Rango C' },
-          { name: 'Rango B', value: 'Rango B' },
-          { name: 'Rango A', value: 'Rango A' }
-        ))
-    .addStringOption(option =>
-      option.setName("imagen")
-        .setDescription("URL de la imagen del personaje")
-        .setRequired(true))
-    .addStringOption(option =>
-      option.setName("n20")
-        .setDescription("URL adicional para N20")
-        .setRequired(true));
+
 
 
 client.on("messageCreate", async (message) => {
@@ -114,41 +41,58 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-
 module.exports = {
-    createCharacterCommand,
+    data: new SlashCommandBuilder()
+        .setName('crearpersonaje')
+        .setDescription('Crea un personaje en el juego')
+        .addStringOption(option => 
+            option.setName('nombre')
+                .setDescription('Nombre del personaje')
+                .setRequired(true))
+        .addStringOption(option => 
+            option.setName('raza')
+                .setDescription('Raza del personaje')
+                .setRequired(true))
+        .addStringOption(option => 
+            option.setName('clase')
+                .setDescription('Clase del personaje')
+                .setRequired(true))
+        .addIntegerOption(option => 
+            option.setName('nivel')
+                .setDescription('Nivel del personaje (por defecto 1)')
+                .setRequired(false))
+        .addStringOption(option => 
+            option.setName('rango')
+                .setDescription('Rango del personaje (por defecto E)')
+                .setRequired(false))
+        .addStringOption(option => 
+            option.setName('imagen')
+                .setDescription('URL de la imagen del personaje')
+                .setRequired(false))
+        .addStringOption(option => 
+            option.setName('n20')
+                .setDescription('URL de la hoja de personaje en N20')
+                .setRequired(false)),
+
     async execute(interaction) {
-        const nombrePersonaje = interaction.options.getString('nombre');
-        const nivel = interaction.options.getInteger('nivel');
-        const clase = interaction.options.getString('clase');
+        const userID = interaction.user.id;
+        const nombre = interaction.options.getString('nombre');
         const raza = interaction.options.getString('raza');
-        const rango = interaction.options.getString('rango');
-        const imagen = interaction.options.getString('imagen');
-        const n20Url = interaction.options.getString('n20');
+        const clase = interaction.options.getString('clase');
+        const nivel = interaction.options.getInteger('nivel') || 1;
+        const rango = interaction.options.getString('rango') || 'E';
+        const imageUrl = interaction.options.getString('imagen') || null;
+        const n20Url = interaction.options.getString('n20') || null;
 
-        // Llama a la función para crear el personaje en DynamoDB
         try {
-            await crearPersonaje(
-                `${userID}_${nombrePersonaje}`, 
-                nombrePersonaje, 
-                raza, 
-                clase, 
-                nivel, 
-                rango,
-                imagen,
-                n20Url
-            );
-
-            // Responder al usuario que el personaje fue creado
-            await interaction.reply(`¡Personaje ${nombrePersonaje} creado con éxito!`);
+            await crearPersonaje(userID, nombre, raza, clase, nivel, rango, imageUrl, n20Url);
+            await interaction.reply(`✅ **${nombre}** ha sido creado como un **${raza} ${clase}** en nivel **${nivel}** y rango **${rango}**.`);
         } catch (error) {
-            console.error('Error al crear el personaje:', error);
-            await interaction.reply('Hubo un error al crear el personaje.');
+            console.error('❌ Error al crear personaje:', error);
+            await interaction.reply('❌ Hubo un error al crear tu personaje.');
         }
-    
-} };
-
-
+    }
+};
 
 
 
@@ -245,3 +189,4 @@ module.exports = {
 };
 
 */
+
