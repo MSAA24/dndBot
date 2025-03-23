@@ -11,7 +11,7 @@ async function crearPersonaje(userId, nombrePersonaje, raza, clase, nivel, rango
     const params = {
         TableName: "personajes",
         Item: {
-            characterId: characterId,
+            personajeId: characterId,
             userId: userId,
             characterName: nombrePersonaje,
             race: raza,
