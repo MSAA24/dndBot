@@ -94,7 +94,7 @@ const comandosPersonaje = [
                     if (personaje.n20Url) {
                         embed.addFields({
                             name: 'n20',
-                            value: `[Hacé click acá para ver el personaje en n20(${personaje.n20Url})`,
+                            value: `[Ver en n20(${personaje.n20Url})`,
                             inline: true
                         });
                     }
