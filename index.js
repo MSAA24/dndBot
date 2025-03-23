@@ -1,11 +1,8 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
-const fs = require('fs');
-const path = require('path');
 const { cargarComandos } = require("./comandos/cargarComandos.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
-const { REST, Routes } = require('@discordjs/rest');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
