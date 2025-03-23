@@ -17,6 +17,7 @@ const dynamoDB = new DynamoDBClient({
 // Crear cliente de Discord
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
+/*
 const commands = [];
 const comandosPath = path.join(__dirname, 'comandos');
 const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
@@ -25,7 +26,7 @@ for (const file of archivosComandos) {
     const command = require(path.join(comandosPath, file));
     commands.push(command.data.toJSON());
 }
-
+*/
 
 // Evento cuando recibe un mensaje
 client.on('messageCreate', async (message) => {
