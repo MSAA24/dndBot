@@ -62,6 +62,7 @@ const comandosPersonaje = [
                 const personaje = await getPersonaje(userID, nombrePersonaje);
 
                 if (personaje) {
+                    /*
                     // Si se encuentra el personaje
                     await interaction.reply(
                         `Información del personaje:
@@ -72,6 +73,22 @@ const comandosPersonaje = [
                             \nRango: ${personaje.rank}
                             \nImagen: ${personaje.imageUrl}
                             \n20: ${personaje.n20Url}`);
+                    */
+                    const embed = new EmbedBuilder()
+                    .setTitle("Personaje")
+                    .setDescription(`El clima actual es: **${personaje.characterName}**`)
+                    .setColor('#1E90FF')
+                    .addFields(
+                        { name: 'Nombre', value: personaje.characterName, inline: true },
+                        { name: 'Raza', value: personaje.race, inline: true },
+                        { name: 'Clase', value: personaje.class, inline: true },
+                        { name: 'Nivel', value: `${personaje.level}`, inline: true },
+                        { name: 'Rango', value: personaje.rank, inline: true },
+                        { name: 'Imagen', value: personaje.imageUrl || 'No disponible', inline: true },
+                        { name: '20', value: personaje.n20Url || 'No disponible', inline: true }
+                    )
+                    .setThumbnail(personaje.imageUrl) 
+                    .setTimestamp(); 
                     
                 } else {
                     // Si no se encuentra el personaje
