@@ -149,8 +149,8 @@ client.on("messageCreate", async (message) => {
             .setTitle("📜 Lista de Comandos de Admin")
             .setDescription("Aquí están los comandos disponibles..")
             .addFields(
-                { name: "!cambiarClima", value: "Muestra el clima actual.", inline: true },
-                { name: "!verPerfil", value: "Muestra tu perfil de usuario.", inline: true },
+                { name: "!eliminarPerfil", value: "Se elimina el perfil con el ID especificado.", inline: false },
+                { name: "!cambiarClima", value: "Cambia el clima actual.", inline: false },
             )
             .setColor("#00ff00")
             .setTimestamp();
