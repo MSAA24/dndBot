@@ -95,7 +95,7 @@ const comandosPersonaje = [
                         embed.addFields({
                             name: 'n20',
                             value: `[Ver en n20](${personaje.n20Url})`,
-                            inline: true
+                            inline: false
                         });
                     }
 
