@@ -1,9 +1,8 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits } = require('discord.js');
-const cargarComandos = require("./cargarComandos.js"); 
-const cargarComandosSlash = require('./cargarComandosSlash');  
+const { cargarComandos } = require("./cargarComandos.js");
+const { cargarComandosSlash } = require('./cargarComandosSlash.js');
 require('dotenv').config();
-
 const autobot_ID = '1352871493343907891'; 
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
@@ -17,7 +16,6 @@ if (!process.env.CLIENT_ID || !process.env.GUILD_ID || !process.env.TOKEN) {
     process.exit(1);
 }
 
-// Configuración del bot con intents necesarios
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds, 
@@ -42,14 +40,13 @@ client.on('messageCreate', async (message) => {
             try {
                 await cmd.execute(message);  // Ejecutar el comando
             } catch (error) {
-                console.error(`❌ Error al ejecutar el comando: ${comando}`, error);
-                message.reply('⚠️ Hubo un error al ejecutar el comando.');
+                console.error(`Error al ejecutar el comando: ${comando}`, error);
+                message.reply('Hubo un error al ejecutar el comando.');
             }
         }
     }
 });
 
-// Cuando el bot esté listo
 client.once('ready', async () => {
     console.log(`✅ El bot está listo. Conectado como ${client.user.tag}`);
 
@@ -63,17 +60,25 @@ client.once('ready', async () => {
     } catch (error) {
         console.error("❌ Error al registrar comandos Slash:", error);
     }
+});
 
-    // Configurar el mensaje automático de cambio de clima cada 24h
+
+// El bot cambia el clima automáticamente cada 24hs
+client.on("ready", () => {
     setInterval(async () => {
         try {
-            const channel = await client.channels.fetch(autobot_ID);
+            const channel = await client.channels.fetch('1352871493343907891');  // ID de canal
             await channel.send('!cambiarClima');
-            console.log('🌦️ Mensaje de cambio de clima enviado');
+            console.log('Mensaje enviado');
         } catch (error) {
-            console.error('❌ Error al enviar el mensaje:', error);
+            console.error('Error al enviar el mensaje:', error);
         }
     }, 24 * 60 * 60 * 1000); // 24 horas en milisegundos
+});
+
+// Cuando el bot esté listo
+client.once('ready', () => {
+    console.log(`El bot está listo. Conectado como ${client.user.tag}`);
 });
 
 client.login(process.env.TOKEN);
