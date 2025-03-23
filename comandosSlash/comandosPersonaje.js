@@ -39,7 +39,7 @@ const comandosPersonaje = [
             const raza = interaction.options.getString('raza');
             const clase = interaction.options.getString('clase');
             const nivel = interaction.options.getInteger('nivel');
-            const rango = interaction.options.getInteger('rango');
+            const rango = interaction.options.getString('rango');
             const imageUrl = interaction.options.getString('image_url');
             const n20 = interaction.options.getString('n20_url');
             await crearPersonaje(interaction.user.id, nombre, raza, clase, nivel, rango, imageUrl, n20);
