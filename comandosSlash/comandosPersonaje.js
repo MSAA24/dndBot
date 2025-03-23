@@ -126,9 +126,9 @@ const comandosPersonaje = [
                         { name: 'Clase', value: personaje.class, inline: true },
                         { name: 'Nivel', value: `${personaje.level}`, inline: true },
                         { name: 'Rango', value: personaje.rank, inline: true },
+                        { name: 'Fecha de creación', value: new Date().toLocaleString(), inline: false }
                     )
                     embed.setImage(personaje.imageUrl) 
-                    .setTimestamp(); 
 
                     if (personaje.n20Url) {
                         embed.addFields({
