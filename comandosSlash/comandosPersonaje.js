@@ -41,8 +41,8 @@ const comandosPersonaje = [
             const nivel = interaction.options.getInteger('nivel');
             const rango = interaction.options.getString('rango');
             const imageUrl = interaction.options.getString('image_url');
-            const n20 = interaction.options.getString('n20_url');
-            await crearPersonaje(interaction.user.id, nombre, raza, clase, nivel, rango, imageUrl, n20);
+            const n20Url = interaction.options.getString('n20_url');
+            await crearPersonaje(interaction.user.id, nombre, raza, clase, nivel, rango, imageUrl, n20Url);
             await interaction.reply(`Personaje **${nombre}** creado con éxito!`);
         }
     },
