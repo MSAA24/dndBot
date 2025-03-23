@@ -90,7 +90,7 @@ const comandosPersonaje = [
                     )
                     .setThumbnail(personaje.imageUrl) 
                     .setTimestamp(); 
-                    
+                    await interaction.reply({ embeds: [embed] });
                 } else {
                     // Si no se encuentra el personaje
                     await interaction.reply(`No se encontró un personaje con el nombre **${nombrePersonaje}**.`);
