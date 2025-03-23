@@ -47,6 +47,9 @@ client.on('messageCreate', async (message) => {
         }
     }
 });
+
+console.log(comandosSlash);
+
 client.once('ready', async () => {
     console.log('✅ Bot listo');
 
