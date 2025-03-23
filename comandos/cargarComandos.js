@@ -5,7 +5,7 @@ const cargarComandos = () => {
     const comandos = [];
 
     // Ruta donde están guardados los archivos de comandos
-    const comandosPath = path.join(__dirname, 'comandos');
+    const comandosPath = path.join(__dirname);
 
     // Leer todos los archivos en la carpeta de comandos
     const files = fs.readdirSync(comandosPath);
