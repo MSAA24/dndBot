@@ -48,7 +48,22 @@ client.on('messageCreate', async (message) => {
     }
 });
 // Cargar los comandos Slash
-const comandosSlash = cargarComandosSlash();
+//const comandosSlash = cargarComandosSlash();
+
+client.once('ready', async () => {
+    console.log('Bot listo');
+
+    const comandosSlash = cargarComandosSlash();
+    console.log("Comandos Slash cargados:", comandosSlash.map(cmd => cmd.data.name));
+
+    // Registra los comandos
+    try {
+        await client.application.commands.set(comandosSlash);
+        console.log("✅ Comandos Slash registrados correctamente");
+    } catch (error) {
+        console.error("❌ Error al registrar comandos:", error);
+    }
+});
 
 
 // Manejar comandos Slash
@@ -85,6 +100,7 @@ client.on("ready", () => {
 // Cuando el bot esté listo
 client.once('ready', () => {
     console.log(`El bot está listo. Conectado como ${client.user.tag}`);
+    
 });
 
 client.login(process.env.TOKEN);
