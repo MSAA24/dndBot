@@ -23,20 +23,6 @@ const client = new Client({
 });
 
 
-// Función para cargar los comandos
-const cargarComandos = () => {
-    const comandos = [];
-    const comandosPath = path.join(__dirname, 'comandos');
-    const archivosComandos = fs.readdirSync(comandosPath).filter(file => file.endsWith('.js'));
-
-    for (const file of archivosComandos) {
-        const comando = require(path.join(comandosPath, file));
-        comandos.push(comando); // Agregar el comando al array
-    }
-    return comandos;
-};
-
-// Cargar los comandos
 const comandos = cargarComandos();
 
 // Evento para cuando se recibe un mensaje
