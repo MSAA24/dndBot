@@ -50,6 +50,25 @@ client.on('messageCreate', async (message) => {
     }
 });
 
+client.once('ready', async () => {
+    console.log('✅ Bot listo');
+
+    try {
+        await client.application.commands.set([]); // Borra todos los comandos globales
+        console.log("🗑️ Comandos globales eliminados");
+
+        const guild = client.guilds.cache.get(process.env.GUILD_ID);
+        if (guild) {
+            await guild.commands.set([]); // Borra comandos específicos del servidor
+            console.log("🗑️ Comandos de servidor eliminados");
+        }
+
+        console.log("✅ Comandos eliminados, vuelve a ejecutar el código sin este bloque");
+    } catch (error) {
+        console.error("❌ Error al eliminar los comandos:", error);
+    }
+});
+
 // **Registrar los comandos slash en Discord**
 async function registrarComandos() {
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
