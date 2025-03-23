@@ -22,7 +22,42 @@ const client = new Client({
         GatewayIntentBits.MessageContent] 
 });
 
+// Cargar los comandos desde la carpeta "comandos"
+const comandos = cargarComandos();
 
+// Registrar los comandos slash
+client.once('ready', async () => {
+    const comandosRegistrados = [];
+    for (const comando of comandos) {
+        comandosRegistrados.push(comando.data.toJSON());
+    }
+
+    try {
+        await client.application.commands.set(comandosRegistrados);
+        console.log('✅ Comandos slash registrados exitosamente');
+    } catch (error) {
+        console.error('❌ Error al registrar los comandos slash:', error);
+    }
+});
+
+    // Manejar interacciones con los comandos slash
+    client.on('interactionCreate', async (interaction) => {
+        if (!interaction.isCommand()) return;
+
+        const comando = comandos.find(cmd => cmd.data.name === interaction.commandName);
+        if (!comando) return;
+
+        try {
+            await comando.execute(interaction);
+        } catch (error) {
+            console.error('❌ Error al ejecutar el comando slash:', error);
+            await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true });
+        }
+    });
+
+
+
+/*
 const comandos = cargarComandos();
 
 // Evento para cuando se recibe un mensaje
@@ -41,7 +76,7 @@ client.on("messageCreate", async (message) => {
         }
     }
 });
-
+*/
 client.on("ready", () => {
     // Configuramos el intervalo de 24 horas (24 horas = 24 * 60 * 60 * 1000 ms)
     setInterval(async () => {
