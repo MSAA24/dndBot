@@ -47,8 +47,6 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-const cargarComandosSlash = require('./cargarComandosSlash'); // Importa la función correctamente
-
 client.once('ready', async () => {
     console.log('Bot listo');
 
