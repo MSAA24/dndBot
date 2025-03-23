@@ -68,5 +68,9 @@ client.on("messageCreate", async (message) => {
     }
 });
 
-
+module.exports = {
+    climaSimple: client.on("messageCreate"),
+    cambiarClima: client.on("messageCreate"),
+    clima: client.on("messageCreate")
+};
 
