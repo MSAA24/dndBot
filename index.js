@@ -48,13 +48,13 @@ client.on('messageCreate', async (message) => {
     }
 });
 
-console.log(comandosSlash);
+
 
 client.once('ready', async () => {
     console.log('✅ Bot listo');
 
     const comandosSlash = cargarComandosSlash(); // Asegúrate de que devuelve un array válido
-
+    console.log(comandosSlash);
     if (comandosSlash.length === 0) {
         console.error("❌ No se encontraron comandos slash para registrar.");
         return;
