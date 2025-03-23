@@ -48,8 +48,49 @@ client.on('messageCreate', async (message) => {
     }
 });
 
+// **Registrar los comandos slash en Discord**
+async function registrarComandos() {
+    const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+    const comandosJSON = comandosPersonaje.map(cmd => cmd.data.toJSON()); // Convertir a JSON
+
+    try {
+        console.log('⏳ Registrando comandos en Discord...');
+        await rest.put(
+            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
+            { body: comandosJSON }
+        );
+        console.log('✅ Comandos registrados correctamente.');
+    } catch (error) {
+        console.error('❌ Error al registrar comandos:', error);
+    }
+}
+
+// Evento cuando el bot está listo
+client.once('ready', async () => {
+    console.log(`✅ Bot conectado como ${client.user.tag}`);
+    await registrarComandos();
+});
+
+// Manejo de interacciones de comandos slash
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isCommand()) return;
+
+    const command = comandosPersonaje.find(cmd => cmd.data.name === interaction.commandName);
+    if (!command) {
+        console.error(`⚠️ Comando no encontrado: ${interaction.commandName}`);
+        return;
+    }
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(`❌ Error al ejecutar el comando Slash: ${interaction.commandName}`, error);
+        await interaction.reply({ content: "Hubo un error al ejecutar este comando.", ephemeral: true });
+    }
+});
 
 
+/*
 client.once('ready', async () => {
     console.log('✅ Bot listo');
 
@@ -86,7 +127,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
         await interaction.reply({ content: "Hubo un error al ejecutar este comando.", ephemeral: true });
     }
 });
-
+*/
 // El bot cambia el clima automáticamente cada 24hs
 client.on("ready", () => {
     setInterval(async () => {
