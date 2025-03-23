@@ -26,24 +26,32 @@ const client = new Client({
     ] 
 });
 
+c// Cargar los comandos desde la carpeta "comandos"
 const comandos = cargarComandos();
 
+client.once('ready', () => {
+    console.log(`El bot está listo. Conectado como ${client.user.tag}`);
+});
+
 client.on('messageCreate', async (message) => {
-    if (message.author.bot) return;  // Ignorar mensajes de bots
+    // Asegúrate de que el mensaje no sea de un bot
+    if (message.author.bot) return;
 
-    // Buscar si el mensaje es un comando
-    const comando = comandos.find(cmd => message.content.startsWith(`!${cmd.nombre}`));
-
-    if (comando) {
-        try {
-            await comando.ejecutar(message);  // Ejecutar la función del comando
-        } catch (error) {
-            console.error('Error al ejecutar el comando:', error);
-            message.reply('Hubo un error al ejecutar el comando.');
+    // Verificar si el mensaje comienza con un comando, por ejemplo, "!eliminarPerfil"
+    const comando = message.content.split(" ")[0]; // Obtener el primer término (el comando)
+    if (comando.startsWith('!')) {
+        // Buscar el archivo de comando correspondiente
+        const cmd = comandos.find((cmd) => cmd.name === comando.slice(1));
+        if (cmd) {
+            try {
+                await cmd.execute(message);  // Ejecutar el comando
+            } catch (error) {
+                console.error(`Error al ejecutar el comando: ${comando}`, error);
+                message.reply('Hubo un error al ejecutar el comando.');
+            }
         }
     }
 });
-
 
 client.on("ready", () => {
     setInterval(async () => {
