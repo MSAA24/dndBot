@@ -123,7 +123,7 @@ const comandosPersonaje = [
                     .addFields(
                         { name: 'Nombre', value: personaje.characterName, inline: true },
                         { name: 'Raza', value: personaje.race, inline: true },
-                        { name: 'Clase', value: personaje.class, inline: true },
+                        { name: 'Clase', value: personaje.class, inline: false },
                         { name: 'Nivel', value: `${personaje.level}`, inline: true },
                         { name: 'Rango', value: personaje.rank, inline: true },
                         //{ name: 'Imagen', value: personaje.imageUrl || 'No disponible', inline: true },
