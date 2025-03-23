@@ -26,4 +26,4 @@ function cargarComandosSlash() {
     return comandos;
 }
 
-module.exports = cargarComandosSlash;
+module.exports = {cargarComandosSlash};
