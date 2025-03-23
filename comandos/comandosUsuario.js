@@ -60,22 +60,28 @@ client.on("messageCreate", async (message) => {
 
 client.on("messageCreate", async (message) => {
     if (message.content.startsWith("!verPerfil")) {
-        const user = await getUser(message.author.id);
-        if (user) {
-            message.reply(`Hola ${user.username}, te registraste en: ${user.joinedAt}`);
-        } else {
-            message.reply("No se encuentra tu perfil en la base de datos.");
+        try {
+            const user = await getUser(message.author.id); // Obtener el usuario desde la base de datos
+            if (user) {
+                // Crear el embed con los datos del usuario
+                const embed = new EmbedBuilder()
+                    .setTitle(`Perfil de ${user.username}`)
+                    .setDescription(`**${user.username}** ha sido agregado a la base de datos.`)
+                    .addFields(
+                        { name: 'Usuario:', value: user.username, inline: true },
+                        { name: 'Unido el:', value: user.joinedAt, inline: true }
+                    )
+                    .setTimestamp()
+                    .setColor('#00ff00'); // Puedes agregar una imagen si lo deseas con `.setImage(imageUrl)`
+                
+                message.reply({ embeds: [embed] }); // Enviar el embed como respuesta
+            } else {
+                message.reply("No se encuentra tu perfil en la base de datos.");
+            }
+        } catch (error) {
+            console.error("Error al obtener el perfil:", error);
+            message.reply("Hubo un error al intentar obtener tu perfil.");
         }
-        const embed = new EmbedBuilder()
-          .setTitle(`Mostrando usuario`)
-          .setDescription(`**${name}** ha sido agregado a tu colección.`)
-          .addFields(
-            { name: 'Usuario:', value: level.toString(), inline: true },
-            { name: 'Unido el:', value: characterClass, inline: true },
-          )
-          .setTimestamp()
-          .setColor('#00ff00')
-          //.setImage(imageUrl);
     }
 });
 
