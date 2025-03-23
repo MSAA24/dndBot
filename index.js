@@ -46,22 +46,27 @@ client.on('messageCreate', async (message) => {
         }
     }
 });
+// Cargar los comandos Slash
+const comandosSlash = cargarComandosSlash();
 
-client.once('ready', async () => {
-    console.log(`✅ El bot está listo. Conectado como ${client.user.tag}`);
+
+// Manejar comandos Slash
+client.on(Events.InteractionCreate, async (interaction) => {
+    if (!interaction.isCommand()) return;
+
+    const command = comandosSlash.find(cmd => cmd.data.name === interaction.commandName);
+    if (!command) {
+        console.error(`Comando no encontrado: ${interaction.commandName}`);
+        return;
+    }
 
     try {
-        const comandosSlash = cargarComandosSlash();  // Llama a la función correctamente
-
-        // Registra los comandos Slash globalmente
-        await client.application.commands.set(comandosSlash);
-        console.log("✅ Comandos Slash registrados correctamente");
-
+        await command.execute(interaction);
     } catch (error) {
-        console.error("❌ Error al registrar comandos Slash:", error);
+        console.error(`Error al ejecutar el comando Slash: ${interaction.commandName}`, error);
+        await interaction.reply({ content: "Hubo un error al ejecutar este comando.", ephemeral: true });
     }
 });
-
 
 // El bot cambia el clima automáticamente cada 24hs
 client.on("ready", () => {
