@@ -1,6 +1,7 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');  // SDK v3 para DynamoDB
 const { Client, GatewayIntentBits, Events } = require('discord.js');
-
+const { REST } = require('@discordjs/rest');
+const { Routes } = require('discord-api-types/v10');
 const { cargarComandos } = require("./cargarComandos.js");
 const { cargarComandosSlash } = require('./cargarComandosSlash.js');
 require('dotenv').config();
