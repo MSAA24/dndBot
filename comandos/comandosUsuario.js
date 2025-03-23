@@ -63,14 +63,16 @@ client.on("messageCreate", async (message) => {
         try {
             const user = await getUser(message.author.id); // Obtener el usuario desde la base de datos
             if (user) {
+                const avatarURL = message.author.avatarURL({ size: 2048, dynamic: true })
                 // Crear el embed con los datos del usuario
                 const embed = new EmbedBuilder()
                     .setTitle(`Perfil de ${user.username}`)
-                    .setDescription(`**${user.username}** ha sido agregado a la base de datos.`)
+                    .setDescription(`Acá se encuentra tu información.`)
                     .addFields(
                         { name: 'Usuario:', value: user.username, inline: true },
                         { name: 'Unido el:', value: user.joinedAt, inline: true }
                     )
+                    .setThumbnail(avatarURL)
                     .setTimestamp()
                     .setColor('#00ff00'); // Puedes agregar una imagen si lo deseas con `.setImage(imageUrl)`
                 
