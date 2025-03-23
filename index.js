@@ -21,7 +21,7 @@ const client = new Client({
         GatewayIntentBits.GuildMessages, 
         GatewayIntentBits.MessageContent] 
 });
-
+client.login(process.env.TOKEN);
 
 const commands = cargarComandos();
 const commandsJSON = commands.map(cmd => cmd.data.toJSON());
@@ -93,4 +93,3 @@ client.on("ready", () => {
 
 console.log('BOT listo.');
 // Iniciar sesión con el token del bot
-client.login(process.env.TOKEN);
