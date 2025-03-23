@@ -85,20 +85,21 @@ const comandosPersonaje = [
                         { name: 'Clase', value: personaje.class, inline: true },
                         { name: 'Nivel', value: `${personaje.level}`, inline: true },
                         { name: 'Rango', value: personaje.rank, inline: true },
-                        { name: 'Imagen', value: personaje.imageUrl || 'No disponible', inline: true },
-                        { name: '20', value: personaje.n20Url || 'No disponible', inline: true }
+                        //{ name: 'Imagen', value: personaje.imageUrl || 'No disponible', inline: true },
+                        //{ name: 'n20', value: personaje.n20Url || 'No disponible', inline: true }
                     )
                     .setThumbnail(personaje.imageUrl) 
                     .setTimestamp(); 
 
                     if (personaje.n20Url) {
                         embed.addFields({
-                            name: 'Nivel 20',
-                            value: `[Haz clic aquí para ver el personaje en Nivel 20](${personaje.n20Url})`,
+                            name: 'n20',
+                            value: `[Hacé click acá para ver el personaje en n20(${personaje.n20Url})`,
                             inline: true
                         });
                     }
-                    
+
+
                     await interaction.reply({ embeds: [embed] });
                 } else {
                     // Si no se encuentra el personaje
