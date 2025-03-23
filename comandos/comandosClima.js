@@ -69,24 +69,23 @@ client.on("messageCreate", async (message) => {
 });
 */
 
-module.exports = {
-    name: 'climaSimple',
-    async execute(message) {
-        try {
-            const clima = await obtenerClimaGlobal();
-            if (clima) {
-                message.reply(`El clima es: ${clima.clima}`);
-            } else {
-                message.reply("No se ha guardado un clima aún.");
-            }
-        } catch (error) {
-            message.reply("Hubo un error al obtener el clima.");
-        }
-    }
-};
-
-// También puedes agregar más comandos en el mismo archivo de la siguiente manera:
 module.exports = [
+    {
+    name: 'climaSimple',
+        async execute(message) {
+            try {
+                const clima = await obtenerClimaGlobal();
+                if (clima) {
+                    message.reply(`El clima es: ${clima.clima}`);
+                } else {
+                    message.reply("No se ha guardado un clima aún.");
+                }
+            } catch (error) {
+                message.reply("Hubo un error al obtener el clima.");
+            }
+        }
+    },
+    
     {
         name: 'cambiarClima',
         async execute(message) {
