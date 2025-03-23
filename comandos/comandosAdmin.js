@@ -1,9 +1,13 @@
 
-const { SlashCommandBuilder, AttachmentBuilder, EmbedBuilder } = require('discord.js');
-const fs = require('fs');
+const { EmbedBuilder } = require('discord.js');
 const { Client, GatewayIntentBits } = require('discord.js');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 const {deleteUser } = require("../controllers/usuarioController.js");
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages, 
+        GatewayIntentBits.MessageContent] 
+    });
 
 
 client.on("messageCreate", async (message) => {

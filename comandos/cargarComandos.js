@@ -1,21 +1,25 @@
 const fs = require('fs');
 const path = require('path');
 
-function cargarComandos() {
+const cargarComandos = () => {
     const comandos = [];
-    const carpetaComandos = path.join(__dirname);
-    const archivos = fs.readdirSync(carpetaComandos);
 
-    for (const archivo of archivos) {
-        const comando = require(path.join(carpetaComandos, archivo));
-        if (comando && comando.data) {
+    // Ruta donde están guardados los archivos de comandos
+    const comandosPath = path.join(__dirname);
+
+    // Leer todos los archivos en la carpeta de comandos
+    const files = fs.readdirSync(comandosPath);
+
+    // Filtrar los archivos que terminan en '.js' y cargar su contenido
+    files.forEach(file => {
+        const filePath = path.join(comandosPath, file);
+        if (file.endsWith('.js')) {
+            const comando = require(filePath);
             comandos.push(comando);
-        } else {
-            console.warn(`Comando sin 'data': ${archivo}`);
         }
-    }
+    });
 
     return comandos;
-}
+};
 
 module.exports = { cargarComandos };

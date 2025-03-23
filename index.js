@@ -26,40 +26,21 @@ const client = new Client({
     ] 
 });
 
-// Cargar los comandos desde la carpeta "comandos"
 const comandos = cargarComandos();
 
-client.once('ready', async () => {
-    const comandosRegistrados = comandos.map(cmd => cmd.data.toJSON());
+client.on('messageCreate', async (message) => {
+    if (message.author.bot) return;  // Ignorar mensajes de bots
 
-    try {
-        const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+    // Buscar si el mensaje es un comando
+    const comando = comandos.find(cmd => message.content.startsWith(`!${cmd.nombre}`));
 
-        console.log('🔄 Registrando comandos slash...');
-
-        // Usa Routes.applicationGuildCommands para registrar los comandos en un servidor específico
-        await rest.put(
-            Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
-            { body: comandosRegistrados }
-        );
-
-        console.log('✅ Comandos slash registrados exitosamente');
-    } catch (error) {
-        console.error('❌ Error al registrar los comandos slash:', error);
-    }
-});
-
-client.on('interactionCreate', async (interaction) => {
-    if (!interaction.isCommand()) return;
-
-    const comando = comandos.find(cmd => cmd.data.name === interaction.commandName);
-    if (!comando) return;
-
-    try {
-        await comando.execute(interaction);
-    } catch (error) {
-        console.error('❌ Error al ejecutar el comando:', error);
-        await interaction.reply({ content: 'Hubo un error al ejecutar el comando.', ephemeral: true });
+    if (comando) {
+        try {
+            await comando.ejecutar(message);  // Ejecutar la función del comando
+        } catch (error) {
+            console.error('Error al ejecutar el comando:', error);
+            message.reply('Hubo un error al ejecutar el comando.');
+        }
     }
 });
 
