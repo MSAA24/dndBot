@@ -115,8 +115,7 @@ const comandosPersonaje = [
                             \nRango: ${personaje.rank}
                             \nImagen: ${personaje.imageUrl}
                             \n20: ${personaje.n20Url}`);
-                    */
-                    const embed = new EmbedBuilder()
+                    */                    const embed = new EmbedBuilder()
                     .setTitle("Personaje")
                     //.setDescription(`El Personaje es: **${personaje.characterName}**`)
                     .setColor('#1E90FF')
@@ -132,7 +131,7 @@ const comandosPersonaje = [
 
                     if (personaje.n20Url) {
                         embed.addFields({
-                            name: 'n20',
+                            name: 'N20',
                             value: `[Ver en n20](${personaje.n20Url})`,
                             inline: false
                         });
