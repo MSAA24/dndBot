@@ -52,7 +52,7 @@ client.on('messageCreate', async (message) => {
 
 
 // Descomentar esto para borrar los comandos slash que estén actualmente
-
+/*
 client.once('ready', async () => {
     console.log('✅ Bot listo');
 
@@ -71,7 +71,7 @@ client.once('ready', async () => {
         console.error("❌ Error al eliminar los comandos:", error);
     }
 });
-
+*/
 
 // **Registrar los comandos slash en Discord**
 async function registrarComandos() {
