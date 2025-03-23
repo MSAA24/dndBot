@@ -22,7 +22,7 @@ const comandosPersonaje = [
                 option.setName('nivel')
                     .setDescription('Nivel del personaje')
                     .setRequired(true))
-            .addIntegerOption(option => 
+            .addStringOption(option => 
                 option.setName('rango')
                     .setDescription('Rango del personaje')
                     .setRequired(true))
