@@ -118,13 +118,13 @@ const comandosPersonaje = [
                     */
                     const embed = new EmbedBuilder()
                     .setTitle("Personaje")
-                    .setDescription(`El Personaje es: **${personaje.characterName}**`)
+                    //.setDescription(`El Personaje es: **${personaje.characterName}**`)
                     .setColor('#1E90FF')
                     .addFields(
                         { name: 'Nombre', value: personaje.characterName, inline: true },
-                        { name: 'Raza', value: personaje.race, inline: false },
+                        { name: 'Raza', value: personaje.race, inline: true },
                         { name: 'Clase', value: personaje.class, inline: true },
-                        { name: 'Nivel', value: `${personaje.level}`, inline: false },
+                        { name: 'Nivel', value: `${personaje.level}`, inline: true },
                         { name: 'Rango', value: personaje.rank, inline: true },
                     )
                     .setThumbnail(personaje.imageUrl) 
