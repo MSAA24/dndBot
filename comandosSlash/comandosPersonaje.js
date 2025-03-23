@@ -94,11 +94,10 @@ const comandosPersonaje = [
                     if (personaje.n20Url) {
                         embed.addFields({
                             name: 'n20',
-                            value: `[Ver en n20(${personaje.n20Url})`,
+                            value: `[Ver en n20](${personaje.n20Url})`,
                             inline: true
                         });
                     }
-
 
                     await interaction.reply({ embeds: [embed] });
                 } else {
