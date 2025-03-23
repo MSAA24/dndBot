@@ -39,7 +39,7 @@ async function getPersonaje(userID, nombrePersonaje) {
     const params = {
         TableName: "personajes",
         Key: {
-            characterId: characterId  // Usar el characterId como la clave primaria
+            personajeId: characterId  // Usar el characterId como la clave primaria
         }
     };
 
