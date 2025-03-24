@@ -6,11 +6,8 @@ const comandosClima = [
     {
         data: new SlashCommandBuilder()
             .setName('clima')
-            .setDescription('Clima actual')
-            .addStringOption(option => 
-                option.setName('nombre')
-                    .setDescription('Nombre del personaje')
-                    .setRequired(true)),
+            .setDescription('Clima actual'),
+            
             async execute(interaction) {
             try {
                 const clima = await obtenerClimaGlobal();
