@@ -148,8 +148,8 @@ const comandosPersonaje = [
             }
         },
     },
+    
     {
-        {
         data: new SlashCommandBuilder()
             .setName('actualizar_personaje')
             .setDescription('Actualiza los detalles de un personaje en la base de datos.')
