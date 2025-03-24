@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {EmbedBuilder } = require('discord.js');
-const { crearPersonaje, getPersonaje, actualizarPersonaje} = require('../controllers/personajeController.js');
+const { crearPersonaje, getPersonaje, actualizarNivelYRango} = require('../controllers/personajeController.js');
 
 const comandosPersonaje = [
     {

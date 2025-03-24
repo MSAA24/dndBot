@@ -119,6 +119,6 @@ async function actualizarNivelYRango(characterId, nuevoNivel, nuevoRango) {
 module.exports = { 
     crearPersonaje, 
     getPersonaje, 
-    actualizarPersonaje 
+    actualizarNivelYRango 
 };
 
