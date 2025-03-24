@@ -191,11 +191,21 @@ const comandosPersonaje = [
             const rango = interaction.options.getString('rango');
             const imageUrl = interaction.options.getString('imageurl') || null;
             const n20Url = interaction.options.getString('n20url') || null;
-            
+        
+            console.log("Datos recibidos:");
+            console.log(`userId: ${userId}`);
+            console.log(`nombrePersonaje: ${nombrePersonaje}`);
+            console.log(`raza: ${raza}`);
+            console.log(`clase: ${clase}`);
+            console.log(`nivel: ${nivel}`);
+            console.log(`rango: ${rango}`);
+            console.log(`imageUrl: ${imageUrl}`);
+            console.log(`n20Url: ${n20Url}`);
+        
             try {
                 // Crear un ID único para el personaje
                 const characterId = `${userId}_${nombrePersonaje}`;
-
+        
                 // Llamar a la función de actualización de personaje con los datos recibidos
                 await actualizarPersonaje(characterId, raza, clase, nivel, rango, imageUrl, n20Url);
                 await interaction.reply(`✅ Personaje **${nombrePersonaje}** actualizado con éxito.`);
