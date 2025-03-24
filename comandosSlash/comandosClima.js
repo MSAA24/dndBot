@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {EmbedBuilder } = require('discord.js');
-const { obtenerClimaGlobal, generarYGuardarClima} = require("../controllers/climaController.js");
+const { obtenerClimaGlobal} = require("../controllers/climaController.js");
 
 const comandosClima = [
     {
