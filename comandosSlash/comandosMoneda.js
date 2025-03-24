@@ -44,14 +44,14 @@ const comandosMoneda = [
     
                 const embed = new EmbedBuilder()
                     .setColor('#FFD700')  // Color dorado, similar al de una moneda
-                    .setTitle(`💰 **${nombreMoneda}**`)
-                    .setDescription(`Tienes **${cantidad}** monedas de **${nombreMoneda}**.`)
+                    .setTitle(`💰 Dinero del jugador`)
+                    .setDescription(`Tenés **${cantidad}** monedas de **${nombreMoneda}**.`)
                     .setTimestamp();
     
                 if (cantidad !== null) {
                     await interaction.reply({ embeds: [embed] });
                 } else {
-                    embed.setDescription(`No tienes monedas de **${nombreMoneda}**.`);
+                    embed.setDescription(`No tenés monedas de **${nombreMoneda}**.`);
                     await interaction.reply({ embeds: [embed], ephemeral: true  });
                 }
             } catch (error) {
