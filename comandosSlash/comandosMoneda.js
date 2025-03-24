@@ -85,7 +85,7 @@ const comandosMoneda = [
 
                 // Agregar cada moneda al embed
                 monedas.forEach(moneda => {
-                    embed.addField(moneda.nombre, `Cantidad: ${moneda.cantidad}`, false);
+                    embed.addField(moneda.nombreMoneda, `Cantidad: ${moneda.cantidad}`, false);
                 });
 
                 await interaction.reply({ embeds: [embed], ephemeral: true }); // Responder con el embed
