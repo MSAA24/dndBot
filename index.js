@@ -2,11 +2,9 @@ const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { Client, GatewayIntentBits, Events } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
-const { SlashCommandBuilder } = require('@discordjs/builders');
 const { cargarComandos } = require("./cargarComandos.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
-
 const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
 const comandosClima = require('./comandosSlash/comandosClima.js');
 const comandosAdmin = require('./comandosSlash/comandosAdmin.js');
@@ -30,7 +28,6 @@ const client = new Client({
         GatewayIntentBits.MessageContent
     ] 
 });
-
 
 // Cargar los comandos desde la carpeta "comandos"
 const comandos = cargarComandos();
@@ -81,49 +78,13 @@ client.once('ready', async () => {
 // **Registrar los comandos slash en Discord**
 async function registrarComandos() {
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
-
-    // Definir los permisos del comando
-    const permisosComando = [
-        {
-            id: '1352042362682998924', //ID del rol "Admin"
-            type: 1, // Tipo 1 significa que es un rol
-            permission: true
-        }
+    const comandos = [
+        ...comandosPersonaje,
+        ...comandosAdmin,
+        ...comandosClima,
+        ...comandosUsuario
     ];
-
-    const comandosAdminConPermisos = comandosAdmin.map(cmd => {
-        if (cmd instanceof SlashCommandBuilder) {
-            // Verificar que el comando tenga nombre y descripción válidos
-            if (!cmd.data.name || !cmd.data.description) {
-                console.error('❌ El comando no tiene un nombre o descripción válida:', cmd);
-                return null;
-            }
-
-            // Verificar que el nombre del comando sea válido
-            if (!/^[a-z0-9-]+$/.test(cmd.data.name)) {
-                console.error('❌ Nombre de comando inválido:', cmd.data.name);
-                return null;
-            }
-
-            return {
-                ...cmd.data.toJSON(),  // Convierte la propiedad 'data' a JSON
-                default_permission: false, // Desactiva la visibilidad por defecto para todos
-                permissions: permisosComando // Asigna los permisos solo para el rol "Admin"
-            };
-        } else {
-            console.error('❌ Comando no es una instancia válida de SlashCommandBuilder', cmd);
-            return null;
-        }
-    }).filter(cmd => cmd !== null);  // Elimina los valores null (comandos inválidos)
-
-    // Combina los comandos con permisos y los comandos normales
-    const comandosFinales = [
-        ...comandos,
-        ...comandosAdminConPermisos
-    ];
-
-    // Convierte todos los comandos a JSON correctamente
-    const comandosJSON = comandosFinales.map(cmd => cmd ? cmd : null).filter(cmd => cmd !== null);
+    const comandosJSON = comandos.map(cmd => cmd.data.toJSON()); // Convertir a JSON
 
     try {
         console.log('⏳ Registrando comandos en Discord...');
@@ -136,7 +97,6 @@ async function registrarComandos() {
         console.error('❌ Error al registrar comandos:', error);
     }
 }
-
 
 // Evento cuando el bot está listo
 client.once('ready', async () => {
