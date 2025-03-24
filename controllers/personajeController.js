@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, DeleteCommand } = require("@aws-sdk/lib-dynamodb");
 
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
 const dynamoDB = DynamoDBDocumentClient.from(client);
@@ -58,6 +58,30 @@ async function getPersonaje(userID, nombrePersonaje) {
     }
 }
 
+//Borrar personaje por characterId
+async function borrarPersonaje(userID, nombrePersonaje) {
+    const characterId = `${userID}_${nombrePersonaje}`;
+
+    const params = {
+        TableName: "personajes",
+        Key: {
+            personajeId: characterId  // Usar el characterId como la clave primaria
+        }
+    };
+
+    try {
+        // Ejecutar el comando para borrar el personaje
+        const result = await dynamoDB.send(new DeleteCommand(params)); 
+
+        // Si no ocurre error, devolver el resultado de la eliminación
+        console.log("Personaje borrado con éxito");
+        return true;
+    } catch (error) {
+        console.error("Error borrando personaje:", error);
+        return false; // Indicar que hubo un error al borrar el personaje
+    }
+}
+
 // Actualizar personaje (ejemplo de actualización de nivel o nombre, si es necesario)
 async function actualizarNivelYRango(characterId, nuevoNivel, nuevoRango) {
     // Validar que el nivel no sea mayor a 20
@@ -105,6 +129,7 @@ async function actualizarNivelYRango(characterId, nuevoNivel, nuevoRango) {
 module.exports = { 
     crearPersonaje, 
     getPersonaje, 
-    actualizarNivelYRango 
+    actualizarNivelYRango,
+    borrarPersonaje
 };
 

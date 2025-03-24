@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {EmbedBuilder } = require('discord.js');
-const { crearPersonaje, getPersonaje, actualizarNivelYRango} = require('../controllers/personajeController.js');
+const { crearPersonaje, getPersonaje, actualizarNivelYRango, borrarPersonaje} = require('../controllers/personajeController.js');
 
 const comandosPersonaje = [
     {
@@ -148,6 +148,34 @@ const comandosPersonaje = [
             }
         },
     },
+    {
+        data: new SlashCommandBuilder()
+            .setName('borrar_personaje')
+            .setDescription('Borra un personaje por su nombre.')
+            .addStringOption(option =>
+                option.setName('nombre')
+                    .setDescription('El nombre del personaje')
+                    .setRequired(true)),
+        async execute(interaction) {
+            const nombrePersonaje = interaction.options.getString('nombre');
+            const userID = interaction.user.id;
+
+            try {
+                const resultado  = await borrarPersonaje(userID, nombrePersonaje);
+
+                if (resultado ) {
+                    await interaction.reply(`El personaje **${nombrePersonaje}** ha sido borrado con éxito.`);
+                } else {
+                    // Si no se encuentra el personaje
+                    await interaction.reply(`No se encontró un personaje con el nombre **${nombrePersonaje}** dentro de tus personajes`);
+                }
+            } catch (error) {
+                console.error("Error al intentar borrar personaje:", error);
+                await interaction.reply("Hubo un error al intentar obtener el personaje. Intenta nuevamente.");
+            }
+        },
+    },
+
     
     {
         data: new SlashCommandBuilder()
