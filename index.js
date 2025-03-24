@@ -104,7 +104,9 @@ client.once('ready', async () => {
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    const command = comandosPersonaje.find(cmd => cmd.data.name === interaction.commandName);
+    const command = [...comandosPersonaje, 
+                     ...comandosClima]
+                    .find(cmd => cmd.data.name === interaction.commandName);
     if (!command) {
         console.error(`⚠️ Comando no encontrado: ${interaction.commandName}`);
         return;
