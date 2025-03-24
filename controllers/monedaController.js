@@ -6,7 +6,7 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 
 
 // Crear moneda para un usuario específico
-async function crearMoneda(userId, nombreMoneda, cantidadMonedas = 1) {
+async function crearMoneda(userId, nombreMoneda) {
     //const monedaUserId = `${userId}_${nombreMoneda}`; // Crear un ID único para la moneda de cada usuario
 
     const params = {
@@ -14,7 +14,7 @@ async function crearMoneda(userId, nombreMoneda, cantidadMonedas = 1) {
         Item: {
             monedaId: userId,
             nombre: nombreMoneda,
-            cantidad: cantidadMonedas,
+            cantidad: 0,
             createdAt: new Date().toDateString()
         }
     };

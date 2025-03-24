@@ -9,20 +9,16 @@ const comandosMoneda = [
             .addStringOption(option =>
                 option.setName('nombre')
                     .setDescription('El nombre de la moneda')
-                    .setRequired(true))
-            .addIntegerOption(option =>
-                option.setName('cantidad')
-                    .setDescription('Cantidad de monedas')
-                    .setRequired(false)),
+                    .setRequired(true)),        
         
         async execute(interaction) {
             const userId = interaction.user.id;
             const nombreMoneda = interaction.options.getString('nombre');
-            const cantidadMonedas = interaction.options.getInteger('cantidad') || 1;
+
 
             try {
-                await crearMoneda(userId, nombreMoneda, cantidadMonedas);
-                await interaction.reply(`Se ha creado la moneda **${nombreMoneda}** con ${cantidadMonedas} monedas para ti.`);
+                await crearMoneda(userId, nombreMoneda);
+                await interaction.reply(`Se ha creado **${nombreMoneda}** .`);
             } catch (error) {
                 console.error("Error creando moneda:", error);
                 await interaction.reply("Hubo un error al crear la moneda. Intenta nuevamente.");
@@ -41,13 +37,21 @@ const comandosMoneda = [
         async execute(interaction) {
             const userId = interaction.user.id;
             const nombreMoneda = interaction.options.getString('nombre');
-
+    
             try {
                 const cantidad = await getMoneda(userId, nombreMoneda);
+    
+                const embed = new MessageEmbed()
+                    .setColor('#FFD700')  // Color dorado, similar al de una moneda
+                    .setTitle(` **${nombreMoneda}**`)
+                    .setDescription(`Tienes **${cantidad}** monedas de **${nombreMoneda}**.`)
+                    .setTimestamp();
+    
                 if (cantidad !== null) {
-                    await interaction.reply(`Tienes ${cantidad} monedas de **${nombreMoneda}**.`);
+                    await interaction.reply({ embeds: [embed] });
                 } else {
-                    await interaction.reply(`No tienes monedas de **${nombreMoneda}**.`);
+                    embed.setDescription(`No tienes monedas de **${nombreMoneda}**.`);
+                    await interaction.reply({ embeds: [embed] });
                 }
             } catch (error) {
                 console.error("Error al obtener la moneda:", error);
