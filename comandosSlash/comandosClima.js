@@ -18,7 +18,7 @@ const comandosClima = [
                         .setColor('#1E90FF')
                         .setTimestamp();
         
-                    await interaction.reply({ embeds: [embed] });
+                    await interaction.reply({ embeds: [embed], ephemeral: true });
                 } else {
                     await interaction.reply("No se ha guardado un clima global aún.");
                 }
@@ -29,7 +29,21 @@ const comandosClima = [
 
             }
             
-    }        
+    },
+    {
+        data: new SlashCommandBuilder()
+            .setName('cambiar_clima')
+            .setDescription('Cambia el clima'),
+            
+            async execute(interaction) {
+                try {
+                    const clima = await generarYGuardarClima();
+                    interaction.reply(`Se cambió el clima a: ${clima}`);
+                } catch (error) {
+                    interaction.reply("Hubo un error al cambiar el clima.");
+                }
+            }          
+    }           
 ];
 
 module.exports = comandosClima;
