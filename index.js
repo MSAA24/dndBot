@@ -29,6 +29,7 @@ const client = new Client({
     ] 
 });
 
+
 // Cargar los comandos desde la carpeta "comandos"
 const comandos = cargarComandos();
 
@@ -78,13 +79,35 @@ client.once('ready', async () => {
 // **Registrar los comandos slash en Discord**
 async function registrarComandos() {
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+    
+    // Definir los permisos del comando
+    const permisosComando = [
+        {
+            id: '1352042362682998924', //ID del rol "Admin"
+            type: 1, // Tipo 1 significa que es un rol
+            permission: true
+        }
+    ];
+    
     const comandos = [
         ...comandosPersonaje,
-        ...comandosAdmin,
         ...comandosClima,
         ...comandosUsuario
     ];
-    const comandosJSON = comandos.map(cmd => cmd.data.toJSON()); // Convertir a JSON
+
+    const comandosAdminConPermisos = comandosAdmin.map(cmd => ({
+        ...cmd.data.toJSON(),
+        default_permission: false, // Desactiva la visibilidad por defecto para todos
+        permissions: permisosComando// Asigna los permisos solo para el rol "Admin"
+    }));
+
+     // Combina los comandos con permisos y los comandos normales
+     const comandosFinales = [
+        ...comandos,
+        ...comandosAdminConPermisos
+    ];
+
+    const comandosJSON = comandosFinales.map(cmd => cmd.toJSON()); // Convertir a JSON
 
     try {
         console.log('⏳ Registrando comandos en Discord...');
