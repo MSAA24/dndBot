@@ -5,6 +5,7 @@ const { Routes } = require('discord-api-types/v10');
 const { cargarComandos } = require("./cargarComandos.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
+
 const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
 const comandosClima = require('./comandosSlash/comandosClima.js');
 const comandosAdmin = require('./comandosSlash/comandosAdmin.js');
@@ -95,11 +96,18 @@ async function registrarComandos() {
         ...comandosUsuario
     ];
 
-    const comandosAdminConPermisos = comandosAdmin.map(cmd => ({
-        ...cmd.data.toJSON(),
-        default_permission: false, // Desactiva la visibilidad por defecto para todos
-        permissions: permisosComando// Asigna los permisos solo para el rol "Admin"
-    }));
+    const comandosAdminConPermisos = comandosAdmin.map(cmd => {
+        if (cmd.data) {
+            return {
+                ...cmd.data.toJSON(),  // Asegúrate de que 'cmd' sea una instancia de SlashCommandBuilder
+                default_permission: false, // Desactiva la visibilidad por defecto para todos
+                permissions: permisosComandoAdmin // Asigna los permisos solo para el rol "Admin"
+            };
+        } else {
+            console.error('❌ Comando no es una instancia válida de SlashCommandBuilder', cmd);
+            return null;
+        }
+    }).filter(cmd => cmd !== null);  // Elimina los valores null (comandos inválidos)
 
      // Combina los comandos con permisos y los comandos normales
      const comandosFinales = [
@@ -108,7 +116,7 @@ async function registrarComandos() {
     ];
 
     // Convierte todos los comandos a JSON correctamente
-    const comandosJSON = comandosFinales.map(cmd => cmd.data ? cmd.data.toJSON() : cmd.toJSON());
+    const comandosJSON = comandosFinales.map(cmd => cmd ? cmd.toJSON() : null).filter(cmd => cmd !== null);
 
     try {
         console.log('⏳ Registrando comandos en Discord...');
