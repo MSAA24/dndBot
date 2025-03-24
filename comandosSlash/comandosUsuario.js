@@ -10,9 +10,9 @@ const comandosUsuario = [
         
             async execute(interaction) {
                 try {
-                    const user = await getUser(interaction.author.id); // Obtener el usuario desde la base de datos
+                    const user = await getUser(interaction.user.id); // Obtener el usuario desde la base de datos
                     if (user) {
-                        const avatarURL = interaction.author.avatarURL({ size: 2048, dynamic: true });
+                        const avatarURL = interaction.user.avatarURL({ size: 2048, dynamic: true });
                         // Crear el embed con los datos del usuario
                         const embed = new EmbedBuilder()
                             .setTitle(`Perfil de ${user.username}`)
@@ -41,7 +41,7 @@ const comandosUsuario = [
         .setDescription('Registra tu usuario'),
         
         async execute(interaction) {
-            await saveUser(interaction.author.id, interaction.author.username);
+            await saveUser(interaction.user.id, interaction.user.username);
             interaction.reply("Tu usuario ha sido registrado.");
         }
     }           
