@@ -97,26 +97,30 @@ async function borrarMoneda(userId, nombreMoneda) {
 
 async function getMonedas(userId) {
     const params = {
-        TableName: "monedas",
-        KeyConditionExpression: "starts_with(monedaId, :userId)", // Usar starts_with para buscar todas las monedas asociadas al userId
+        TableName: "monedas", // Nombre de la tabla en DynamoDB
+        KeyConditionExpression: "monedaId begins_with :userId", // Filtro para obtener las monedas que comienzan con el userId
         ExpressionAttributeValues: {
-            ":userId": userId  // El prefijo de monedaId es el userId
+            ":userId": { S: userId } // El valor de userId como parámetro de la consulta
         }
     };
 
     try {
-        const result = await dynamoDB.send(new QueryCommand(params)); // Realizar la consulta
-        if (result.Items && result.Items.length > 0) {
-            return result.Items.map(item => ({
-                nombre: item.nombre,
-                cantidad: item.cantidad
-            }));
+        const result = await dynamoDB.send(new QueryCommand(params)); // Ejecuta la consulta en DynamoDB
+        if (result.Items) {
+            // Si se encuentran monedas, se devuelve un array de objetos de las monedas
+            return result.Items.map(item => {
+                return {
+                    monedaId: item.monedaId.S, // Devolvemos solo los campos relevantes
+                    nombre: item.nombre.S,
+                    cantidad: Number(item.cantidad.N) // Convertir la cantidad a número
+                };
+            });
         } else {
-            return []; // No se encontraron monedas
+            return []; // Si no se encuentran monedas, devolver un array vacío
         }
     } catch (error) {
-        console.error("Error obteniendo las monedas:", error);
-        throw new Error("No se pudieron obtener las monedas");
+        console.error("Error al obtener monedas:", error);
+        return []; // Si hay error, devolver un array vacío
     }
 }
 

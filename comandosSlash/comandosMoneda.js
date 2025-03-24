@@ -66,39 +66,35 @@ const comandosMoneda = [
         data: new SlashCommandBuilder()
             .setName('ver_monedas')
             .setDescription('Muestra todas las monedas asociadas a tu cuenta.'),
-        
+    
         async execute(interaction) {
             const userId = interaction.user.id; // Obtener el userId del que ejecuta el comando
-
+    
             try {
-                // Obtener todas las monedas del usuario, esto debe estar implementado en getMonedas
+                // Obtener todas las monedas del usuario
                 const monedas = await getMonedas(userId); 
-
-                // Filtrar las monedas que empiecen con el userId del usuario
-                const monedasUsuario = monedas.filter(moneda => moneda.monedaId.startsWith(userId));
-
-                if (monedasUsuario.length === 0) {
+    
+                if (monedas.length === 0) {
                     return await interaction.reply("No tenés monedas asociadas a tu cuenta.");
                 }
-
+    
                 // Crear el Embed para mostrar las monedas
                 const embed = new EmbedBuilder()
                     .setColor('#FFD700') // Puedes cambiar el color
                     .setTitle('💰Tus Monedas')
                     .setDescription('Acá están todas las monedas asociadas a tu cuenta:')
-                
-
+    
                 // Agregar cada moneda al embed
-                monedasUsuario.forEach(moneda => {
+                monedas.forEach(moneda => {
                     embed.addFields({
                         name: `${moneda.nombre}`, 
                         value: `Cantidad: ${moneda.cantidad}`,
                         inline: false
                     });
                 });
-
+    
                 await interaction.reply({ embeds: [embed], ephemeral: true }); // Responder con el embed
-
+    
             } catch (error) {
                 console.error("Error al mostrar las monedas:", error);
                 await interaction.reply("Hubo un error al intentar mostrar las monedas. Intenta nuevamente.");
