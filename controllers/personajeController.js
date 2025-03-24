@@ -67,11 +67,6 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
     let updatedAttributes = false; // Flag para verificar si algún atributo fue proporcionado para actualizar
 
     // Condiciones para cada campo: Si el campo está definido, lo incluimos en la actualización
-    if (nombrePersonaje) {
-        updateExpression += "characterName = :characterName, ";
-        expressionAttributeValues[":characterName"] = nombrePersonaje;
-        updatedAttributes = true;
-    }
     if (raza) {
         updateExpression += "race = :race, ";
         expressionAttributeValues[":race"] = raza;
@@ -113,8 +108,8 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
         const params = {
             TableName: "personajes",
             Key: {
-                userId: userId,
-                personajeId: characterId
+                userId: userId,               // Esto es el Partition Key
+                personajeId: characterId      // Esto es el Sort Key
             },
             UpdateExpression: updateExpression,
             ExpressionAttributeValues: expressionAttributeValues,
@@ -130,9 +125,10 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
     } else {
         console.log("No se proporcionaron atributos para actualizar.");
     }
+}
 
     
-}
+
 module.exports = { 
     crearPersonaje, 
     getPersonaje, 
