@@ -89,17 +89,12 @@ async function registrarComandos() {
             permission: true
         }
     ];
-    
-    const comandos = [
-        ...comandosPersonaje,
-        ...comandosClima,
-        ...comandosUsuario
-    ];
 
+    // Verifica que todos los comandos sean instancias válidas de SlashCommandBuilder
     const comandosAdminConPermisos = comandosAdmin.map(cmd => {
-        if (cmd.data) {
+        if (cmd instanceof SlashCommandBuilder) {
             return {
-                ...cmd.data.toJSON(),  // Asegúrate de que 'cmd' sea una instancia de SlashCommandBuilder
+                ...cmd.toJSON(),  // Aquí usamos toJSON directamente en cmd (sin acceder a cmd.data)
                 default_permission: false, // Desactiva la visibilidad por defecto para todos
                 permissions: permisosComando // Asigna los permisos solo para el rol "Admin"
             };
@@ -109,14 +104,14 @@ async function registrarComandos() {
         }
     }).filter(cmd => cmd !== null);  // Elimina los valores null (comandos inválidos)
 
-     // Combina los comandos con permisos y los comandos normales
-     const comandosFinales = [
+    // Combina los comandos con permisos y los comandos normales
+    const comandosFinales = [
         ...comandos,
         ...comandosAdminConPermisos
     ];
 
     // Convierte todos los comandos a JSON correctamente
-    const comandosJSON = comandosFinales.map(cmd => cmd ? cmd.toJSON() : null).filter(cmd => cmd !== null);
+    const comandosJSON = comandosFinales.map(cmd => cmd ? cmd : null).filter(cmd => cmd !== null);
 
     try {
         console.log('⏳ Registrando comandos en Discord...');
