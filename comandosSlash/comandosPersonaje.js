@@ -184,7 +184,7 @@ const comandosPersonaje = [
 
         async execute(interaction) {
             const userId = interaction.user.id; // Obtener el ID del usuario que está ejecutando el comando
-            const nombrePersonaje = interaction.options.getString('nombrepersonaje');
+            const nombrePersonaje = interaction.options.getString('nombre');
             const raza = interaction.options.getString('raza');
             const clase = interaction.options.getString('clase');
             const nivel = interaction.options.getInteger('nivel');
@@ -197,7 +197,7 @@ const comandosPersonaje = [
                 const characterId = `${userId}_${nombrePersonaje}`;
 
                 // Llamar a la función de actualización de personaje con los datos recibidos
-                await actualizarPersonaje(userId, characterId, raza, clase, nivel, rango, imageUrl, n20Url);
+                await actualizarPersonaje(characterId, raza, clase, nivel, rango, imageUrl, n20Url);
                 await interaction.reply(`✅ Personaje **${nombrePersonaje}** actualizado con éxito.`);
             } catch (error) {
                 console.error("Error al actualizar personaje:", error);

@@ -108,8 +108,7 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
         const params = {
             TableName: "personajes",
             Key: {
-                userId: userId,               // Esto es el Partition Key
-                personajeId: characterId      // Esto es el Sort Key
+                personajeId: characterId 
             },
             UpdateExpression: updateExpression,
             ExpressionAttributeValues: expressionAttributeValues,
