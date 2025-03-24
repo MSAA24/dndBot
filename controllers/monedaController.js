@@ -98,9 +98,9 @@ async function borrarMoneda(userId, nombreMoneda) {
 async function getMonedas(userId) {
     const params = {
         TableName: "monedas", // Nombre de la tabla en DynamoDB
-        KeyConditionExpression: "monedaId begins_with :userId", // Filtro para obtener las monedas que comienzan con el userId
+        KeyConditionExpression: "begins_with(monedaId, :userId)", // Filtro para monedas que empiecen con el userId
         ExpressionAttributeValues: {
-            ":userId": { S: userId } // El valor de userId como parámetro de la consulta
+            ":userId": { S: userId } // El valor de userId como parámetro
         }
     };
 
