@@ -60,9 +60,17 @@ async function getPersonaje(userID, nombrePersonaje) {
 
 // Actualizar personaje (ejemplo de actualización de nivel o nombre, si es necesario)
 async function actualizarNivelYRango(characterId, nuevoNivel, nuevoRango) {
+    // Validar que el nivel no sea mayor a 20
+    if (nuevoNivel && nuevoNivel > 20) {
+        nuevoNivel = 20; // Si el nivel es mayor a 20, lo asignamos a 20
+    }
+
+    // Si no se pasa nivel, asignamos 1 (o el valor máximo de 20 si el nivel es 0 o negativo)
+    nuevoNivel = nuevoNivel || 1;
+
     const updateExpression = "set #lvl = :lvl, #rnk = :rnk, updatedAt = :updatedAt";
     const expressionAttributeValues = {
-        ":lvl": nuevoNivel || 1, // Si no se pasa un nuevo nivel, se usa el nivel 1
+        ":lvl": nuevoNivel,
         ":rnk": nuevoRango || 'E', // Si no se pasa un nuevo rango, se usa 'E'
         ":updatedAt": new Date().toDateString(), // Fecha de actualización
     };
