@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {EmbedBuilder } = require('discord.js');
-const {deleteUser } = require("./controllers/usuarioController.js");
+const {deleteUser } = require("../controllers/usuarioController.js");
 
 const comandosAdmin = [
     {
