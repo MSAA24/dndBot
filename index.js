@@ -8,6 +8,7 @@ const autobot_ID = '1352871493343907891';
 const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
 const comandosClima = require('./comandosSlash/comandosClima.js');
 const comandosAdmin = require('./comandosSlash/comandosAdmin.js');
+const comandosUsuario = require('./comandosSlash/comandosUsuario.js');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
@@ -80,7 +81,8 @@ async function registrarComandos() {
     const comandos = [
         ...comandosPersonaje,
         ...comandosAdmin,
-        ...comandosClima
+        ...comandosClima,
+        ...comandosUsuario
     ];
     const comandosJSON = comandos.map(cmd => cmd.data.toJSON()); // Convertir a JSON
 
@@ -108,6 +110,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 
     const command = [...comandosPersonaje,
                      ...comandosAdmin,
+                     ...comandosUsuario,
                      ...comandosClima]
                     .find(cmd => cmd.data.name === interaction.commandName);
     if (!command) {
