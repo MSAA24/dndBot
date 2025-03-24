@@ -108,7 +108,7 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
         const params = {
             TableName: "personajes",
             Key: {
-                personajeId: characterId 
+                personajeId: characterId  // Solo el personajeId como clave primaria
             },
             UpdateExpression: updateExpression,
             ExpressionAttributeValues: expressionAttributeValues,
@@ -117,7 +117,7 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
 
         try {
             const result = await dynamoDB.send(new UpdateCommand(params)); // Actualizar personaje en DynamoDB
-            console.log("Personaje actualizado:", result.Attributes);
+            console.log("Personaje actualizado:", result.Attributes); // Imprimir resultado
         } catch (error) {
             console.error("Error actualizando personaje:", error);
         }
