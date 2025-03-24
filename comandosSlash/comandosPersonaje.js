@@ -154,7 +154,7 @@ const comandosPersonaje = [
         .setName('actualizar_personaje')
         .setDescription('Actualiza los detalles de un personaje en la base de datos.')
         .addStringOption(option =>
-            option.setName('nombrepersonaje')
+            option.setName('nombre')
                 .setDescription('El nombre del personaje a actualizar.')
                 .setRequired(true))
         .addStringOption(option =>
