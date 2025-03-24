@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const {crearMoneda,getMoneda,crearMoneda} = require("../controllers/monedaController.js");
+const {crearMoneda,getMoneda} = require("../controllers/monedaController.js");
 
 const comandosMoneda = [
     
