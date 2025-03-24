@@ -195,7 +195,7 @@ const comandosPersonaje = [
             const characterId = `${userId}_${nombrePersonaje}`;
             try {
             // Llamar a la función de actualización de personaje con los datos recibidos
-                await actualizarPersonaje(characterId, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url);
+                await actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url);
                 await interaction.reply(`✅ Personaje **${nombrePersonaje}** actualizado con éxito.`);
             } catch (error) {
                 console.error("Error al actualizar personaje:", error);
