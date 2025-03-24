@@ -60,57 +60,35 @@ async function getPersonaje(userID, nombrePersonaje) {
 
 // Actualizar personaje (ejemplo de actualización de nivel o nombre, si es necesario)
 async function actualizarNivelYRango(characterId, nuevoNivel, nuevoRango) {
-    // Verificar que al menos uno de los dos parámetros esté definido
-    if (nuevoNivel === undefined && nuevoRango === undefined) {
-        console.log("No se proporcionaron valores para actualizar.");
-        return;
-    }
+    const updateExpression = "set #lvl = :lvl, #rnk = :rnk, updatedAt = :updatedAt";
+    const expressionAttributeValues = {
+        ":lvl": nuevoNivel || 1, // Si no se pasa un nuevo nivel, se usa el nivel 1
+        ":rnk": nuevoRango || 'E', // Si no se pasa un nuevo rango, se usa 'E'
+        ":updatedAt": new Date().toDateString(), // Fecha de actualización
+    };
+    
+    // Usar ExpressionAttributeNames para evitar el uso de palabras reservadas
+    const expressionAttributeNames = {
+        "#lvl": "level",  // Alias para 'level'
+        "#rnk": "rank"    // Alias para 'rank'
+    };
 
-    // Inicializar la expresión de actualización y valores
-    let updateExpression = "set ";
-    let expressionAttributeValues = {};
-    let updatedAttributes = false;
+    const params = {
+        TableName: "personajes",
+        Key: {
+            personajeId: characterId, // Usamos el ID del personaje para buscarlo
+        },
+        UpdateExpression: updateExpression,
+        ExpressionAttributeValues: expressionAttributeValues,
+        ExpressionAttributeNames: expressionAttributeNames,
+        ReturnValues: "ALL_NEW", // Devuelve los nuevos valores después de la actualización
+    };
 
-    // Verificar si se proporciona un nuevo nivel
-    if (nuevoNivel !== undefined) {
-        updateExpression += "level = :level, ";
-        expressionAttributeValues[":level"] = parseInt(nuevoNivel) || 1;
-        updatedAttributes = true;
-    }
-
-    // Verificar si se proporciona un nuevo rango
-    if (nuevoRango !== undefined) {
-        updateExpression += "rank = :rank, ";
-        expressionAttributeValues[":rank"] = nuevoRango || 'E'; // Por defecto 'E' si no se pasa rango
-        updatedAttributes = true;
-    }
-
-    if (updatedAttributes) {
-        // Eliminar la coma extra al final
-        updateExpression = updateExpression.slice(0, -2); // Eliminar la última coma
-        updateExpression += ", updatedAt = :updatedAt"; // Agregar la actualización de la fecha
-
-        expressionAttributeValues[":updatedAt"] = new Date().toDateString(); // Fecha de actualización
-
-        // Parámetros de la consulta para DynamoDB
-        const params = {
-            TableName: "personajes",
-            Key: {
-                personajeId: characterId // Usar el characterId para buscar el personaje
-            },
-            UpdateExpression: updateExpression,
-            ExpressionAttributeValues: expressionAttributeValues,
-            ReturnValues: "ALL_NEW" // Para devolver los nuevos valores después de la actualización
-        };
-
-        try {
-            const result = await dynamoDB.send(new UpdateCommand(params)); // Ejecutar la actualización en DynamoDB
-            console.log("Personaje actualizado:", result.Attributes);
-        } catch (error) {
-            console.error("Error actualizando personaje:", error);
-        }
-    } else {
-        console.log("No se proporcionaron atributos válidos para actualizar.");
+    try {
+        const result = await dynamoDB.send(new UpdateCommand(params)); // Actualizar personaje en DynamoDB
+        console.log("Personaje actualizado:", result.Attributes);
+    } catch (error) {
+        console.error("Error actualizando personaje:", error);
     }
 }
 
