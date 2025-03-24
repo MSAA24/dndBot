@@ -81,7 +81,7 @@ client.once('ready', async () => {
 // **Registrar los comandos slash en Discord**
 async function registrarComandos() {
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
-    
+
     // Definir los permisos del comando
     const permisosComando = [
         {
@@ -94,19 +94,19 @@ async function registrarComandos() {
     const comandosAdminConPermisos = comandosAdmin.map(cmd => {
         if (cmd instanceof SlashCommandBuilder) {
             // Verificar que el comando tenga nombre y descripción válidos
-            if (!cmd.name || !cmd.description) {
+            if (!cmd.data.name || !cmd.data.description) {
                 console.error('❌ El comando no tiene un nombre o descripción válida:', cmd);
                 return null;
             }
 
             // Verificar que el nombre del comando sea válido
-            if (!/^[a-z0-9-]+$/.test(cmd.name)) {
-                console.error('❌ Nombre de comando inválido:', cmd.name);
+            if (!/^[a-z0-9-]+$/.test(cmd.data.name)) {
+                console.error('❌ Nombre de comando inválido:', cmd.data.name);
                 return null;
             }
 
             return {
-                ...cmd.toJSON(),  // Convierte a JSON
+                ...cmd.data.toJSON(),  // Convierte la propiedad 'data' a JSON
                 default_permission: false, // Desactiva la visibilidad por defecto para todos
                 permissions: permisosComando // Asigna los permisos solo para el rol "Admin"
             };
@@ -136,6 +136,7 @@ async function registrarComandos() {
         console.error('❌ Error al registrar comandos:', error);
     }
 }
+
 
 // Evento cuando el bot está listo
 client.once('ready', async () => {
