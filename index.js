@@ -9,7 +9,7 @@ const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
 const comandosClima = require('./comandosSlash/comandosClima.js');
 const comandosAdmin = require('./comandosSlash/comandosAdmin.js');
 const comandosUsuario = require('./comandosSlash/comandosUsuario.js');
-
+const comandosMoneda = require('./comandosSlash/comandosMoneda.js');
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
     region: 'us-east-2'  // Asegúrate de poner la región correcta de tu instancia EC2
@@ -82,7 +82,8 @@ async function registrarComandos() {
         ...comandosPersonaje,
         ...comandosAdmin,
         ...comandosClima,
-        ...comandosUsuario
+        ...comandosUsuario,
+        ...comandosMoneda
     ];
     const comandosJSON = comandos.map(cmd => cmd.data.toJSON()); // Convertir a JSON
 
@@ -111,7 +112,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
     const command = [...comandosPersonaje,
                      ...comandosAdmin,
                      ...comandosUsuario,
-                     ...comandosClima]
+                     ...comandosClima,
+                     ...comandosMoneda]
                     .find(cmd => cmd.data.name === interaction.commandName);
     if (!command) {
         console.error(`⚠️ Comando no encontrado: ${interaction.commandName}`);
