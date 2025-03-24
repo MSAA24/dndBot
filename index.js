@@ -2,6 +2,7 @@ const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
 const { Client, GatewayIntentBits, Events } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v10');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { cargarComandos } = require("./cargarComandos.js");
 require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
