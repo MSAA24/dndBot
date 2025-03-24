@@ -101,7 +101,7 @@ async function registrarComandos() {
             return {
                 ...cmd.data.toJSON(),  // Asegúrate de que 'cmd' sea una instancia de SlashCommandBuilder
                 default_permission: false, // Desactiva la visibilidad por defecto para todos
-                permissions: permisosComandoAdmin // Asigna los permisos solo para el rol "Admin"
+                permissions: permisosComando // Asigna los permisos solo para el rol "Admin"
             };
         } else {
             console.error('❌ Comando no es una instancia válida de SlashCommandBuilder', cmd);
