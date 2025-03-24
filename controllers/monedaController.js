@@ -12,10 +12,10 @@ async function crearMoneda(userId, nombreMoneda) {
     const params = {
         TableName: "monedas",
         Item: {
-            monedaId: monedaUserId,
-            nombre: nombreMoneda,
-            cantidad: 0,
-            createdAt: new Date().toDateString()
+            monedaId: monedaUserId, // ID único para la moneda (userId + nombreMoneda)
+            nombre: nombreMoneda,   // Solo el nombre de la moneda
+            cantidad: 0,            // Cantidad inicial
+            createdAt: new Date().toDateString() // Fecha de creación
         }
     };
 
