@@ -107,7 +107,8 @@ async function registrarComandos() {
         ...comandosAdminConPermisos
     ];
 
-    const comandosJSON = comandosFinales.map(cmd => cmd.toJSON()); // Convertir a JSON
+    // Convierte todos los comandos a JSON correctamente
+    const comandosJSON = comandosFinales.map(cmd => cmd.data ? cmd.data.toJSON() : cmd.toJSON());
 
     try {
         console.log('⏳ Registrando comandos en Discord...');
