@@ -7,12 +7,12 @@ const dynamoDB = DynamoDBDocumentClient.from(client);
 
 // Crear moneda para un usuario específico
 async function crearMoneda(userId, nombreMoneda, cantidadMonedas = 1) {
-    const monedaUserId = `${userId}_${nombreMoneda}`; // Crear un ID único para la moneda de cada usuario
+    //const monedaUserId = `${userId}_${nombreMoneda}`; // Crear un ID único para la moneda de cada usuario
 
     const params = {
         TableName: "monedas",
         Item: {
-            monedaId: monedaUserId,
+            monedaId: userId,
             nombre: nombreMoneda,
             cantidad: cantidadMonedas,
             createdAt: new Date().toDateString()
@@ -35,7 +35,7 @@ async function getMoneda(userId, nombreMoneda) {
     const params = {
         TableName: "monedas",
         Key: {
-            monedaId: monedaUserId // Buscar por el ID de la moneda
+            monedaId: userId // Buscar por el ID de la moneda
         }
     };
 
@@ -59,7 +59,7 @@ async function actualizarMoneda(userId, nombreMoneda, cantidad) {
     const params = {
         TableName: "monedas",
         Key: {
-            monedaId: monedaUserId // Buscar por el ID de la moneda
+            monedaId: userId // Buscar por el ID de la moneda
         },
         UpdateExpression: "set cantidad = cantidad + :cantidad",
         ExpressionAttributeValues: {

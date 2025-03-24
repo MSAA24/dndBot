@@ -17,12 +17,11 @@ const comandosMoneda = [
         
         async execute(interaction) {
             const userId = interaction.user.id;
-            const characterId = `${userId}_${nombrePersonaje}`;
             const nombreMoneda = interaction.options.getString('nombre');
             const cantidadMonedas = interaction.options.getInteger('cantidad') || 1;
 
             try {
-                await crearMoneda(characterId, nombreMoneda, cantidadMonedas);
+                await crearMoneda(userId, nombreMoneda, cantidadMonedas);
                 await interaction.reply(`Se ha creado la moneda **${nombreMoneda}** con ${cantidadMonedas} monedas para ti.`);
             } catch (error) {
                 console.error("Error creando moneda:", error);
@@ -41,11 +40,10 @@ const comandosMoneda = [
         
         async execute(interaction) {
             const userId = interaction.user.id;
-            const characterId = `${userId}_${nombrePersonaje}`;
             const nombreMoneda = interaction.options.getString('nombre');
 
             try {
-                const cantidad = await getMoneda(characterId, nombreMoneda);
+                const cantidad = await getMoneda(userId, nombreMoneda);
                 if (cantidad !== null) {
                     await interaction.reply(`Tienes ${cantidad} monedas de **${nombreMoneda}**.`);
                 } else {
