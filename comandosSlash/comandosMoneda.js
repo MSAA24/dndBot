@@ -15,10 +15,10 @@ const comandosMoneda = [
         async execute(interaction) {
             const userId = interaction.user.id;
             const nombreMoneda = interaction.options.getString('nombre');
-
+            const monedaUserId = `${userId}_${nombreMoneda}`;
 
             try {
-                await crearMoneda(userId, nombreMoneda);
+                await crearMoneda(monedaUserId, nombreMoneda);
                 await interaction.reply(`Se ha creado **${nombreMoneda}** .`);
             } catch (error) {
                 console.error("Error creando moneda:", error);
@@ -38,9 +38,10 @@ const comandosMoneda = [
         async execute(interaction) {
             const userId = interaction.user.id;
             const nombreMoneda = interaction.options.getString('nombre');
-    
+            const monedaUserId = `${userId}_${nombreMoneda}`;
+
             try {
-                const cantidad = await getMoneda(userId, nombreMoneda);
+                const cantidad = await getMoneda(monedaUserId, nombreMoneda);
     
                 const embed = new EmbedBuilder()
                     .setColor('#FFD700')  // Color dorado, similar al de una moneda
@@ -68,9 +69,9 @@ const comandosMoneda = [
         
         async execute(interaction) {
             const userId = interaction.user.id; // Obtener el userId del que ejecuta el comando
-
+            const monedaUserId = `${userId}_${nombreMoneda}`;
             try {
-                const monedas = await getMonedas(userId); // Obtener las monedas del usuario
+                const monedas = await getMonedas(monedaUserId); // Obtener las monedas del usuario
                 
                 if (monedas.length === 0) {
                     return await interaction.reply("No tenés monedas asociadas a tu cuenta.");
