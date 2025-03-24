@@ -130,6 +130,8 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
     } else {
         console.log("No se proporcionaron atributos para actualizar.");
     }
+
+    
 }
 module.exports = { 
     crearPersonaje, 
