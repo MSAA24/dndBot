@@ -7,6 +7,7 @@ require('dotenv').config();
 const autobot_ID = '1352871493343907891'; 
 const comandosPersonaje = require('./comandosSlash/comandosPersonaje.js');
 const comandosClima = require('./comandosSlash/comandosClima.js');
+const comandosAdmin = require('./comandosSlash/comandosAdmin.js');
 
 // Crear cliente de DynamoDB sin credenciales explícitas (las toma de EC2)
 const dynamoDB = new DynamoDBClient({
@@ -78,6 +79,7 @@ async function registrarComandos() {
     const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
     const comandos = [
         ...comandosPersonaje,
+        ...comandosAdmin,
         ...comandosClima
     ];
     const comandosJSON = comandos.map(cmd => cmd.data.toJSON()); // Convertir a JSON
@@ -104,7 +106,8 @@ client.once('ready', async () => {
 client.on(Events.InteractionCreate, async (interaction) => {
     if (!interaction.isCommand()) return;
 
-    const command = [...comandosPersonaje, 
+    const command = [...comandosPersonaje,
+                     ...comandosAdmin,
                      ...comandosClima]
                     .find(cmd => cmd.data.name === interaction.commandName);
     if (!command) {
@@ -124,7 +127,7 @@ client.on(Events.InteractionCreate, async (interaction) => {
 client.on("ready", () => {
     setInterval(async () => {
         try {
-            const channel = await client.channels.fetch('1352871493343907891');  // ID de canal
+            const channel = await client.channels.fetch(autobot_ID);  // ID de canal
             await channel.send('!cambiarClima');
             console.log('Mensaje enviado');
         } catch (error) {

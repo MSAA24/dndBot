@@ -35,7 +35,18 @@ const comandosClima = [
             .setName('cambiar_clima')
             .setDescription('Cambia el clima'),
             
+            
             async execute(interaction) {
+                const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Admin'); 
+            
+                if (!adminRole || !interaction.member.roles.cache.has(adminRole.id)) {
+                    // Si no tiene el rol "Admin"
+                    return interaction.reply({
+                        content: '❌ No tienes permiso para usar este comando.',
+                        ephemeral: true
+                    });
+                }
+                
                 try {
                     const clima = await generarYGuardarClima();
                     interaction.reply(`Se cambió el clima a: ${clima}`);
