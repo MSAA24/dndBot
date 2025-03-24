@@ -56,19 +56,19 @@ const comandosUsuario = [
             .addStringOption(option =>
             option.setName('raza')
                 .setDescription('La raza del personaje.')
-                .setRequired(true))
+                .setRequired(false))
             .addStringOption(option =>
             option.setName('clase')
                 .setDescription('La clase del personaje.')
-                .setRequired(true))
+                .setRequired(false))
             .addIntegerOption(option =>
             option.setName('nivel')
                 .setDescription('El nivel del personaje.')
-                .setRequired(true))
+                .setRequired(false))
             .addStringOption(option =>
             option.setName('rango')
                 .setDescription('El rango del personaje.')
-                .setRequired(true))
+                .setRequired(false))
             .addStringOption(option =>
             option.setName('imageurl')
                 .setDescription('La URL de la imagen del personaje.')
