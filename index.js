@@ -28,7 +28,7 @@ const client = new Client({
         GatewayIntentBits.MessageContent
     ] 
 });
-
+/*
 // Cargar los comandos desde la carpeta "comandos"
 const comandos = cargarComandos();
 
@@ -51,7 +51,7 @@ client.on('messageCreate', async (message) => {
         }
     }
 });
-
+*/
 
 // Descomentar esto para borrar los comandos slash que estén actualmente
 /*
