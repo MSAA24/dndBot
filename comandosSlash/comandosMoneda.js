@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const {EmbedBuilder } = require('discord.js');
 const {crearMoneda,getMoneda} = require("../controllers/monedaController.js");
 
 const comandosMoneda = [
@@ -41,9 +42,9 @@ const comandosMoneda = [
             try {
                 const cantidad = await getMoneda(userId, nombreMoneda);
     
-                const embed = new MessageEmbed()
+                const embed = new EmbedBuilder()
                     .setColor('#FFD700')  // Color dorado, similar al de una moneda
-                    .setTitle(` **${nombreMoneda}**`)
+                    .setTitle(`💰 **${nombreMoneda}**`)
                     .setDescription(`Tienes **${cantidad}** monedas de **${nombreMoneda}**.`)
                     .setTimestamp();
     
@@ -51,7 +52,7 @@ const comandosMoneda = [
                     await interaction.reply({ embeds: [embed] });
                 } else {
                     embed.setDescription(`No tienes monedas de **${nombreMoneda}**.`);
-                    await interaction.reply({ embeds: [embed] });
+                    await interaction.reply({ embeds: [embed], ephemeral: true  });
                 }
             } catch (error) {
                 console.error("Error al obtener la moneda:", error);
