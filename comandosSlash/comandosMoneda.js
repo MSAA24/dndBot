@@ -69,23 +69,32 @@ const comandosMoneda = [
         
         async execute(interaction) {
             const userId = interaction.user.id; // Obtener el userId del que ejecuta el comando
-            const monedaUserId = `${userId}_${nombreMoneda}`;
+
             try {
-                const monedas = await getMonedas(monedaUserId); // Obtener las monedas del usuario
-                
-                if (monedas.length === 0) {
+                // Obtener todas las monedas del usuario, esto debe estar implementado en getMonedas
+                const monedas = await getMonedas(userId); 
+
+                // Filtrar las monedas que empiecen con el userId del usuario
+                const monedasUsuario = monedas.filter(moneda => moneda.monedaId.startsWith(userId));
+
+                if (monedasUsuario.length === 0) {
                     return await interaction.reply("No tenés monedas asociadas a tu cuenta.");
                 }
 
                 // Crear el Embed para mostrar las monedas
                 const embed = new EmbedBuilder()
                     .setColor('#FFD700') // Puedes cambiar el color
-                    .setTitle('Tus Monedas')
+                    .setTitle('💰Tus Monedas')
                     .setDescription('Acá están todas las monedas asociadas a tu cuenta:')
+                
 
                 // Agregar cada moneda al embed
-                monedas.forEach(moneda => {
-                    embed.addField(moneda.nombreMoneda, `Cantidad: ${moneda.cantidad}`, false);
+                monedasUsuario.forEach(moneda => {
+                    embed.addFields({
+                        name: `${moneda.nombre}`, 
+                        value: `Cantidad: ${moneda.cantidad}`,
+                        inline: false
+                    });
                 });
 
                 await interaction.reply({ embeds: [embed], ephemeral: true }); // Responder con el embed
