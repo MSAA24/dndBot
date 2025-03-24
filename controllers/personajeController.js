@@ -59,56 +59,58 @@ async function getPersonaje(userID, nombrePersonaje) {
 }
 
 // Actualizar personaje (ejemplo de actualización de nivel o nombre, si es necesario)
-async function actualizarPersonaje(characterId, atributo, valorNuevo) {
-    // Verifica si el atributo y el valorNuevo están definidos
-    if (!atributo || valorNuevo === undefined) {
-        console.log("Atributo o valor no proporcionado");
+async function actualizarNivelYRango(characterId, nuevoNivel, nuevoRango) {
+    // Verificar que al menos uno de los dos parámetros esté definido
+    if (nuevoNivel === undefined && nuevoRango === undefined) {
+        console.log("No se proporcionaron valores para actualizar.");
         return;
     }
 
-    // Asegúrate de que el atributo es válido para actualizar (evitar nombres reservados)
-    const atributosPermitidos = ["race", "class", "level", "rank", "imageUrl", "n20Url"];
-    if (!atributosPermitidos.includes(atributo)) {
-        console.log("Atributo no permitido");
-        return;
-    }
-
+    // Inicializar la expresión de actualización y valores
     let updateExpression = "set ";
     let expressionAttributeValues = {};
-    let expressionAttributeNames = {};  // Para manejar nombres reservados
+    let updatedAttributes = false;
 
-    // Si el atributo es `class` o `level`, se deben usar alias porque son palabras reservadas
-    if (atributo === "class" || atributo === "level") {
-        updateExpression += `#${atributo} = :${atributo}, `;
-        expressionAttributeNames[`#${atributo}`] = atributo;
-    } else {
-        updateExpression += `${atributo} = :${atributo}, `;
+    // Verificar si se proporciona un nuevo nivel
+    if (nuevoNivel !== undefined) {
+        updateExpression += "level = :level, ";
+        expressionAttributeValues[":level"] = parseInt(nuevoNivel) || 1;
+        updatedAttributes = true;
     }
 
-    expressionAttributeValues[`:` + atributo] = valorNuevo;
+    // Verificar si se proporciona un nuevo rango
+    if (nuevoRango !== undefined) {
+        updateExpression += "rank = :rank, ";
+        expressionAttributeValues[":rank"] = nuevoRango || 'E'; // Por defecto 'E' si no se pasa rango
+        updatedAttributes = true;
+    }
 
-    // Remove the last comma from the update expression
-    updateExpression = updateExpression.slice(0, -2);
-    updateExpression += ", updatedAt = :updatedAt";
-    expressionAttributeValues[":updatedAt"] = new Date().toDateString();
+    if (updatedAttributes) {
+        // Eliminar la coma extra al final
+        updateExpression = updateExpression.slice(0, -2); // Eliminar la última coma
+        updateExpression += ", updatedAt = :updatedAt"; // Agregar la actualización de la fecha
 
-    // Parámetros para la actualización
-    const params = {
-        TableName: "personajes",
-        Key: {
-            personajeId: characterId
-        },
-        UpdateExpression: updateExpression,
-        ExpressionAttributeValues: expressionAttributeValues,
-        ExpressionAttributeNames: expressionAttributeNames,
-        ReturnValues: "ALL_NEW" // Devuelve los nuevos valores después de la actualización
-    };
+        expressionAttributeValues[":updatedAt"] = new Date().toDateString(); // Fecha de actualización
 
-    try {
-        const result = await dynamoDB.send(new UpdateCommand(params)); // Actualizar personaje en DynamoDB
-        console.log("Personaje actualizado:", result.Attributes);
-    } catch (error) {
-        console.error("Error actualizando personaje:", error);
+        // Parámetros de la consulta para DynamoDB
+        const params = {
+            TableName: "personajes",
+            Key: {
+                personajeId: characterId // Usar el characterId para buscar el personaje
+            },
+            UpdateExpression: updateExpression,
+            ExpressionAttributeValues: expressionAttributeValues,
+            ReturnValues: "ALL_NEW" // Para devolver los nuevos valores después de la actualización
+        };
+
+        try {
+            const result = await dynamoDB.send(new UpdateCommand(params)); // Ejecutar la actualización en DynamoDB
+            console.log("Personaje actualizado:", result.Attributes);
+        } catch (error) {
+            console.error("Error actualizando personaje:", error);
+        }
+    } else {
+        console.log("No se proporcionaron atributos válidos para actualizar.");
     }
 }
 

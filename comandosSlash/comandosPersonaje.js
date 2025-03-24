@@ -151,70 +151,46 @@ const comandosPersonaje = [
     
     {
         data: new SlashCommandBuilder()
-        .setName('actualizar_personaje')
-        .setDescription('Actualiza los detalles de un personaje en la base de datos.')
+        .setName('actualizar_nivel_rango')
+        .setDescription('Actualiza el nivel y rango de un personaje en la base de datos.')
         .addStringOption(option =>
             option.setName('nombre')
                 .setDescription('El nombre del personaje a actualizar.')
                 .setRequired(true))
-        .addStringOption(option =>
-            option.setName('raza')
-                .setDescription('La raza del personaje.')
-                .setRequired(false))
-        .addStringOption(option =>
-            option.setName('clase')
-                .setDescription('La clase del personaje.')
-                .setRequired(false))
         .addIntegerOption(option =>
             option.setName('nivel')
-                .setDescription('El nivel del personaje.')
+                .setDescription('El nuevo nivel del personaje.')
                 .setRequired(false))
         .addStringOption(option =>
             option.setName('rango')
-                .setDescription('El rango del personaje.')
-                .setRequired(false))
-        .addStringOption(option =>
-            option.setName('imageurl')
-                .setDescription('La URL de la imagen del personaje.')
-                .setRequired(false))
-        .addStringOption(option =>
-            option.setName('n20url')
-                .setDescription('La URL del personaje en 20 caras.')
-                .setRequired(false)),
+                .setDescription('El nuevo rango del personaje.')
+                .setRequired(false)
+                .addChoices(
+                    { name: 'Rango E', value: 'Rango E' },
+                    { name: 'Rango D', value: 'Rango D' },
+                    { name: 'Rango C', value: 'Rango C' },
+                    { name: 'Rango B', value: 'Rango B' },
+                    { name: 'Rango A', value: 'Rango A' }
+                  )),
 
         async execute(interaction) {
-            const userId = interaction.user.id; // Obtener el ID del usuario que está ejecutando el comando
-            const nombrePersonaje = interaction.options.getString('nombre');
-            const raza = interaction.options.getString('raza');
-            const clase = interaction.options.getString('clase');
-            const nivel = interaction.options.getInteger('nivel');
-            const rango = interaction.options.getString('rango');
-            const imageUrl = interaction.options.getString('imageurl') || null;
-            const n20Url = interaction.options.getString('n20url') || null;
-        
-            console.log("Datos recibidos:");
-            console.log(`userId: ${userId}`);
-            console.log(`nombrePersonaje: ${nombrePersonaje}`);
-            console.log(`raza: ${raza}`);
-            console.log(`clase: ${clase}`);
-            console.log(`nivel: ${nivel}`);
-            console.log(`rango: ${rango}`);
-            console.log(`imageUrl: ${imageUrl}`);
-            console.log(`n20Url: ${n20Url}`);
-        
+            const userId = interaction.user.id; // Obtener el ID del usuario
+            const nombrePersonaje = interaction.options.getString('nombre'); // Obtener el nombre del personaje
+            const nuevoNivel = interaction.options.getInteger('nivel'); // Obtener el nuevo nivel (opcional)
+            const nuevoRango = interaction.options.getString('rango'); // Obtener el nuevo rango (opcional)
+
+            const characterId = `${userId}_${nombrePersonaje}`; // Crear el ID único del personaje
+
+            // Llamar a la función de actualización de nivel y rango
             try {
-                // Crear un ID único para el personaje
-                const characterId = `${userId}_${nombrePersonaje}`;
-        
-                // Llamar a la función de actualización de personaje con los datos recibidos
-                await actualizarPersonaje(characterId, raza, clase, nivel, rango, imageUrl, n20Url);
-                await interaction.reply(`✅ Personaje **${nombrePersonaje}** actualizado con éxito.`);
+                await actualizarNivelYRango(characterId, nuevoNivel, nuevoRango);
+                await interaction.reply(`✅ Personaje **${nombrePersonaje}** actualizado correctamente.`);
             } catch (error) {
                 console.error("Error al actualizar personaje:", error);
                 await interaction.reply('❌ Hubo un error al intentar actualizar el personaje.');
             }
         }
-    }   
+    }
 ];
 
 module.exports = comandosPersonaje;
