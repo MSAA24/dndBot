@@ -18,7 +18,7 @@ const comandosMoneda = [
             const monedaUserId = `${userId}_${nombreMoneda}`;
 
             try {
-                await crearMoneda(monedaUserId, nombreMoneda);
+                await crearMoneda(userId, nombreMoneda);
                 await interaction.reply(`Se ha creado **${nombreMoneda}** .`);
             } catch (error) {
                 console.error("Error creando moneda:", error);
