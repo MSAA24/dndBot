@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const {saveUser, getUser } = require("../controllers/usuarioController.js");
+const {saveUser, getUser, } = require("../controllers/usuarioController.js");
+const {actualizarPersonaje} = require("../controllers/personajeController.js")
 const {AttachmentBuilder, EmbedBuilder } = require('discord.js');
 
 const comandosUsuario = [
