@@ -95,11 +95,32 @@ async function borrarMoneda(userId, nombreMoneda) {
     }
 }
 
+const {QueryCommand} = require('@aws-sdk/lib-dynamodb');
+
+async function getMonedas(userId) {
+    const params = {
+        TableName: "monedas",
+        KeyConditionExpression: "monedaId begins_with :userId", // Usamos begins_with para filtrar las monedas por userId
+        ExpressionAttributeValues: {
+            ":userId": userId
+        }
+    };
+
+    try {
+        const result = await dynamoDB.send(new QueryCommand(params)); // Hacer la consulta
+        return result.Items; // Devuelve las monedas asociadas
+    } catch (error) {
+        console.error("Error al obtener las monedas:", error);
+        return [];
+    }
+}
+
     
 
 module.exports = { 
     crearMoneda, 
     getMoneda, 
     actualizarMoneda,
-    borrarMoneda
+    borrarMoneda,
+    getMonedas
 };
