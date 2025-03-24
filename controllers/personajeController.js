@@ -62,6 +62,7 @@ async function getPersonaje(userID, nombrePersonaje) {
 async function actualizarPersonaje(characterId, raza, clase, nivel, rango, imageUrl, n20Url) {
     let updateExpression = "set ";
     let expressionAttributeValues = {};
+    let expressionAttributeNames = {};  // Para manejar nombres reservados
     let updatedAttributes = false; // Flag para verificar si algún atributo fue proporcionado para actualizar
 
     // Verifica si el campo raza está presente y agrega la condición a la expresión de actualización
@@ -71,7 +72,9 @@ async function actualizarPersonaje(characterId, raza, clase, nivel, rango, image
         updatedAttributes = true;
     }
     if (clase !== undefined) {
-        updateExpression += "class = :class, ";
+        // Usamos un alias para 'class' ya que es una palabra reservada en DynamoDB
+        updateExpression += "#class = :class, ";
+        expressionAttributeNames["#class"] = "class";
         expressionAttributeValues[":class"] = clase;
         updatedAttributes = true;
     }
@@ -110,6 +113,7 @@ async function actualizarPersonaje(characterId, raza, clase, nivel, rango, image
             },
             UpdateExpression: updateExpression,
             ExpressionAttributeValues: expressionAttributeValues,
+            ExpressionAttributeNames: expressionAttributeNames,  // Aquí asignamos los nombres alternativos
             ReturnValues: "ALL_NEW" // Devuelve los nuevos valores después de la actualización
         };
 
@@ -122,7 +126,6 @@ async function actualizarPersonaje(characterId, raza, clase, nivel, rango, image
     } else {
         console.log("No se proporcionaron atributos para actualizar.");
     }
-
 }
 
     
