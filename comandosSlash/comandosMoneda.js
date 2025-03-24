@@ -30,7 +30,7 @@ const comandosMoneda = [
         
             async execute(interaction) {
                 const userId = interaction.user.id;
-                const monedaUser= `${userId}_${nombreMoneda}`
+                const monedaUser= `${userId}_${nombre}`
                 const subcommand = interaction.options.getSubcommand();
         
                 if (subcommand === 'crear') {
