@@ -184,7 +184,6 @@ const comandosPersonaje = [
 
         async execute(interaction) {
             const userId = interaction.user.id; // Obtener el ID del usuario que está ejecutando el comando
-            const characterId = `${userId}_${nombrePersonaje}`;
             const nombrePersonaje = interaction.options.getString('nombrepersonaje');
             const raza = interaction.options.getString('raza');
             const clase = interaction.options.getString('clase');
@@ -192,7 +191,8 @@ const comandosPersonaje = [
             const rango = interaction.options.getString('rango');
             const imageUrl = interaction.options.getString('imageurl') || null;
             const n20Url = interaction.options.getString('n20url') || null;
-
+            
+            const characterId = `${userId}_${nombrePersonaje}`;
             try {
             // Llamar a la función de actualización de personaje con los datos recibidos
                 await actualizarPersonaje(characterId, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url);
