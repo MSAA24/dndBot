@@ -151,33 +151,33 @@ const comandosPersonaje = [
     
     {
         data: new SlashCommandBuilder()
-            .setName('actualizar_personaje')
-            .setDescription('Actualiza los detalles de un personaje en la base de datos.')
-            .addStringOption(option =>
+        .setName('actualizar_personaje')
+        .setDescription('Actualiza los detalles de un personaje en la base de datos.')
+        .addStringOption(option =>
             option.setName('nombrepersonaje')
                 .setDescription('El nombre del personaje a actualizar.')
                 .setRequired(true))
-            .addStringOption(option =>
+        .addStringOption(option =>
             option.setName('raza')
                 .setDescription('La raza del personaje.')
                 .setRequired(false))
-            .addStringOption(option =>
+        .addStringOption(option =>
             option.setName('clase')
                 .setDescription('La clase del personaje.')
                 .setRequired(false))
-            .addIntegerOption(option =>
+        .addIntegerOption(option =>
             option.setName('nivel')
                 .setDescription('El nivel del personaje.')
                 .setRequired(false))
-            .addStringOption(option =>
+        .addStringOption(option =>
             option.setName('rango')
                 .setDescription('El rango del personaje.')
                 .setRequired(false))
-            .addStringOption(option =>
+        .addStringOption(option =>
             option.setName('imageurl')
                 .setDescription('La URL de la imagen del personaje.')
                 .setRequired(false))
-            .addStringOption(option =>
+        .addStringOption(option =>
             option.setName('n20url')
                 .setDescription('La URL del personaje en 20 caras.')
                 .setRequired(false)),
@@ -192,18 +192,19 @@ const comandosPersonaje = [
             const imageUrl = interaction.options.getString('imageurl') || null;
             const n20Url = interaction.options.getString('n20url') || null;
             
-            const characterId = `${userId}_${nombrePersonaje}`;
             try {
-            // Llamar a la función de actualización de personaje con los datos recibidos
-                await actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, rango, imageUrl, n20Url);
+                // Crear un ID único para el personaje
+                const characterId = `${userId}_${nombrePersonaje}`;
+
+                // Llamar a la función de actualización de personaje con los datos recibidos
+                await actualizarPersonaje(userId, characterId, raza, clase, nivel, rango, imageUrl, n20Url);
                 await interaction.reply(`✅ Personaje **${nombrePersonaje}** actualizado con éxito.`);
             } catch (error) {
                 console.error("Error al actualizar personaje:", error);
                 await interaction.reply('❌ Hubo un error al intentar actualizar el personaje.');
             }
-        },
-    }
-
+        }
+    }   
 ];
 
 module.exports = comandosPersonaje;
