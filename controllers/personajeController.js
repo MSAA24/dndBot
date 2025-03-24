@@ -11,8 +11,8 @@ async function crearPersonaje(userId, nombrePersonaje, raza, clase, nivel, rango
     const params = {
         TableName: "personajes",
         Item: {
-            personajeId: characterId,
             userId: userId,
+            personajeId: characterId,
             characterName: nombrePersonaje,
             race: raza,
             class: clase,
@@ -113,8 +113,8 @@ async function actualizarPersonaje(userId, nombrePersonaje, raza, clase, nivel, 
         const params = {
             TableName: "personajes",
             Key: {
-                personajeId: characterId,
-                userId: userId
+                userId: userId,
+                personajeId: characterId
             },
             UpdateExpression: updateExpression,
             ExpressionAttributeValues: expressionAttributeValues,
