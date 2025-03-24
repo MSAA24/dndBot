@@ -3,7 +3,7 @@ const { DynamoDBDocumentClient, PutCommand, GetCommand, UpdateCommand, DeleteCom
 
 const client = new DynamoDBClient({ region: "us-east-2" }); // Cambia la región según corresponda
 const dynamoDB = DynamoDBDocumentClient.from(client);
-
+const { QueryCommand } = require("@aws-sdk/lib-dynamodb");
 
 // Crear moneda para un usuario específico
 async function crearMoneda(userId, nombreMoneda) {
@@ -95,25 +95,31 @@ async function borrarMoneda(userId, nombreMoneda) {
     }
 }
 
-const {QueryCommand} = require('@aws-sdk/lib-dynamodb');
-
 async function getMonedas(userId) {
     const params = {
         TableName: "monedas",
-        KeyConditionExpression: "monedaId begins_with :userId", // Usamos begins_with para filtrar las monedas por userId
+        KeyConditionExpression: "starts_with(monedaId, :userId)", // Usar starts_with para buscar todas las monedas asociadas al userId
         ExpressionAttributeValues: {
-            ":userId": userId
+            ":userId": userId  // El prefijo de monedaId es el userId
         }
     };
 
     try {
-        const result = await dynamoDB.send(new QueryCommand(params)); // Hacer la consulta
-        return result.Items; // Devuelve las monedas asociadas
+        const result = await dynamoDB.send(new QueryCommand(params)); // Realizar la consulta
+        if (result.Items && result.Items.length > 0) {
+            return result.Items.map(item => ({
+                nombre: item.nombre,
+                cantidad: item.cantidad
+            }));
+        } else {
+            return []; // No se encontraron monedas
+        }
     } catch (error) {
-        console.error("Error al obtener las monedas:", error);
-        return [];
+        console.error("Error obteniendo las monedas:", error);
+        throw new Error("No se pudieron obtener las monedas");
     }
 }
+
 
     
 
