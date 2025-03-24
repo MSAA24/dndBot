@@ -14,7 +14,7 @@ async function crearMoneda(userId, nombreMoneda) {
         Item: {
             monedaId: monedaUserId, // ID único para la moneda (userId + nombreMoneda)
             nombre: nombreMoneda,   // Solo el nombre de la moneda
-            cantidad: 0,            // Cantidad inicial
+            cantidad: parseInt(0),            // Cantidad inicial
             createdAt: new Date().toDateString() // Fecha de creación
         }
     };
@@ -98,9 +98,9 @@ async function borrarMoneda(userId, nombreMoneda) {
 async function getMonedas(userId) {
     const params = {
         TableName: "monedas", // Nombre de la tabla en DynamoDB
-        KeyConditionExpression: "begins_with(userId)", // Filtro para monedas que empiecen con el userId
+        KeyConditionExpression: "begins_with(monedaId, :userId)", // Usamos begins_with con la clave correctamente
         ExpressionAttributeValues: {
-            ":userId": { S: userId } // El valor de userId como parámetro
+            ":userId": userId // Asegúrate de que esta sea una cadena
         }
     };
 
@@ -112,7 +112,7 @@ async function getMonedas(userId) {
                 return {
                     monedaId: item.monedaId.S, // Devolvemos solo los campos relevantes
                     nombre: item.nombre.S,
-                    cantidad: Number(item.cantidad.N) // Convertir la cantidad a número
+                    cantidad: item.cantidad.N // Si la cantidad está guardada como número
                 };
             });
         } else {
