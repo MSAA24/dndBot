@@ -48,6 +48,6 @@ const comandosMoneda = [
         }
 ];
 
-module.exports = comandosAdmin;
+module.exports = comandosMoneda;
 
 
