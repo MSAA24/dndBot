@@ -91,11 +91,22 @@ async function registrarComandos() {
         }
     ];
 
-    // Verifica que todos los comandos sean instancias válidas de SlashCommandBuilder
     const comandosAdminConPermisos = comandosAdmin.map(cmd => {
         if (cmd instanceof SlashCommandBuilder) {
+            // Verificar que el comando tenga nombre y descripción válidos
+            if (!cmd.name || !cmd.description) {
+                console.error('❌ El comando no tiene un nombre o descripción válida:', cmd);
+                return null;
+            }
+
+            // Verificar que el nombre del comando sea válido
+            if (!/^[a-z0-9-]+$/.test(cmd.name)) {
+                console.error('❌ Nombre de comando inválido:', cmd.name);
+                return null;
+            }
+
             return {
-                ...cmd.toJSON(),  // Aquí usamos toJSON directamente en cmd (sin acceder a cmd.data)
+                ...cmd.toJSON(),  // Convierte a JSON
                 default_permission: false, // Desactiva la visibilidad por defecto para todos
                 permissions: permisosComando // Asigna los permisos solo para el rol "Admin"
             };
